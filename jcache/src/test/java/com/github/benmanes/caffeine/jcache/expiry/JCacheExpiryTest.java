@@ -36,14 +36,12 @@ import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 @SuppressWarnings("unchecked")
 public final class JCacheExpiryTest extends AbstractJCacheTest {
   private static final long ONE_MINUTE = TimeUnit.MINUTES.toNanos(1);
 
   private final Expiry<Integer, Integer> expiry = Mockito.mock(Expiry.class);
 
-  @BeforeMethod
   public void setup() {
     Mockito.reset(expiry);
     when(expiry.expireAfterCreate(anyInt(), anyInt(), anyLong())).thenReturn(ONE_MINUTE);
@@ -59,7 +57,6 @@ public final class JCacheExpiryTest extends AbstractJCacheTest {
     return configuration;
   }
 
-  @Test
   public void configured() {
     jcache.put(KEY_1, VALUE_1);
     verify(expiry).expireAfterCreate(anyInt(), anyInt(), anyLong());

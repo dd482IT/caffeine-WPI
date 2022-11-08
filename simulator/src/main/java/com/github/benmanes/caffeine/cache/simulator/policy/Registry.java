@@ -231,7 +231,6 @@ public final class Registry {
     registerMany(ExpiringMapPolicy.class, ExpiringMapPolicy::policies);
   }
 
-  @AutoValue
   abstract static class Factory {
     abstract Class<? extends Policy> policyClass();
     abstract Function<Config, Set<Policy>> creator();

@@ -23,7 +23,6 @@ import org.junit.runners.Parameterized;
 /**
  * @author nitsanw@yahoo.com (Nitsan Wakart)
  */
-@RunWith(Parameterized.class)
 public final class MpscGrowableQueueSanityTest extends QueueSanityTest {
 
   public MpscGrowableQueueSanityTest(Queue<Integer> queue,
@@ -31,7 +30,6 @@ public final class MpscGrowableQueueSanityTest extends QueueSanityTest {
     super(queue, ordering, capacity, isBounded);
   }
 
-  @Parameterized.Parameters
   public static List<Object[]> parameters() {
     var list = new ArrayList<Object[]>();
     // MPSC size: 1

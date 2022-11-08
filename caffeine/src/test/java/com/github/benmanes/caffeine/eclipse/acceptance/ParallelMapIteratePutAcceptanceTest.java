@@ -43,7 +43,6 @@ public abstract class ParallelMapIteratePutAcceptanceTest {
   private static final int CHUNK_SIZE = 16000;
   private static final int MAX_THREADS = 48;
 
-  @After
   public void tearDown() {
     ParallelMapIteratePutAcceptanceTest.fullGc();
   }
@@ -61,7 +60,6 @@ public abstract class ParallelMapIteratePutAcceptanceTest {
     }
   }
 
-  @Test
   public void testMapIteratePut() {
     int constSize = 100_000;
     int size = 10_000_000;

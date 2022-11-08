@@ -41,7 +41,6 @@ public abstract class MutableMapTestCase extends MutableMapIterableTestCase {
   protected abstract <K, V> MutableMap<K, V> newMapWithKeysValues(K key1, V value1, K key2,
       V value2, K key3, V value3, K key4, V value4);
 
-  @Test
   public void collectKeysAndValues() {
     MutableMap<Integer, String> map = newMapWithKeysValues(1, "1", 2, "Two");
     MutableList<Integer> toAdd = FastList.newListWith(2, 3);
@@ -50,7 +49,6 @@ public abstract class MutableMapTestCase extends MutableMapIterableTestCase {
     Verify.assertContainsAllKeyValues(map, 1, "1", 2, "2", 3, "3");
   }
 
-  @Test
   public void testClone() {
     MutableMap<Integer, String> map = newMapWithKeysValues(1, "One", 2, "Two");
     MutableMap<Integer, String> clone = map.clone();

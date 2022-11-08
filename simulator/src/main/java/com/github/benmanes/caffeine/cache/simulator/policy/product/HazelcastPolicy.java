@@ -47,7 +47,6 @@ import com.typesafe.config.Config;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "product.Hazelcast")
 public final class HazelcastPolicy implements KeyOnlyPolicy {
   private final NearCache<Long, Boolean> cache;
   private final PolicyStats policyStats;

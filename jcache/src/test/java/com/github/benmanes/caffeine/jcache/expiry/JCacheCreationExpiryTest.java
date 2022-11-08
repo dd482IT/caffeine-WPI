@@ -46,7 +46,6 @@ import com.google.common.util.concurrent.MoreExecutors;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   @Override
@@ -62,7 +61,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- containsKey --------------- */
 
-  @Test
   public void containsKey_expired() {
     jcache.put(KEY_1, VALUE_1);
     ticker.setAutoIncrementStep(EXPIRY_DURATION / 2, TimeUnit.MILLISECONDS);
@@ -73,7 +71,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- get --------------- */
 
-  @Test
   public void get_expired() {
     jcache.put(KEY_1, VALUE_1);
     ticker.setAutoIncrementStep(EXPIRY_DURATION / 2, TimeUnit.MILLISECONDS);
@@ -84,14 +81,12 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- get (loading) --------------- */
 
-  @Test
   public void get_loading_absent() {
     assertThat(jcacheLoading.get(KEY_1)).isEqualTo(KEY_1);
     Expirable<Integer> expirable = getExpirable(jcacheLoading, KEY_1);
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void get_loading_expired() {
     jcacheLoading.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -101,7 +96,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void get_loading_expired_lazy() {
     cacheManager.enableStatistics(jcacheLoading.getName(), false);
 
@@ -111,7 +105,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(jcacheLoading.get(KEY_1)).isEqualTo(KEY_1);
   }
 
-  @Test
   public void get_loading_present() {
     jcacheLoading.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -123,7 +116,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- getAndPut --------------- */
 
-  @Test
   public void getAndPut_absent() {
     assertThat(jcache.getAndPut(KEY_1, VALUE_1)).isNull();
 
@@ -131,7 +123,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void getAndPut_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -141,7 +132,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void getAndPut_present() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -153,7 +143,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- put --------------- */
 
-  @Test
   public void put_absent() {
     jcache.put(KEY_1, VALUE_1);
 
@@ -161,7 +150,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void put_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -171,7 +159,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void put_present() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -183,7 +170,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- putAll --------------- */
 
-  @Test
   public void putAll_absent() {
     jcache.putAll(entries);
 
@@ -193,7 +179,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void putAll_expired() {
     jcache.putAll(entries);
     advancePastExpiry();
@@ -205,7 +190,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void putAll_present() {
     jcache.putAll(entries);
     advanceHalfExpiry();
@@ -219,7 +203,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- putIfAbsent --------------- */
 
-  @Test
   public void putIfAbsent_absent() {
     jcache.putIfAbsent(KEY_1, VALUE_1);
 
@@ -227,7 +210,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void putIfAbsent_expired() {
     jcache.putIfAbsent(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -238,7 +220,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void putIfAbsent_expired_lazy() {
     jcache.putIfAbsent(KEY_1, VALUE_1);
 
@@ -246,7 +227,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(jcache.putIfAbsent(KEY_1, VALUE_2)).isTrue();
   }
 
-  @Test
   public void putIfAbsent_present() {
     jcache.putIfAbsent(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -258,7 +238,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- invoke --------------- */
 
-  @Test
   public void invoke_absent() {
     var result = jcache.invoke(KEY_1, (entry, args) -> {
       entry.setValue(VALUE_2);
@@ -270,7 +249,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void invoke_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -285,7 +263,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void invoke_present() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -302,7 +279,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
 
   /* --------------- invokeAll --------------- */
 
-  @Test
   public void invokeAll_absent() {
     var result = jcache.invokeAll(keys, (entry, args) -> {
       entry.setValue(VALUE_2);
@@ -316,7 +292,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void invokeAll_expired() {
     jcache.putAll(entries);
     advancePastExpiry();
@@ -333,7 +308,6 @@ public final class JCacheCreationExpiryTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void invokeAll_present() {
     jcache.putAll(entries);
     advanceHalfExpiry();

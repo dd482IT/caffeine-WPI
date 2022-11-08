@@ -33,12 +33,10 @@ import com.github.benmanes.caffeine.testing.ConcurrentTestHarness;
  */
 public final class BoundedBufferTest {
 
-  @DataProvider
   public Object[][] buffer() {
     return new Object[][] {{ new BoundedBuffer<Boolean>() }};
   }
 
-  @Test(dataProvider = "buffer")
   public void offer(BoundedBuffer<Boolean> buffer) {
     ConcurrentTestHarness.timeTasks(10, () -> {
       for (int i = 0; i < 100; i++) {
@@ -49,7 +47,6 @@ public final class BoundedBufferTest {
     assertThat(buffer.writes()).isEqualTo(buffer.size());
   }
 
-  @Test(dataProvider = "buffer")
   public void drain(BoundedBuffer<Boolean> buffer) {
     for (int i = 0; i < BoundedBuffer.BUFFER_SIZE; i++) {
       buffer.offer(Boolean.TRUE);
@@ -60,7 +57,6 @@ public final class BoundedBufferTest {
     assertThat(read[0]).isEqualTo(buffer.writes());
   }
 
-  @Test(dataProvider = "buffer")
   @SuppressWarnings("ThreadPriorityCheck")
   public void offerAndDrain(BoundedBuffer<Boolean> buffer) {
     var lock = new ReentrantLock();
@@ -80,7 +76,6 @@ public final class BoundedBufferTest {
     assertThat(reads.longValue()).isEqualTo(buffer.writes());
   }
 
-  @Test
   public void overflow() {
     var buffer = new BoundedBuffer.RingBuffer<Boolean>(null);
     buffer.writeCounter = Long.MAX_VALUE;

@@ -52,28 +52,24 @@ public abstract class ConcurrentMutableHashMapTest extends ConcurrentHashMapTest
   public abstract <K, V> ConcurrentMutableMap<K, V> newMapWithKeysValues(
       K key1, V value1, K key2, V value2, K key3, V value3, K key4, V value4);
 
-  @Test
   public void putIfAbsent() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertEquals(Integer.valueOf(1), map.putIfAbsent(1, 1));
     Assert.assertNull(map.putIfAbsent(3, 3));
   }
 
-  @Test
   public void replace() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertEquals(Integer.valueOf(1), map.replace(1, 1));
     Assert.assertNull(map.replace(3, 3));
   }
 
-  @Test
   public void replaceWithOldValue() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertTrue(map.replace(1, 1, 1));
     Assert.assertFalse(map.replace(2, 3, 3));
   }
 
-  @Test
   public void removeWithKeyValue() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertTrue(map.remove(1, 1));
@@ -81,7 +77,6 @@ public abstract class ConcurrentMutableHashMapTest extends ConcurrentHashMapTest
   }
 
   @Override
-  @Test
   public void removeFromEntrySet() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", 1, "Two", 2, "Three", 3);
     Assert.assertTrue(map.entrySet().remove(ImmutableEntry.of("Two", 2)));
@@ -92,7 +87,6 @@ public abstract class ConcurrentMutableHashMapTest extends ConcurrentHashMapTest
   }
 
   @Override
-  @Test
   public void removeAllFromEntrySet() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", 1, "Two", 2, "Three", 3);
     Assert.assertTrue(map.entrySet().removeAll(
@@ -105,14 +99,12 @@ public abstract class ConcurrentMutableHashMapTest extends ConcurrentHashMapTest
   }
 
   @Override
-  @Test
   public void keySetEqualsAndHashCode() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", 1, "Two", 2, "Three", 3);
     Verify.assertEqualsAndHashCode(UnifiedSet.newSetWith("One", "Two", "Three"), map.keySet());
   }
 
   @Override
-  @Test
   public void partition_value() {
     MapIterable<String, Integer> map = newMapWithKeysValues("A", 1, "B", 2, "C", 3, "D", 4);
     PartitionIterable<Integer> partition = map.partition(IntegerPredicates.isEven());
@@ -121,7 +113,6 @@ public abstract class ConcurrentMutableHashMapTest extends ConcurrentHashMapTest
   }
 
   @Override
-  @Test
   public void partitionWith_value() {
     MapIterable<String, Integer> map = newMapWithKeysValues("A", 1, "B", 2, "C", 3, "D", 4);
     PartitionIterable<Integer> partition =

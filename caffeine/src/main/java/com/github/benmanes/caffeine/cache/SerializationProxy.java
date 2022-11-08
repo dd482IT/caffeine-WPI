@@ -44,12 +44,12 @@ final class SerializationProxy<K, V> implements Serializable {
   long maximumSize = UNSET_INT;
   long maximumWeight = UNSET_INT;
 
-  @Nullable Ticker ticker;
-  @Nullable Expiry<?, ?> expiry;
-  @Nullable Weigher<?, ?> weigher;
-  @Nullable AsyncCacheLoader<?, ?> cacheLoader;
-  @Nullable RemovalListener<?, ?> removalListener;
-  @Nullable RemovalListener<?, ?> evictionListener;
+  Ticker ticker;
+  Expiry<?, ?> expiry;
+  Weigher<?, ?> weigher;
+  AsyncCacheLoader<?, ?> cacheLoader;
+  RemovalListener<?, ?> removalListener;
+  RemovalListener<?, ?> evictionListener;
 
   @SuppressWarnings("PreferJavaTimeOverload")
   Caffeine<Object, Object> recreateCaffeine() {

@@ -81,11 +81,11 @@ public final class CaffeineSpec {
   long maximumSize = UNSET_INT;
   boolean recordStats;
 
-  @Nullable Strength keyStrength;
-  @Nullable Strength valueStrength;
-  @Nullable Duration expireAfterWrite;
-  @Nullable Duration expireAfterAccess;
-  @Nullable Duration refreshAfterWrite;
+  Strength keyStrength;
+  Strength valueStrength;
+  Duration expireAfterWrite;
+  Duration expireAfterAccess;
+  Duration refreshAfterWrite;
 
   private CaffeineSpec(String specification) {
     this.specification = requireNonNull(specification);
@@ -166,7 +166,7 @@ public final class CaffeineSpec {
   }
 
   /** Configures the setting. */
-  void configure(String key, @Nullable String value) {
+  void configure(String key, String value) {
     switch (key) {
       case "initialCapacity":
         initialCapacity(key, value);
@@ -204,14 +204,14 @@ public final class CaffeineSpec {
   }
 
   /** Configures the initial capacity. */
-  void initialCapacity(String key, @Nullable String value) {
+  void initialCapacity(String key, String value) {
     requireArgument(initialCapacity == UNSET_INT,
         "initial capacity was already set to %,d", initialCapacity);
     initialCapacity = parseInt(key, value);
   }
 
   /** Configures the maximum size. */
-  void maximumSize(String key, @Nullable String value) {
+  void maximumSize(String key, String value) {
     requireArgument(maximumSize == UNSET_INT,
         "maximum size was already set to %,d", maximumSize);
     requireArgument(maximumWeight == UNSET_INT,
@@ -220,7 +220,7 @@ public final class CaffeineSpec {
   }
 
   /** Configures the maximum size. */
-  void maximumWeight(String key, @Nullable String value) {
+  void maximumWeight(String key, String value) {
     requireArgument(maximumWeight == UNSET_INT,
         "maximum weight was already set to %,d", maximumWeight);
     requireArgument(maximumSize == UNSET_INT,
@@ -229,46 +229,46 @@ public final class CaffeineSpec {
   }
 
   /** Configures the keys as weak references. */
-  void weakKeys(@Nullable String value) {
+  void weakKeys(String value) {
     requireArgument(value == null, "weak keys does not take a value");
     requireArgument(keyStrength == null, "weak keys was already set");
     keyStrength = Strength.WEAK;
   }
 
   /** Configures the value as weak or soft references. */
-  void valueStrength(String key, @Nullable String value, Strength strength) {
+  void valueStrength(String key, String value, Strength strength) {
     requireArgument(value == null, "%s does not take a value", key);
     requireArgument(valueStrength == null, "%s was already set to %s", key, valueStrength);
     valueStrength = strength;
   }
 
   /** Configures expire after access. */
-  void expireAfterAccess(String key, @Nullable String value) {
+  void expireAfterAccess(String key, String value) {
     requireArgument(expireAfterAccess == null, "expireAfterAccess was already set");
     expireAfterAccess = parseDuration(key, value);
   }
 
   /** Configures expire after write. */
-  void expireAfterWrite(String key, @Nullable String value) {
+  void expireAfterWrite(String key, String value) {
     requireArgument(expireAfterWrite == null, "expireAfterWrite was already set");
     expireAfterWrite = parseDuration(key, value);
   }
 
   /** Configures refresh after write. */
-  void refreshAfterWrite(String key, @Nullable String value) {
+  void refreshAfterWrite(String key, String value) {
     requireArgument(refreshAfterWrite == null, "refreshAfterWrite was already set");
     refreshAfterWrite = parseDuration(key, value);
   }
 
   /** Configures the value as weak or soft references. */
-  void recordStats(@Nullable String value) {
+  void recordStats(String value) {
     requireArgument(value == null, "record stats does not take a value");
     requireArgument(!recordStats, "record stats was already set");
     recordStats = true;
   }
 
   /** Returns a parsed int value. */
-  static int parseInt(String key, @Nullable String value) {
+  static int parseInt(String key, String value) {
     requireArgument((value != null) && !value.isEmpty(), "value of key %s was omitted", key);
     try {
       return Integer.parseInt(value);
@@ -279,7 +279,7 @@ public final class CaffeineSpec {
   }
 
   /** Returns a parsed long value. */
-  static long parseLong(String key, @Nullable String value) {
+  static long parseLong(String key, String value) {
     requireArgument((value != null) && !value.isEmpty(), "value of key %s was omitted", key);
     try {
       return Long.parseLong(value);
@@ -290,7 +290,7 @@ public final class CaffeineSpec {
   }
 
   /** Returns a parsed duration value. */
-  static Duration parseDuration(String key, @Nullable String value) {
+  static Duration parseDuration(String key, String value) {
     requireArgument((value != null) && !value.isEmpty(), "value of key %s omitted", key);
 
     @SuppressWarnings("NullAway")
@@ -309,7 +309,7 @@ public final class CaffeineSpec {
   }
 
   /** Returns a parsed {@link TimeUnit} value. */
-  static TimeUnit parseTimeUnit(String key, @Nullable String value) {
+  static TimeUnit parseTimeUnit(String key, String value) {
     requireArgument((value != null) && !value.isEmpty(), "value of key %s omitted", key);
     @SuppressWarnings("NullAway")
     char lastChar = Character.toLowerCase(value.charAt(value.length() - 1));
@@ -329,7 +329,7 @@ public final class CaffeineSpec {
   }
 
   @Override
-  public boolean equals(@Nullable Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     } else if (!(o instanceof CaffeineSpec)) {

@@ -62,19 +62,19 @@ public final class CaffeineConfiguration<K, V> implements CompleteConfiguration<
   private final MutableConfiguration<K, V> delegate;
   private final boolean readOnly;
 
-  private @Nullable Factory<Weigher<K, V>> weigherFactory;
-  private @Nullable Factory<Expiry<K, V>> expiryFactory;
+  private Factory<Weigher<K, V>> weigherFactory;
+  private Factory<Expiry<K, V>> expiryFactory;
 
   private Factory<Scheduler> schedulerFactory;
   private Factory<Executor> executorFactory;
   private Factory<Copier> copierFactory;
   private Factory<Ticker> tickerFactory;
 
-  private @Nullable Long refreshAfterWriteNanos;
-  private @Nullable Long expireAfterAccessNanos;
-  private @Nullable Long expireAfterWriteNanos;
-  private @Nullable Long maximumWeight;
-  private @Nullable Long maximumSize;
+  private Long refreshAfterWriteNanos;
+  private Long expireAfterAccessNanos;
+  private Long expireAfterWriteNanos;
+  private Long maximumWeight;
+  private Long maximumSize;
   private boolean nativeStatistics;
 
   public CaffeineConfiguration() {
@@ -180,7 +180,7 @@ public final class CaffeineConfiguration<K, V> implements CompleteConfiguration<
   }
 
   /** Returns a writer created by the configured factory or null if not set. */
-  public @Nullable CacheWriter<K , V> getCacheWriter() {
+  public CacheWriter<K , V> getCacheWriter() {
     if (hasCacheWriter()) {
       @SuppressWarnings("unchecked")
       CacheWriter<K , V> writer = (CacheWriter<K, V>) getCacheWriterFactory().create();

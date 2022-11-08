@@ -63,12 +63,10 @@ public final class InternerTest extends TestCase {
         .createTestSuite();
   }
 
-  @Test(dataProvider = "interners", expectedExceptions = NullPointerException.class)
   public void intern_null(Interner<Int> interner) {
     interner.intern(null);
   }
 
-  @Test(dataProvider = "interners")
   public void intern(Interner<Int> interner) {
     var canonical = new Int(1);
     var other = new Int(1);
@@ -83,7 +81,6 @@ public final class InternerTest extends TestCase {
     checkState(interner);
   }
 
-  @Test
   public void intern_weak_replace() {
     var canonical = new Int(1);
     var other = new Int(1);
@@ -100,7 +97,6 @@ public final class InternerTest extends TestCase {
     checkState(interner);
   }
 
-  @Test
   public void intern_weak_remove() {
     var canonical = new Int(1);
     var next = new Int(2);
@@ -117,7 +113,6 @@ public final class InternerTest extends TestCase {
     checkState(interner);
   }
 
-  @Test
   public void intern_weak_cleanup() {
     var interner = (WeakInterner<Int>) Interner.<Int>newWeakInterner();
     interner.cache.drainStatus = BoundedLocalCache.REQUIRED;
@@ -131,12 +126,10 @@ public final class InternerTest extends TestCase {
     assertThat(interner.cache.drainStatus).isEqualTo(BoundedLocalCache.IDLE);
   }
 
-  @Test
   public void nullPointerExceptions() {
     new NullPointerTester().testAllPublicStaticMethods(Interner.class);
   }
 
-  @Test
   public void interned() {
     var node = new Interned<Object, Boolean>(new WeakReference<>(null));
     assertThat(node.getValue()).isTrue();
@@ -176,7 +169,6 @@ public final class InternerTest extends TestCase {
     }
   }
 
-  @DataProvider(name = "interners")
   Object[] providesInterners() {
     return new Object[] { Interner.newStrongInterner(), Interner.newWeakInterner() };
   }

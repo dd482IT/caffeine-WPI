@@ -39,7 +39,6 @@ import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 public final class CacheWriterTest extends AbstractJCacheTest {
   private CloseableCacheWriter writer = Mockito.mock(CloseableCacheWriter.class);
 
@@ -52,13 +51,11 @@ public final class CacheWriterTest extends AbstractJCacheTest {
     return configuration;
   }
 
-  @Test(expectedExceptions = CacheWriterException.class)
   public void put_fails() {
     doThrow(CacheWriterException.class).when(writer).write(any());
     jcache.put(KEY_1, VALUE_1);
   }
 
-  @Test
   public void putAll_fails() {
     doThrow(CacheWriterException.class).when(writer).writeAll(any());
     var map = new HashMap<Integer, Integer>();
@@ -72,7 +69,6 @@ public final class CacheWriterTest extends AbstractJCacheTest {
     }
   }
 
-  @Test(expectedExceptions = CacheWriterException.class)
   public void remove_fails() {
     jcache.put(KEY_1, VALUE_1);
 
@@ -80,7 +76,6 @@ public final class CacheWriterTest extends AbstractJCacheTest {
     jcache.remove(KEY_1);
   }
 
-  @Test(expectedExceptions = CacheWriterException.class)
   public void removeAll_fails() {
     doThrow(CacheWriterException.class).when(writer).deleteAll(any());
     var keys = new HashSet<Integer>();
@@ -89,7 +84,6 @@ public final class CacheWriterTest extends AbstractJCacheTest {
     jcache.removeAll(keys);
   }
 
-  @Test
   public void close_fails() throws IOException {
     doThrow(IOException.class).when(writer).close();
     jcache.close();
@@ -97,7 +91,6 @@ public final class CacheWriterTest extends AbstractJCacheTest {
     verify(writer, atLeastOnce()).close();
   }
 
-  @Test
   public void disabled() {
     DisabledCacheWriter.get().write(null);
     DisabledCacheWriter.get().writeAll(null);

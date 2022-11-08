@@ -88,6 +88,5 @@ public interface AsyncLoadingCache<K, V> extends AsyncCache<K, V> {
    * @return a thread-safe synchronous view of this cache
    */
   @Override
-  @CheckReturnValue
   LoadingCache<K, V> synchronous();
 }

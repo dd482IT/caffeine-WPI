@@ -58,29 +58,26 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
  * @author ben.manes@gmail.com (Ben Manes)
  */
 public final class EventDispatcherTest {
-  @Mock Cache<Integer, Integer> cache;
-  @Mock CacheEntryCreatedListener<Integer, Integer> createdListener;
-  @Mock CacheEntryUpdatedListener<Integer, Integer> updatedListener;
-  @Mock CacheEntryRemovedListener<Integer, Integer> removedListener;
-  @Mock CacheEntryExpiredListener<Integer, Integer> expiredListener;
+  Cache<Integer, Integer> cache;
+  CacheEntryCreatedListener<Integer, Integer> createdListener;
+  CacheEntryUpdatedListener<Integer, Integer> updatedListener;
+  CacheEntryRemovedListener<Integer, Integer> removedListener;
+  CacheEntryExpiredListener<Integer, Integer> expiredListener;
 
   ExecutorService executorService = Executors.newCachedThreadPool(
       new ThreadFactoryBuilder().setDaemon(true).build());
   CacheEntryEventFilter<Integer, Integer> allowFilter = event -> true;
   CacheEntryEventFilter<Integer, Integer> rejectFilter = event -> false;
 
-  @BeforeMethod
   public void beforeMethod() throws Exception {
     MockitoAnnotations.openMocks(this).close();
     EventDispatcher.pending.remove();
   }
 
-  @AfterTest
   public void afterTest() {
     executorService.shutdownNow();
   }
 
-  @Test
   public void register_noListener() {
     var configuration =
         new MutableCacheEntryListenerConfiguration<Integer, Integer>(null, null, false, false);
@@ -89,7 +86,6 @@ public final class EventDispatcherTest {
     assertThat(dispatcher.dispatchQueues).isEmpty();
   }
 
-  @Test
   public void register_twice() {
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);
     var configuration = new MutableCacheEntryListenerConfiguration<>(
@@ -99,7 +95,6 @@ public final class EventDispatcherTest {
     assertThat(dispatcher.dispatchQueues).hasSize(1);
   }
 
-  @Test
   public void register_equality() {
     var c1 = new MutableCacheEntryListenerConfiguration<>(
         () -> createdListener, null, false, false);
@@ -119,7 +114,6 @@ public final class EventDispatcherTest {
         .testEquals();
   }
 
-  @Test
   public void deregister() {
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);
     var configuration = new MutableCacheEntryListenerConfiguration<>(
@@ -129,7 +123,6 @@ public final class EventDispatcherTest {
     assertThat(dispatcher.dispatchQueues).isEmpty();
   }
 
-  @Test
   public void publishCreated() {
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);
     registerAll(dispatcher);
@@ -141,7 +134,6 @@ public final class EventDispatcherTest {
         .flatMap(queue -> queue.entrySet().stream())).isEmpty();
   }
 
-  @Test
   public void publishUpdated() {
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);
     registerAll(dispatcher);
@@ -153,7 +145,6 @@ public final class EventDispatcherTest {
         .flatMap(queue -> queue.entrySet().stream())).isEmpty();
   }
 
-  @Test
   public void publishRemoved() {
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);
     registerAll(dispatcher);
@@ -165,7 +156,6 @@ public final class EventDispatcherTest {
         .flatMap(queue -> queue.entrySet().stream())).isEmpty();
   }
 
-  @Test
   public void publishExpired() {
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);
     registerAll(dispatcher);
@@ -177,7 +167,6 @@ public final class EventDispatcherTest {
         .flatMap(queue -> queue.entrySet().stream())).isEmpty();
   }
 
-  @Test(invocationCount = 25)
   public void ordered() {
     var start = new AtomicBoolean();
     var next = new AtomicBoolean();
@@ -224,7 +213,6 @@ public final class EventDispatcherTest {
         .containsExactly(CREATED, UPDATED, UPDATED, REMOVED, EXPIRED).inOrder();
   }
 
-  @Test(invocationCount = 25)
   public void parallel_keys() {
     var execute = new AtomicBoolean();
     var received1 = new AtomicBoolean();
@@ -270,7 +258,6 @@ public final class EventDispatcherTest {
         .flatMap(queue -> queue.entrySet().stream())).isEmpty());
   }
 
-  @Test(invocationCount = 25)
   public void parallel_listeners() {
     var execute = new AtomicBoolean();
     var run = new AtomicBoolean();
@@ -303,7 +290,6 @@ public final class EventDispatcherTest {
         .flatMap(queue -> queue.entrySet().stream())).isEmpty());
   }
 
-  @Test
   public void awaitSynchronous() {
     EventDispatcher.pending.get().add(CompletableFuture.completedFuture(null));
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);
@@ -311,7 +297,6 @@ public final class EventDispatcherTest {
     assertThat(EventDispatcher.pending.get()).isEmpty();
   }
 
-  @Test
   public void awaitSynchronous_failure() {
     var future = new CompletableFuture<Void>();
     future.completeExceptionally(new RuntimeException());
@@ -322,7 +307,6 @@ public final class EventDispatcherTest {
     assertThat(EventDispatcher.pending.get()).isEmpty();
   }
 
-  @Test
   public void ignoreSynchronous() {
     EventDispatcher.pending.get().add(CompletableFuture.completedFuture(null));
     var dispatcher = new EventDispatcher<Integer, Integer>(Runnable::run);

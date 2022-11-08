@@ -33,14 +33,12 @@ import com.github.benmanes.caffeine.testing.ConcurrentTestHarness;
  */
 public final class BufferTest {
 
-  @DataProvider
   public Iterator<Object[]> buffers() {
     return Arrays.stream(BufferType.values())
         .map(factory -> new Object[] { factory.create() })
         .iterator();
   }
 
-  @Test(dataProvider = "buffers")
   @SuppressWarnings("ThreadPriorityCheck")
   public void record(ReadBuffer<Boolean> buffer) {
     ConcurrentTestHarness.timeTasks(100, () -> {
@@ -53,7 +51,6 @@ public final class BufferTest {
     assertThat(recorded).isEqualTo(ReadBuffer.BUFFER_SIZE);
   }
 
-  @Test(dataProvider = "buffers")
   public void drain(ReadBuffer<Boolean> buffer) {
     for (int i = 0; i < 2 * ReadBuffer.BUFFER_SIZE; i++) {
       buffer.offer(Boolean.TRUE);
@@ -64,7 +61,6 @@ public final class BufferTest {
     assertThat(drained).isEqualTo(recorded);
   }
 
-  @Test(dataProvider = "buffers")
   @SuppressWarnings("ThreadPriorityCheck")
   public void recordAndDrain(ReadBuffer<Boolean> buffer) {
     ConcurrentTestHarness.timeTasks(100, () -> {

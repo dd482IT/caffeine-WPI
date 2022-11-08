@@ -53,7 +53,6 @@ public final class EntryProcessorTest extends AbstractJCacheTest {
   private int loads;
   private int writes;
 
-  @BeforeMethod
   public void beforeMethod() {
     map.clear();
     loads = 0;
@@ -73,7 +72,6 @@ public final class EntryProcessorTest extends AbstractJCacheTest {
     return config;
   }
 
-  @Test
   public void reload() {
     jcache.invoke(KEY_1, this::process);
     assertThat(loads).isEqualTo(1);
@@ -93,7 +91,6 @@ public final class EntryProcessorTest extends AbstractJCacheTest {
     assertThat(loads).isEqualTo(2);
   }
 
-  @Test
   public void writeOccursForInitialLoadOfEntry() {
     map.put(KEY_1, 100);
     jcache.invoke(KEY_1, this::process);

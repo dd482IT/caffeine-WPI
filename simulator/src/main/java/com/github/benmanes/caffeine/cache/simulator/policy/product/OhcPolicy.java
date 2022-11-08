@@ -42,7 +42,6 @@ import com.typesafe.config.Config;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "product.OHC")
 public final class OhcPolicy implements KeyOnlyPolicy {
   private static final long ENTRY_SIZE = 80;
 

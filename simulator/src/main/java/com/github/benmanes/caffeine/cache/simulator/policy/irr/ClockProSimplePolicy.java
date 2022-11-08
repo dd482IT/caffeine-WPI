@@ -50,7 +50,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  * @author ben.manes@gmail.com (Ben Manes)
  * @author park910113@gmail.com (Chanyoung Park)
  */
-@PolicySpec(name = "irr.ClockProSimple")
 public final class ClockProSimplePolicy implements KeyOnlyPolicy {
   // Enable to print out the internal state
   private static final boolean debug = false;

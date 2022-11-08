@@ -51,25 +51,21 @@ public final class JCacheGuiceTest {
   @Inject CacheManager cacheManager;
   @Inject Service service;
 
-  @BeforeMethod
   public void beforeMethod() {
     var module = Modules.override(new CacheAnnotationsModule()).with(new CaffeineJCacheModule());
     Guice.createInjector(module).injectMembers(this);
   }
 
-  @AfterClass
   public void afterClass() {
     TypesafeConfigurator.setFactoryCreator(FactoryBuilder::factoryOf);
   }
 
-  @Test
   public void factory() {
     Cache<Integer, Integer> cache = cacheManager.getCache("guice");
     var result = cache.getAll(ImmutableSet.of(1, 2, 3));
     assertThat(result).containsExactly(1, 1, 2, 2, 3, 3);
   }
 
-  @Test
   public void annotations() {
     for (int i = 0; i < 10; i++) {
       assertThat(service.get()).isEqualTo(1);
@@ -80,7 +76,6 @@ public final class JCacheGuiceTest {
   public static class Service {
     int times;
 
-    @CacheResult(cacheName = "annotations")
     public Integer get() {
       return ++times;
     }

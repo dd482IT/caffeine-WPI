@@ -46,7 +46,6 @@ import picocli.CommandLine.Option;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Command(mixinStandardHelpOptions = true)
 public final class Stresser implements Runnable {
   private static final String[] STATUS =
     { "Idle", "Required", "Processing -> Idle", "Processing -> Required" };

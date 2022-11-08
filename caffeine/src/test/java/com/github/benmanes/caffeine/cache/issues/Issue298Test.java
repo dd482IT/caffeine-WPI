@@ -47,7 +47,6 @@ import com.github.benmanes.caffeine.testing.ConcurrentTestHarness;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(groups = "isolated")
 public final class Issue298Test {
   static final long EXPIRE_NS = Duration.ofDays(1).toNanos();
 
@@ -65,7 +64,6 @@ public final class Issue298Test {
   VarExpiration<String, String> policy;
   String key;
 
-  @BeforeMethod
   public void before() {
     startedCreate = new AtomicBoolean();
     startedLoad = new AtomicBoolean();
@@ -80,12 +78,10 @@ public final class Issue298Test {
     policy = cache.synchronous().policy().expireVariably().orElseThrow();
   }
 
-  @AfterMethod
   public void after() {
     endRead.set(true);
   }
 
-  @Test
   @SuppressWarnings("FutureReturnValueIgnored")
   public void readDuringCreate() {
     // Loaded value and waiting at expireAfterCreate (expire: infinite)
@@ -119,18 +115,18 @@ public final class Issue298Test {
     return Caffeine.newBuilder()
         .executor(ConcurrentTestHarness.executor)
         .expireAfter(new Expiry<String, String>() {
-          @Override public long expireAfterCreate(@Nonnull String key,
-              @Nonnull String value, long currentTime) {
+          @Override public long expireAfterCreate(String key,
+              String value, long currentTime) {
             startedCreate.set(true);
             await().untilTrue(doCreate);
             return EXPIRE_NS;
           }
-          @Override public long expireAfterUpdate(@Nonnull String key,
-              @Nonnull String value, long currentTime, long currentDuration) {
+          @Override public long expireAfterUpdate(String key,
+              String value, long currentTime, long currentDuration) {
             return currentDuration;
           }
-          @Override public long expireAfterRead(@Nonnull String key,
-              @Nonnull String value, long currentTime, long currentDuration) {
+          @Override public long expireAfterRead(String key,
+              String value, long currentTime, long currentDuration) {
             startedRead.set(true);
             await().untilTrue(doRead);
             return currentDuration;

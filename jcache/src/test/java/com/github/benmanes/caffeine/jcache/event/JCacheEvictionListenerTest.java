@@ -45,10 +45,9 @@ public final class JCacheEvictionListenerTest {
   JCacheEvictionListener<Integer, Integer> listener;
   JCacheStatisticsMXBean statistics;
 
-  @Mock EvictionListener entryListener;
-  @Mock Cache<Integer, Integer> cache;
+  EvictionListener entryListener;
+  Cache<Integer, Integer> cache;
 
-  @BeforeMethod
   public void before() throws Exception {
     MockitoAnnotations.openMocks(this).close();
     statistics = new JCacheStatisticsMXBean();
@@ -61,7 +60,6 @@ public final class JCacheEvictionListenerTest {
         () -> entryListener, null, false, false));
   }
 
-  @DataProvider
   public Iterator<Object[]> notifications() {
     return Arrays.stream(RemovalCause.values())
         .filter(RemovalCause::wasEvicted)
@@ -69,7 +67,6 @@ public final class JCacheEvictionListenerTest {
         .iterator();
   }
 
-  @Test(dataProvider = "notifications")
   public void publishIfEvicted(Integer key, Expirable<Integer> value, RemovalCause cause) {
     listener.onRemoval(key, value, cause);
 

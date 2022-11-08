@@ -31,7 +31,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ohadey@gmail.com (Ohad Eytan)
  */
-@PolicySpec(name = "irr.HillClimberFrd")
 public final class HillClimberFrdPolicy implements KeyOnlyPolicy {
   final Long2ObjectOpenHashMap<Node> data;
   final PolicyStats policyStats;

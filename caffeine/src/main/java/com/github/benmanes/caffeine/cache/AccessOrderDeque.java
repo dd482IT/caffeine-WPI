@@ -57,22 +57,22 @@ final class AccessOrderDeque<E extends AccessOrder<E>> extends AbstractLinkedDeq
   }
 
   @Override
-  public @Nullable E getPrevious(E e) {
+  public E getPrevious(E e) {
     return e.getPreviousInAccessOrder();
   }
 
   @Override
-  public void setPrevious(E e, @Nullable E prev) {
+  public void setPrevious(E e, E prev) {
     e.setPreviousInAccessOrder(prev);
   }
 
   @Override
-  public @Nullable E getNext(E e) {
+  public E getNext(E e) {
     return e.getNextInAccessOrder();
   }
 
   @Override
-  public void setNext(E e, @Nullable E next) {
+  public void setNext(E e, E next) {
     e.setNextInAccessOrder(next);
   }
 
@@ -85,18 +85,18 @@ final class AccessOrderDeque<E extends AccessOrder<E>> extends AbstractLinkedDeq
      * Retrieves the previous element or <tt>null</tt> if either the element is unlinked or the
      * first element on the deque.
      */
-    @Nullable T getPreviousInAccessOrder();
+    T getPreviousInAccessOrder();
 
     /** Sets the previous element or <tt>null</tt> if there is no link. */
-    void setPreviousInAccessOrder(@Nullable T prev);
+    void setPreviousInAccessOrder(T prev);
 
     /**
      * Retrieves the next element or <tt>null</tt> if either the element is unlinked or the last
      * element on the deque.
      */
-    @Nullable T getNextInAccessOrder();
+    T getNextInAccessOrder();
 
     /** Sets the next element or <tt>null</tt> if there is no link. */
-    void setNextInAccessOrder(@Nullable T next);
+    void setNextInAccessOrder(T next);
   }
 }

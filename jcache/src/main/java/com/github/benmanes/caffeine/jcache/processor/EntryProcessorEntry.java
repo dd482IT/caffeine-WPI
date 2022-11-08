@@ -36,10 +36,10 @@ public final class EntryProcessorEntry<K, V> implements MutableEntry<K, V> {
   private final K key;
 
   private Action action;
-  private @Nullable V value;
+  private V value;
   private Optional<CacheLoader<K, V>> cacheLoader;
 
-  public EntryProcessorEntry(K key, @Nullable V value, Optional<CacheLoader<K, V>> cacheLoader) {
+  public EntryProcessorEntry(K key, V value, Optional<CacheLoader<K, V>> cacheLoader) {
     this.hasEntry = (value != null);
     this.cacheLoader = cacheLoader;
     this.action = Action.NONE;
@@ -58,7 +58,7 @@ public final class EntryProcessorEntry<K, V> implements MutableEntry<K, V> {
   }
 
   @Override
-  public @Nullable V getValue() {
+  public V getValue() {
     if (action != Action.NONE) {
       return value;
     } else if (value != null) {

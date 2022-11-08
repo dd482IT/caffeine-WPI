@@ -91,7 +91,6 @@ public interface CaffeineMutableMapTestCase {
     @Override public boolean replace(K key, V oldValue, V newValue) {
       return delegate.replace(key, oldValue, newValue);
     }
-    @CanIgnoreReturnValue
     @SuppressWarnings("FunctionalInterfaceClash")
     @Override public ConcurrentMutableMap<K, V> tap(Procedure<? super V> procedure) {
       each(procedure);

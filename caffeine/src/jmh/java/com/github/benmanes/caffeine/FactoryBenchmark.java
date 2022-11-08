@@ -27,28 +27,23 @@ import org.openjdk.jmh.annotations.State;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class FactoryBenchmark {
   private final ReflectionFactory reflectionFactory = new ReflectionFactory();
   private final MethodHandleFactory methodHandleFactory = new MethodHandleFactory();
 
-  @Benchmark
   public Alpha direct() {
     return new Alpha();
   }
 
-  @Benchmark
   public Alpha methodHandle_invoke() {
     return methodHandleFactory.invoke();
   }
 
-  @Benchmark
   public Alpha methodHandle_invokeExact() {
     return methodHandleFactory.invokeExact();
   }
 
-  @Benchmark
   public Alpha reflection() {
     return reflectionFactory.newInstance();
   }

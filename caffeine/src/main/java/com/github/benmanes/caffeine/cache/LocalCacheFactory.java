@@ -35,7 +35,7 @@ final class LocalCacheFactory {
 
   /** Returns a cache optimized for this configuration. */
   static <K, V> BoundedLocalCache<K, V> newBoundedLocalCache(Caffeine<K, V> builder,
-      @Nullable AsyncCacheLoader<? super K, V> cacheLoader, boolean async) {
+      AsyncCacheLoader<? super K, V> cacheLoader, boolean async) {
     var className = getClassName(builder);
     return loadFactory(builder, cacheLoader, async, className);
   }
@@ -79,7 +79,7 @@ final class LocalCacheFactory {
   }
 
   static <K, V> BoundedLocalCache<K, V> loadFactory(Caffeine<K, V> builder,
-      @Nullable AsyncCacheLoader<? super K, V> cacheLoader, boolean async, String className) {
+      AsyncCacheLoader<? super K, V> cacheLoader, boolean async, String className) {
     try {
       Class<?> clazz = Class.forName(className);
       MethodHandle handle = LOOKUP.findConstructor(clazz, FACTORY);

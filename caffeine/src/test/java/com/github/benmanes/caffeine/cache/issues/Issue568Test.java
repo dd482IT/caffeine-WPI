@@ -30,7 +30,6 @@ import com.github.benmanes.caffeine.testing.ConcurrentTestHarness;
  *
  * @author jhorvitz@google.com (Justin Horvitz)
  */
-@Test(groups = "isolated")
 public class Issue568Test {
 
   /**
@@ -40,7 +39,6 @@ public class Issue568Test {
    * return a null value, which is more likely due to the cache proactively clearing the referent to
    * assist the garbage collector.
    */
-  @Test
   public void intermittentNull() throws InterruptedException {
     Cache<String, String> cache = Caffeine.newBuilder()
         .executor(ConcurrentTestHarness.executor)
@@ -86,7 +84,6 @@ public class Issue568Test {
    * no longer valid, then it would incorrectly discard the mapping with a removal notification
    * containing a non-null key, non-null value, and collected removal cause.
    */
-  @Test
   public void resurrect() throws InterruptedException {
     var error = new AtomicReference<RuntimeException>();
     Cache<String, Object> cache = Caffeine.newBuilder()

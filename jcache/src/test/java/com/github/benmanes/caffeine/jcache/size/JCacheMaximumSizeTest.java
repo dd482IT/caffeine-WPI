@@ -35,7 +35,6 @@ import com.google.common.util.concurrent.MoreExecutors;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 public final class JCacheMaximumSizeTest extends AbstractJCacheTest {
   private static final int MAXIMUM = 10;
 
@@ -54,7 +53,6 @@ public final class JCacheMaximumSizeTest extends AbstractJCacheTest {
     return configuration;
   }
 
-  @Test
   public void evict() {
     for (int i = 0; i < 2 * MAXIMUM; i++) {
       jcache.put(i, i);

@@ -24,22 +24,18 @@ import org.openjdk.jmh.annotations.Threads;
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class TimeBenchmark {
 
-  @Benchmark @Threads(1)
   public long nanos_noContention() {
     return System.nanoTime();
   }
 
-  @Benchmark @Threads(8)
   public long nanos_contention() {
     return System.nanoTime();
   }
 
-  @Benchmark @Threads(1)
   public long millis_noContention() {
     return System.currentTimeMillis();
   }
 
-  @Benchmark @Threads(8)
   public long millis_contention() {
     return System.currentTimeMillis();
   }

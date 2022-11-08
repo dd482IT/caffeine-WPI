@@ -69,7 +69,6 @@ public final class Issue193Test {
     return future.join();
   }
 
-  @Test
   public void invalidateDuringRefreshRemovalCheck() throws Exception {
     var removed = new ArrayList<Long>();
     AsyncLoadingCache<String, Long> cache = Caffeine.newBuilder()

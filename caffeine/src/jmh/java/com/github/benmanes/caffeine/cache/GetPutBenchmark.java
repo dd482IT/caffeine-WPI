@@ -40,7 +40,6 @@ import site.ycsb.generator.ScrambledZipfianGenerator;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Group)
 @SuppressWarnings({"CanonicalAnnotationSyntax", "LexicographicalAnnotationAttributeListing",
   "PMD.JUnit4TestShouldUseAfterAnnotation", "PMD.MethodNamingConventions"})
 public class GetPutBenchmark {
@@ -48,26 +47,17 @@ public class GetPutBenchmark {
   private static final int MASK = SIZE - 1;
   private static final int ITEMS = SIZE / 3;
 
-  @Param({
-    "LinkedHashMap_Lru",
-    "Caffeine",
-    "ConcurrentLinkedHashMap",
-    "Coherence_Hybrid",
-    "Ehcache3",
-    "Guava",
   })
   CacheType cacheType;
 
   BasicCache<Integer, Boolean> cache;
   Integer[] ints;
 
-  @State(Scope.Thread)
   public static class ThreadState {
     static final Random random = new Random();
     int index = random.nextInt();
   }
 
-  @Setup
   public void setup() {
     ints = new Integer[SIZE];
     cache = cacheType.create(2 * SIZE);
@@ -87,27 +77,22 @@ public class GetPutBenchmark {
     }
   }
 
-  @TearDown(Level.Iteration)
   public void tearDown() {
     cache.cleanUp();
   }
 
-  @Benchmark @Group("read_only") @GroupThreads(8)
   public Boolean readOnly(ThreadState threadState) {
     return cache.get(ints[threadState.index++ & MASK]);
   }
 
-  @Benchmark @Group("write_only") @GroupThreads(8)
   public void writeOnly(ThreadState threadState) {
     cache.put(ints[threadState.index++ & MASK], Boolean.TRUE);
   }
 
-  @Benchmark @Group("readwrite") @GroupThreads(6)
   public Boolean readwrite_get(ThreadState threadState) {
     return cache.get(ints[threadState.index++ & MASK]);
   }
 
-  @Benchmark @Group("readwrite") @GroupThreads(2)
   public void readwrite_put(ThreadState threadState) {
     cache.put(ints[threadState.index++ & MASK], Boolean.TRUE);
   }

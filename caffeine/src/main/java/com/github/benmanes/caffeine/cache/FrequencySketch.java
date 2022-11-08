@@ -82,7 +82,7 @@ final class FrequencySketch<E> {
    *
    * @param maximumSize the maximum size of the cache
    */
-  public void ensureCapacity(@NonNegative long maximumSize) {
+  public void ensureCapacity(long maximumSize) {
     requireArgument(maximumSize >= 0);
     int maximum = (int) Math.min(maximumSize, Integer.MAX_VALUE >>> 1);
     if ((table != null) && (table.length >= maximum)) {
@@ -112,7 +112,6 @@ final class FrequencySketch<E> {
    * @param e the element to count occurrences of
    * @return the estimated number of occurrences of the element; possibly zero but never negative
    */
-  @NonNegative
   public int frequency(E e) {
     if (isNotInitialized()) {
       return 0;

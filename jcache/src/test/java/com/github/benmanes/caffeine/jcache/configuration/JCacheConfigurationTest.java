@@ -41,7 +41,6 @@ public final class JCacheConfigurationTest {
   private MutableConfiguration<String, String> cacheConfig;
   private CacheManager cacheManager;
 
-  @BeforeClass
   public void beforeClass() {
     var provider = Caching.getCachingProvider(PROVIDER_NAME);
     cacheManager = provider.getCacheManager();
@@ -52,7 +51,6 @@ public final class JCacheConfigurationTest {
     cacheConfig.setStatisticsEnabled(true);
   }
 
-  @Test
   public void equality() {
     new EqualsTester()
         .addEqualityGroup(cacheConfig,
@@ -61,7 +59,6 @@ public final class JCacheConfigurationTest {
     .testEquals();
   }
 
-  @Test
   public void anonymousCache() {
     checkConfiguration(() ->
         cacheManager.createCache("cache-not-in-config-file", cacheConfig), 500L);
@@ -69,7 +66,6 @@ public final class JCacheConfigurationTest {
         cacheManager.getCache("cache-not-in-config-file", String.class, String.class), 500L);
   }
 
-  @Test
   public void definedCache() {
     try {
       cacheManager.createCache("test-cache-2", cacheConfig);

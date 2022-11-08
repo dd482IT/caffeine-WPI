@@ -52,13 +52,13 @@ interface LocalManualCache<K, V> extends Cache<K, V> {
   }
 
   @Override
-  default @Nullable V getIfPresent(K key) {
+  default V getIfPresent(K key) {
     return cache().getIfPresent(key, /* recordStats */ true);
   }
 
   @Override
   @SuppressWarnings("NullAway")
-  default @Nullable V get(K key, Function<? super K, ? extends V> mappingFunction) {
+  default V get(K key, Function<? super K, ? extends V> mappingFunction) {
     return cache().computeIfAbsent(key, mappingFunction);
   }
 

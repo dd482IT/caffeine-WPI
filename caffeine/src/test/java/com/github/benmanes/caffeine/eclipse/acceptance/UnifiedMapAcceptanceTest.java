@@ -44,7 +44,6 @@ public abstract class UnifiedMapAcceptanceTest {
 
   public abstract <K, V> MutableMap<K, V> newMap();
 
-  @Test
   public void forEachWithIndexWithChainedValues() {
     MutableMap<CollidingInt, String> map = newMap();
 
@@ -70,7 +69,6 @@ public abstract class UnifiedMapAcceptanceTest {
   // todo: entryset.add(key associated with null) == true
   // todo: entryset.contains(entry with null value) == true
 
-  @Test
   public void unifiedMapWithCollisions() {
     assertUnifiedMapWithCollisions(0, 2);
     assertUnifiedMapWithCollisions(1, 2);
@@ -123,7 +121,6 @@ public abstract class UnifiedMapAcceptanceTest {
     Verify.assertSize(0, map);
   }
 
-  @Test
   public void unifiedMap() {
     MutableMap<Integer, String> map = newMap();
 
@@ -147,7 +144,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapClear() {
     assertUnifiedMapClear(0);
     assertUnifiedMapClear(1);
@@ -170,7 +166,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapForEachEntry() {
     assertUnifiedMapForEachEntry(0);
     assertUnifiedMapForEachEntry(1);
@@ -193,7 +188,6 @@ public abstract class UnifiedMapAcceptanceTest {
     Assert.assertEquals(size, count[0]);
   }
 
-  @Test
   public void unifiedMapForEachKey() {
     assertUnifiedMapForEachKey(0);
     assertUnifiedMapForEachKey(1);
@@ -218,7 +212,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapForEachValue() {
     assertUnifiedMapForEachValue(0);
     assertUnifiedMapForEachValue(1);
@@ -243,14 +236,12 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void equalsWithNullValue() {
     MutableMap<Integer, Integer> map1 = UnifiedMap.newWithKeysValues(1, null, 2, 2);
     MutableMap<Integer, Integer> map2 = UnifiedMap.newWithKeysValues(2, 2, 3, 3);
     Assert.assertNotEquals(map1, map2);
   }
 
-  @Test
   public void unifiedMapEqualsAndHashCode() {
     assertUnifiedMapEqualsAndHashCode(0);
     assertUnifiedMapEqualsAndHashCode(1);
@@ -300,7 +291,6 @@ public abstract class UnifiedMapAcceptanceTest {
     Assert.assertEquals(map2.keySet().hashCode(), map4.keySet().hashCode());
   }
 
-  @Test
   public void unifiedMapPutAll() {
     assertUnifiedMapPutAll(0);
     assertUnifiedMapPutAll(1);
@@ -325,7 +315,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapPutAllWithHashMap() {
     assertUnifiedMapPutAllWithHashMap(0);
     assertUnifiedMapPutAllWithHashMap(1);
@@ -350,7 +339,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapReplace() {
     assertUnifiedMapReplace(0);
     assertUnifiedMapReplace(1);
@@ -374,7 +362,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapContainsValue() {
     runUnifiedMapContainsValue(0);
     runUnifiedMapContainsValue(1);
@@ -394,7 +381,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapKeySet() {
     runUnifiedMapKeySet(0);
     runUnifiedMapKeySet(1);
@@ -429,7 +415,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapKeySetRetainAll() {
     runUnifiedMapKeySetRetainAll(0);
     runUnifiedMapKeySetRetainAll(1);
@@ -468,7 +453,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapKeySetRemoveAll() {
     runUnifiedMapKeySetRemoveAll(0);
     runUnifiedMapKeySetRemoveAll(1);
@@ -505,7 +489,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapKeySetToArray() {
     runUnifiedMapKeySetToArray(0);
     runUnifiedMapKeySetToArray(1);
@@ -531,7 +514,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapKeySetIterator() {
     runUnifiedMapKeySetIterator(0);
     runUnifiedMapKeySetIterator(1);
@@ -561,7 +543,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapKeySetIteratorRemove() {
     runUnifiedMapKeySetIteratorRemove(0, 2);
     runUnifiedMapKeySetIteratorRemove(1, 2);
@@ -609,7 +590,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapKeySetIteratorRemoveFlip() {
     runUnifiedMapKeySetIteratorRemoveFlip(0, 2);
     runUnifiedMapKeySetIteratorRemoveFlip(1, 2);
@@ -659,7 +639,6 @@ public abstract class UnifiedMapAcceptanceTest {
 
   // entry set tests
 
-  @Test
   public void unifiedMapEntrySet() {
     runUnifiedMapEntrySet(0);
     runUnifiedMapEntrySet(1);
@@ -694,7 +673,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapEntrySetRetainAll() {
     runUnifiedMapEntrySetRetainAll(0);
     runUnifiedMapEntrySetRetainAll(1);
@@ -733,7 +711,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapEntrySetRemoveAll() {
     runUnifiedMapEntrySetRemoveAll(0);
     runUnifiedMapEntrySetRemoveAll(1);
@@ -770,7 +747,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapEntrySetToArray() {
     runUnifiedMapEntrySetToArray(0);
     runUnifiedMapEntrySetToArray(1);
@@ -796,7 +772,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapEntrySetIterator() {
     runUnifiedMapEntrySetIterator(0);
     runUnifiedMapEntrySetIterator(1);
@@ -826,7 +801,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapEntrySetIteratorSetValue() {
     runUnifiedMapEntrySetIteratorSetValue(0);
     runUnifiedMapEntrySetIteratorSetValue(1);
@@ -860,7 +834,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapEntrySetIteratorRemove() {
     runUnifiedMapEntrySetIteratorRemove(0, 2);
     runUnifiedMapEntrySetIteratorRemove(1, 2);
@@ -908,7 +881,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapEntrySetIteratorRemoveFlip() {
     runUnifiedMapEntrySetIteratorRemoveFlip(0, 2);
     runUnifiedMapEntrySetIteratorRemoveFlip(1, 2);
@@ -958,7 +930,6 @@ public abstract class UnifiedMapAcceptanceTest {
 
   // values collection
 
-  @Test
   public void unifiedMapValues() {
     runUnifiedMapValues(0);
     runUnifiedMapValues(1);
@@ -993,7 +964,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapValuesRetainAll() {
     runUnifiedMapValuesRetainAll(0);
     runUnifiedMapValuesRetainAll(1);
@@ -1032,7 +1002,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapValuesRemoveAll() {
     runUnifiedMapValuesRemoveAll(0);
     runUnifiedMapValuesRemoveAll(1);
@@ -1069,7 +1038,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapValuesToArray() {
     runUnifiedMapValuesToArray(0);
     runUnifiedMapValuesToArray(1);
@@ -1095,7 +1063,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapValuesIterator() {
     runUnifiedMapValuesIterator(0);
     runUnifiedMapValuesIterator(1);
@@ -1125,7 +1092,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapValuesIteratorRemove() {
     runUnifiedMapValuesIteratorRemove(0, 2);
     runUnifiedMapValuesIteratorRemove(1, 2);
@@ -1174,7 +1140,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapValuesIteratorRemoveFlip() {
     runUnifiedMapValuesIteratorRemoveFlip(0, 2);
     runUnifiedMapValuesIteratorRemoveFlip(1, 2);
@@ -1372,7 +1337,6 @@ public abstract class UnifiedMapAcceptanceTest {
     }
   }
 
-  @Test
   public void unifiedMapToString() {
     MutableMap<Object, Object> map = UnifiedMap.newWithKeysValues(1, "One", 2, "Two");
     Verify.assertContains("1=One", map.toString());

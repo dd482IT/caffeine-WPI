@@ -41,7 +41,6 @@ import site.ycsb.generator.ScrambledZipfianGenerator;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(groups = "isolated")
 public final class Issue412Test {
   private static final int NUM_THREADS = 5;
 
@@ -51,7 +50,6 @@ public final class Issue412Test {
   private Integer[] ints;
   private Random random;
 
-  @BeforeMethod
   public void before() {
     executor = Executors.newCachedThreadPool(DAEMON_FACTORY);
     collected = new AtomicBoolean();
@@ -68,7 +66,6 @@ public final class Issue412Test {
     random = new Random();
   }
 
-  @Test
   public void expire_remove() {
     timeTasks(NUM_THREADS, this::addRemoveAndExpire);
     shutdownAndAwaitTermination(executor, 1, TimeUnit.MINUTES);

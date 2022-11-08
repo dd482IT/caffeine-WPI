@@ -63,32 +63,28 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 @SuppressWarnings("GuardedBy")
 public final class TimerWheelTest {
   private static final Random random = new Random();
   private static final long[] CLOCKS = { Long.MIN_VALUE, -SPANS[0] + 1, 0L,
       0xfffffffc0000000L, Long.MAX_VALUE - SPANS[0] + 1, Long.MAX_VALUE, random.nextLong() };
 
-  @Captor ArgumentCaptor<Node<Long, Long>> captor;
-  @Mock BoundedLocalCache<Long, Long> cache;
+  ArgumentCaptor<Node<Long, Long>> captor;
+  BoundedLocalCache<Long, Long> cache;
   TimerWheel<Long, Long> timerWheel;
 
-  @BeforeMethod
   public void beforeMethod() throws Exception {
     Reset.setThreadLocalRandom(random.nextInt(), random.nextInt());
     MockitoAnnotations.openMocks(this).close();
     timerWheel = new TimerWheel<>();
   }
 
-  @AfterMethod
   public void afterMethod(ITestResult testResult) throws Exception {
     if (!testResult.isSuccess()) {
       printTimerWheel();
     }
   }
 
-  @Test(dataProvider = "schedule")
   public void schedule(long clock, long duration, int expired) {
     when(cache.evictEntry(captor.capture(), any(), anyLong())).thenReturn(true);
 
@@ -104,7 +100,6 @@ public final class TimerWheelTest {
     }
   }
 
-  @Test(dataProvider = "fuzzySchedule")
   public void schedule_fuzzy(long clock, long duration, long[] times) {
     when(cache.evictEntry(captor.capture(), any(), anyLong())).thenReturn(true);
     timerWheel.nanos = clock;
@@ -125,7 +120,6 @@ public final class TimerWheelTest {
     checkTimerWheel(duration);
   }
 
-  @Test(dataProvider = "clock")
   public void advance(long clock) {
     when(cache.evictEntry(captor.capture(), any(), anyLong())).thenReturn(true);
 
@@ -136,7 +130,6 @@ public final class TimerWheelTest {
     verify(cache).evictEntry(any(), any(), anyLong());
   }
 
-  @Test
   public void advance_overflow() {
     when(cache.evictEntry(captor.capture(), any(), anyLong())).thenReturn(true);
 
@@ -148,7 +141,6 @@ public final class TimerWheelTest {
     verify(cache).evictEntry(any(), any(), anyLong());
   }
 
-  @Test(dataProvider = "clock")
   public void advance_backwards(long clock) {
     var timerWheel = new TimerWheel<Long, Long>();
     timerWheel.nanos = clock;
@@ -164,7 +156,6 @@ public final class TimerWheelTest {
     verifyNoInteractions(cache);
   }
 
-  @Test
   public void advance_exception() {
     doThrow(new IllegalStateException())
         .when(cache).evictEntry(captor.capture(), any(), anyLong());
@@ -181,7 +172,6 @@ public final class TimerWheelTest {
     }
   }
 
-  @Test(dataProvider = "clock")
   public void getExpirationDelay_empty(long clock) {
     when(cache.evictEntry(any(), any(), anyLong())).thenReturn(true);
     timerWheel.nanos = clock;
@@ -189,7 +179,6 @@ public final class TimerWheelTest {
     assertThat(timerWheel.getExpirationDelay()).isEqualTo(Long.MAX_VALUE);
   }
 
-  @Test(dataProvider = "clock")
   public void getExpirationDelay_firstWheel(long clock) {
     when(cache.evictEntry(any(), any(), anyLong())).thenReturn(true);
     timerWheel.nanos = clock;
@@ -199,7 +188,6 @@ public final class TimerWheelTest {
     assertThat(timerWheel.getExpirationDelay()).isAtMost(SPANS[0]);
   }
 
-  @Test(dataProvider = "clock")
   public void getExpirationDelay_lastWheel(long clock) {
     when(cache.evictEntry(any(), any(), anyLong())).thenReturn(true);
     timerWheel.nanos = clock;
@@ -209,7 +197,6 @@ public final class TimerWheelTest {
     assertThat(timerWheel.getExpirationDelay()).isAtMost(delay);
   }
 
-  @Test(dataProvider = "clock")
   public void getExpirationDelay_hierarchy(long clock) {
     when(cache.evictEntry(any(), any(), anyLong())).thenReturn(true);
     timerWheel.nanos = clock;
@@ -230,7 +217,6 @@ public final class TimerWheelTest {
     assertThat(delay).isLessThan(expectedDelay + SPANS[0]); // cascaded T80 in wheel[1]
   }
 
-  @Test(dataProvider = "fuzzySchedule", invocationCount = 25)
   public void getExpirationDelay_fuzzy(long clock, long duration, long[] times) {
     when(cache.evictEntry(any(), any(), anyLong())).thenReturn(true);
     timerWheel.nanos = clock;
@@ -272,12 +258,10 @@ public final class TimerWheelTest {
     }
   }
 
-  @DataProvider(name = "clock")
   public Iterator<Object> providesClock() {
     return LongStream.of(CLOCKS).mapToObj(o -> (Object) o).iterator();
   }
 
-  @DataProvider(name = "schedule")
   public Iterator<Object[]> providesSchedule() {
     var args = new ArrayList<Object[]>();
     for (long clock : CLOCKS) {
@@ -288,7 +272,6 @@ public final class TimerWheelTest {
     return args.iterator();
   }
 
-  @DataProvider(name = "fuzzySchedule")
   public Object[][] providesFuzzySchedule() {
     long[] times = new long[5_000];
     long clock = ThreadLocalRandom.current().nextLong();
@@ -322,7 +305,6 @@ public final class TimerWheelTest {
     return timers;
   }
 
-  @Test(dataProvider = "clock")
   public void reschedule(long clock) {
     when(cache.evictEntry(captor.capture(), any(), anyLong())).thenReturn(true);
     timerWheel.nanos = clock;
@@ -349,7 +331,6 @@ public final class TimerWheelTest {
     }
   }
 
-  @Test(dataProvider = "clock")
   public void deschedule(long clock) {
     var timer = new Timer(clock + 100);
     timerWheel.nanos = clock;
@@ -359,13 +340,11 @@ public final class TimerWheelTest {
     assertThat(timer.getPreviousInVariableOrder()).isNull();
   }
 
-  @Test(dataProvider = "clock")
   public void deschedule_notScheduled(long clock) {
     timerWheel.nanos = clock;
     timerWheel.deschedule(new Timer(clock + 100));
   }
 
-  @Test(dataProvider = "fuzzySchedule")
   public void deschedule_fuzzy(long clock, long nanos, long[] times) {
     var timers = new ArrayList<Timer>();
     timerWheel.nanos = clock;
@@ -381,7 +360,6 @@ public final class TimerWheelTest {
     checkTimerWheel(nanos);
   }
 
-  @Test(dataProvider = "clock")
   public void expire_reschedule(long clock) {
     when(cache.evictEntry(captor.capture(), any(), anyLong())).thenAnswer(invocation -> {
       var timer = (Timer) invocation.getArgument(0);
@@ -398,7 +376,6 @@ public final class TimerWheelTest {
     assertThat(captor.getValue().getPreviousInVariableOrder()).isNotNull();
   }
 
-  @Test(dataProvider = "cascade")
   public void cascade(long clock, long duration, long timeout, int span) {
     timerWheel.nanos = clock;
     timerWheel.schedule(new Timer(clock + timeout));
@@ -413,7 +390,6 @@ public final class TimerWheelTest {
     assertThat(count).isEqualTo(1);
   }
 
-  @DataProvider(name = "cascade")
   public Iterator<Object[]> providesCascade() {
     var args = new ArrayList<Object[]>();
     for (int i = 1; i < SPANS.length - 1; i++) {
@@ -427,7 +403,6 @@ public final class TimerWheelTest {
     return args.iterator();
   }
 
-  @Test(dataProvider = "iterator")
   public void iterator_hasNext(Iterable<Node<Long, Long>> iterable) {
     var iterator = iterable.iterator();
     assertThat(iterator.hasNext()).isFalse();
@@ -448,7 +423,6 @@ public final class TimerWheelTest {
     } catch (NoSuchElementException expected) {}
   }
 
-  @DataProvider(name = "iterator")
   @SuppressWarnings("MethodReferenceUsage")
   public Object[][] providesIterators() {
     Iterable<Node<Long, Long>> descending = () -> timerWheel.descendingIterator();
@@ -456,7 +430,6 @@ public final class TimerWheelTest {
     return new Object[][] {{ascending}, {descending}};
   }
 
-  @Test(dataProvider = "clock")
   public void iterator_fixed(long clock) {
     timerWheel.nanos = clock;
     var input = IntStream.range(0, 21).mapToLong(i -> {
@@ -474,7 +447,6 @@ public final class TimerWheelTest {
     assertThat(descending).containsExactlyElementsIn(input.reverse()).inOrder();
   }
 
-  @Test(invocationCount = 25)
   public void iterator_random() {
     int range = ThreadLocalRandom.current().nextInt(0, 1000);
     timerWheel.nanos = ThreadLocalRandom.current().nextLong(
@@ -498,7 +470,6 @@ public final class TimerWheelTest {
     assertThat(descending).containsExactlyElementsIn(input);
   }
 
-  @Test
   public void sentinel_ignored() {
     var node = new Sentinel<>();
     node.setValue(new Object(), null);
@@ -513,7 +484,6 @@ public final class TimerWheelTest {
     assertThat(node.isDead()).isFalse();
   }
 
-  @Test
   public void sentinel_unsupported() {
     var node = new Sentinel<>();
     List<Runnable> methods = List.of(node::getKeyReference, node::getValueReference);
@@ -592,13 +562,13 @@ public final class TimerWheelTest {
     @Override public Node<Long, Long> getPreviousInVariableOrder() {
       return prev;
     }
-    @Override public void setPreviousInVariableOrder(@Nullable Node<Long, Long> prev) {
+    @Override public void setPreviousInVariableOrder(Node<Long, Long> prev) {
       this.prev = prev;
     }
     @Override public Node<Long, Long> getNextInVariableOrder() {
       return next;
     }
-    @Override public void setNextInVariableOrder(@Nullable Node<Long, Long> next) {
+    @Override public void setNextInVariableOrder(Node<Long, Long> next) {
       this.next = next;
     }
 

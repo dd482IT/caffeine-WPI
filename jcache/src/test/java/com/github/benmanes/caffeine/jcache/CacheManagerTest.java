@@ -44,7 +44,6 @@ public final class CacheManagerTest {
 
   private CacheManager cacheManager;
 
-  @BeforeClass
   public void beforeClass() {
     var provider = Caching.getCachingProvider(PROVIDER_NAME);
     cacheManager = provider.getCacheManager(
@@ -52,13 +51,11 @@ public final class CacheManagerTest {
     cacheManager.getCacheNames().forEach(cacheManager::destroyCache);
   }
 
-  @Test
   public void jmxBeanIsRegistered_createCache() throws OperationsException {
     checkConfigurationJmx(() -> cacheManager.createCache("cache-not-in-config-file",
         TypesafeConfigurator.from(ConfigFactory.load(), "test-cache").orElseThrow()));
   }
 
-  @Test
   public void jmxBeanIsRegistered_getCache() throws OperationsException {
     checkConfigurationJmx(() -> cacheManager.getCache("test-cache"));
   }
@@ -77,12 +74,10 @@ public final class CacheManagerTest {
         new ObjectName(String.format(US, name, cache.getName(), PROVIDER_NAME)));
   }
 
-  @Test
   public void enableManagement_absent() {
     cacheManager.enableManagement("absent", true);
   }
 
-  @Test
   public void enableStatistics_absent() {
     cacheManager.enableStatistics("absent", true);
   }

@@ -28,7 +28,6 @@ import org.testng.annotations.Test;
 public final class FrequencySketchTest {
   final Integer item = ThreadLocalRandom.current().nextInt();
 
-  @Test
   public void construct() {
     var sketch = new FrequencySketch<Integer>();
     assertThat(sketch.table).isNull();
@@ -38,12 +37,10 @@ public final class FrequencySketchTest {
     assertThat(sketch.frequency(item)).isEqualTo(0);
   }
 
-  @Test(dataProvider = "sketch", expectedExceptions = IllegalArgumentException.class)
   public void ensureCapacity_negative(FrequencySketch<Integer> sketch) {
     sketch.ensureCapacity(-1);
   }
 
-  @Test(dataProvider = "sketch")
   public void ensureCapacity_smaller(FrequencySketch<Integer> sketch) {
     int size = sketch.table.length;
     sketch.ensureCapacity(size / 2);
@@ -52,7 +49,6 @@ public final class FrequencySketchTest {
     assertThat(sketch.blockMask).isEqualTo((size >> 3) - 1);
   }
 
-  @Test(dataProvider = "sketch")
   public void ensureCapacity_larger(FrequencySketch<Integer> sketch) {
     int size = sketch.table.length;
     sketch.ensureCapacity(2 * size);
@@ -61,7 +57,6 @@ public final class FrequencySketchTest {
     assertThat(sketch.blockMask).isEqualTo(((2 * size) >> 3) - 1);
   }
 
-  @Test(dataProvider = "sketch", groups = "isolated")
   public void ensureCapacity_maximum(FrequencySketch<Integer> sketch) {
     int size = Integer.MAX_VALUE / 10 + 1;
     sketch.ensureCapacity(size);
@@ -70,13 +65,11 @@ public final class FrequencySketchTest {
     assertThat(sketch.blockMask).isEqualTo((sketch.table.length >> 3) - 1);
   }
 
-  @Test(dataProvider = "sketch")
   public void increment_once(FrequencySketch<Integer> sketch) {
     sketch.increment(item);
     assertThat(sketch.frequency(item)).isEqualTo(1);
   }
 
-  @Test(dataProvider = "sketch")
   public void increment_max(FrequencySketch<Integer> sketch) {
     for (int i = 0; i < 20; i++) {
       sketch.increment(item);
@@ -84,7 +77,6 @@ public final class FrequencySketchTest {
     assertThat(sketch.frequency(item)).isEqualTo(15);
   }
 
-  @Test(dataProvider = "sketch")
   public void increment_distinct(FrequencySketch<Integer> sketch) {
     sketch.increment(item);
     sketch.increment(item + 1);
@@ -93,13 +85,11 @@ public final class FrequencySketchTest {
     assertThat(sketch.frequency(item + 2)).isEqualTo(0);
   }
 
-  @Test(dataProvider = "sketch")
   public void increment_zero(FrequencySketch<Integer> sketch) {
     sketch.increment(0);
     assertThat(sketch.frequency(0)).isEqualTo(1);
   }
 
-  @Test
   public void reset() {
     boolean reset = false;
     var sketch = new FrequencySketch<Integer>();
@@ -116,7 +106,6 @@ public final class FrequencySketchTest {
     assertThat(sketch.size).isAtMost(sketch.sampleSize / 2);
   }
 
-  @Test
   public void full() {
     FrequencySketch<Integer> sketch = makeSketch(512);
     sketch.sampleSize = Integer.MAX_VALUE;
@@ -133,7 +122,6 @@ public final class FrequencySketchTest {
     }
   }
 
-  @Test
   public void heavyHitters() {
     FrequencySketch<Double> sketch = makeSketch(512);
     for (int i = 100; i < 100_000; i++) {
@@ -163,7 +151,6 @@ public final class FrequencySketchTest {
     }
   }
 
-  @DataProvider(name = "sketch")
   public Object[][] providesSketch() {
     return new Object[][] {{ makeSketch(512) }};
   }

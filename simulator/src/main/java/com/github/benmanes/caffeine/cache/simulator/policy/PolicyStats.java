@@ -291,7 +291,6 @@ public class PolicyStats {
     return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
   }
 
-  @AutoValue
   public abstract static class Metric {
     public enum MetricType { NUMBER, PERCENT, OBJECT }
 
@@ -308,7 +307,6 @@ public class PolicyStats {
       return new AutoValue_PolicyStats_Metric.Builder().required(false);
     }
 
-    @AutoValue.Builder @CopyAnnotations
     @SuppressWarnings("NarrowingCompoundAssignment")
     public abstract static class Builder {
       public abstract Builder name(String name);

@@ -42,7 +42,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "sketch.FeedbackTinyLfu")
 public final class FeedbackTinyLfuPolicy implements KeyOnlyPolicy {
   private final Long2ObjectMap<Node> data;
   private final PolicyStats policyStats;

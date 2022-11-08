@@ -39,7 +39,6 @@ import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "opt.Clairvoyant")
 public final class ClairvoyantPolicy implements Policy {
   private final Long2ObjectMap<IntPriorityQueue> accessTimes;
   private final PolicyStats policyStats;

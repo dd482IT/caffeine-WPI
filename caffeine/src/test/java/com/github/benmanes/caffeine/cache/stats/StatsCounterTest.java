@@ -34,7 +34,6 @@ import com.github.benmanes.caffeine.testing.ConcurrentTestHarness;
  */
 public final class StatsCounterTest {
 
-  @Test
   public void disabled() {
     var counter = DisabledStatsCounter.INSTANCE;
     counter.recordHits(1);
@@ -50,7 +49,6 @@ public final class StatsCounterTest {
     }
   }
 
-  @Test
   public void enabled() {
     var counter = new ConcurrentStatsCounter();
     counter.recordHits(1);
@@ -67,7 +65,6 @@ public final class StatsCounterTest {
     assertThat(counter.snapshot()).isEqualTo(CacheStats.of(2, 2, 2, 2, 4, 2, 20));
   }
 
-  @Test
   public void concurrent() {
     var counter = new ConcurrentStatsCounter();
     ConcurrentTestHarness.timeTasks(5, () -> {
@@ -80,7 +77,6 @@ public final class StatsCounterTest {
     assertThat(counter.snapshot()).isEqualTo(CacheStats.of(5, 5, 5, 5, 10, 5, 50));
   }
 
-  @Test
   public void guarded() {
     var counter = StatsCounter.guardedStatsCounter(new ConcurrentStatsCounter());
     counter.recordHits(1);
@@ -94,13 +90,11 @@ public final class StatsCounterTest {
     assertThat(counter.snapshot().toString()).isEqualTo(expected.toString());
   }
 
-  @Test
   public void guarded_sameInstance() {
     var counter = StatsCounter.guardedStatsCounter(new ConcurrentStatsCounter());
     assertThat(StatsCounter.guardedStatsCounter(counter)).isSameInstanceAs(counter);
   }
 
-  @Test
   public void guarded_exception() {
     var statsCounter = Mockito.mock(StatsCounter.class);
     when(statsCounter.snapshot()).thenThrow(new NullPointerException());
@@ -125,7 +119,6 @@ public final class StatsCounterTest {
     verify(statsCounter).recordLoadFailure(1);
   }
 
-  @Test
   public void overflow_loadSuccess() {
     var counter = new ConcurrentStatsCounter();
     counter.recordLoadSuccess(Long.MAX_VALUE);
@@ -134,7 +127,6 @@ public final class StatsCounterTest {
     assertThat(stats.totalLoadTime()).isEqualTo(Long.MAX_VALUE);
   }
 
-  @Test
   public void overflow_loadFailure() {
     var counter = new ConcurrentStatsCounter();
     counter.recordLoadFailure(Long.MAX_VALUE);

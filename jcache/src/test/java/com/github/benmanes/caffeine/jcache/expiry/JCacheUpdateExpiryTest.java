@@ -45,7 +45,6 @@ import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
 
   @Override
@@ -58,7 +57,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     return configuration;
   }
 
-  @Test
   public void containsKey_expired() {
     jcache.put(KEY_1, VALUE_1);
     ticker.setAutoIncrementStep(EXPIRY_DURATION / 2, TimeUnit.MILLISECONDS);
@@ -67,7 +65,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(getExpirable(jcache, KEY_1)).isNull();
   }
 
-  @Test
   public void get_expired() {
     jcache.put(KEY_1, VALUE_1);
     ticker.setAutoIncrementStep(EXPIRY_DURATION / 2, TimeUnit.MILLISECONDS);
@@ -76,7 +73,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(getExpirable(jcache, KEY_1)).isNull();
   }
 
-  @Test
   public void getAndPut() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -86,7 +82,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void getAndReplace() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -96,7 +91,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void put() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -106,7 +100,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void putAll() {
     jcache.putAll(entries);
     advanceHalfExpiry();
@@ -118,7 +111,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void replace() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -128,7 +120,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void replaceConditionally() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -138,7 +129,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void replaceConditionally_failed() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -148,7 +138,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(START_TIME_MS + EXPIRY_DURATION);
   }
 
-  @Test
   public void invoke() {
     jcache.put(KEY_1, VALUE_1);
     advanceHalfExpiry();
@@ -163,7 +152,6 @@ public final class JCacheUpdateExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void invokeAll() {
     jcache.putAll(entries);
     advanceHalfExpiry();

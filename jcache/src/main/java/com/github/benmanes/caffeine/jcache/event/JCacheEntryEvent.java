@@ -38,11 +38,11 @@ final class JCacheEntryEvent<K, V> extends CacheEntryEvent<K, V>
 
   private final K key;
   private final boolean hasOldValue;
-  private final @Nullable V oldValue;
-  private final @Nullable V newValue;
+  private final V oldValue;
+  private final V newValue;
 
   JCacheEntryEvent(Cache<K, V> source, EventType eventType,
-      K key, boolean hasOldValue, @Nullable V oldValue, @Nullable V newValue) {
+      K key, boolean hasOldValue, V oldValue, V newValue) {
     super(source, eventType);
     this.key = requireNonNull(key);
     this.hasOldValue = hasOldValue;
@@ -56,12 +56,12 @@ final class JCacheEntryEvent<K, V> extends CacheEntryEvent<K, V>
   }
 
   @Override
-  public @Nullable V getValue() {
+  public V getValue() {
     return newValue;
   }
 
   @Override
-  public @Nullable V getOldValue() {
+  public V getOldValue() {
     return oldValue;
   }
 

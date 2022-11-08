@@ -51,13 +51,13 @@ class CaffeinatedGuavaCache<K, V> implements Cache<K, V>, Serializable {
   private static final long serialVersionUID = 1L;
 
   private final com.github.benmanes.caffeine.cache.Cache<K, V> cache;
-  private transient @Nullable ConcurrentMap<K, V> mapView;
+  private transient ConcurrentMap<K, V> mapView;
 
   CaffeinatedGuavaCache(com.github.benmanes.caffeine.cache.Cache<K, V> cache) {
     this.cache = requireNonNull(cache);
   }
 
-  @Override @Nullable
+  @Override 
   public V getIfPresent(Object key) {
     @SuppressWarnings("unchecked")
     K castedKey = (K) key;
@@ -153,14 +153,14 @@ class CaffeinatedGuavaCache<K, V> implements Cache<K, V>, Serializable {
   }
 
   final class AsMapView extends ForwardingConcurrentMap<K, V> {
-    @Nullable EntrySetView entrySet;
-    @Nullable KeySetView keySet;
-    @Nullable ValuesView values;
+    EntrySetView entrySet;
+    KeySetView keySet;
+    ValuesView values;
 
-    @Override public boolean containsKey(@Nullable Object key) {
+    @Override public boolean containsKey(Object key) {
       return (key != null) && delegate().containsKey(key);
     }
-    @Override public boolean containsValue(@Nullable Object value) {
+    @Override public boolean containsValue(Object value) {
       return (value != null) && delegate().containsValue(value);
     }
     @Override public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
@@ -211,7 +211,7 @@ class CaffeinatedGuavaCache<K, V> implements Cache<K, V>, Serializable {
     @Override public boolean removeIf(Predicate<? super V> filter) {
       return delegate().removeIf(filter);
     }
-    @Override public boolean remove(@Nullable Object o) {
+    @Override public boolean remove(Object o) {
       return (o != null) && delegate().remove(o);
     }
     @Override protected Collection<V> delegate() {

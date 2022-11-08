@@ -40,7 +40,6 @@ import com.typesafe.config.ConfigFactory;
  */
 public final class TypesafeConfigurationTest {
 
-  @Test
   public void configSource() {
     Config config = ConfigFactory.load();
     Supplier<Config> configSource = () -> config;
@@ -48,7 +47,6 @@ public final class TypesafeConfigurationTest {
     assertThat(TypesafeConfigurator.configSource()).isEqualTo(configSource);
   }
 
-  @Test
   public void defaults() {
     CaffeineConfiguration<Integer, Integer> defaults =
         TypesafeConfigurator.defaults(ConfigFactory.load());
@@ -58,7 +56,6 @@ public final class TypesafeConfigurationTest {
     assertThat(defaults.getMaximumSize()).hasValue(500);
   }
 
-  @Test
   public void cacheNames() {
     assertThat(TypesafeConfigurator.cacheNames(ConfigFactory.empty())).isEmpty();;
 
@@ -67,17 +64,14 @@ public final class TypesafeConfigurationTest {
         "invalid-cache", "test-cache", "test-cache-2", "guice");
   }
 
-  @Test
   public void illegalPath() {
     assertThat(TypesafeConfigurator.from(ConfigFactory.load(), "#")).isEmpty();
   }
 
-  @Test(expectedExceptions = IllegalStateException.class)
   public void invalidCache() {
     TypesafeConfigurator.from(ConfigFactory.load(), "invalid-cache");
   }
 
-  @Test
   public void testCache() {
     Optional<CaffeineConfiguration<Integer, Integer>> config =
         TypesafeConfigurator.from(ConfigFactory.load(), "test-cache");
@@ -86,7 +80,6 @@ public final class TypesafeConfigurationTest {
     checkTestCache(config.orElseThrow());
   }
 
-  @Test
   public void testCache2() {
     Optional<CaffeineConfiguration<Integer, Integer>> config1 =
         TypesafeConfigurator.from(ConfigFactory.load(), "test-cache");
@@ -104,7 +97,6 @@ public final class TypesafeConfigurationTest {
     assertThat(config.getCacheWriter()).isNull();
   }
 
-  @Test
   public void getCache() {
     Cache<Integer, Integer> cache = Caching.getCachingProvider()
         .getCacheManager().getCache("test-cache");

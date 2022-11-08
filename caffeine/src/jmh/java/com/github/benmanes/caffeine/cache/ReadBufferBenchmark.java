@@ -43,26 +43,21 @@ import com.github.benmanes.caffeine.cache.buffer.ReadBuffer;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 public class ReadBufferBenchmark {
 
-  @Param BufferType bufferType;
+  BufferType bufferType;
   ReadBuffer<Boolean> buffer;
 
-  @AuxCounters
-  @State(Scope.Thread)
   public static class RecordCounter {
     public int recordFailed;
     public int recordSuccess;
     public int recordFull;
   }
 
-  @Setup
   public void setup() {
     buffer = bufferType.create();
   }
 
-  @Benchmark @Group @GroupThreads(8)
   public void record(RecordCounter counters) {
     switch (buffer.offer(Boolean.TRUE)) {
       case ReadBuffer.FAILED:
@@ -79,7 +74,6 @@ public class ReadBufferBenchmark {
     }
   }
 
-  @Benchmark @Group @GroupThreads(1)
   public void drain() {
     buffer.drain();
   }

@@ -61,7 +61,7 @@ public final class LoadingCacheProxy<K, V> extends CacheProxy<K, V> {
 
   @Override
   @SuppressWarnings("PMD.AvoidCatchingNPE")
-  public @Nullable V get(K key) {
+  public V get(K key) {
     requireNotClosed();
     try {
       return getOrLoad(key);
@@ -76,7 +76,7 @@ public final class LoadingCacheProxy<K, V> extends CacheProxy<K, V> {
 
   /** Retrieves the value from the cache, loading it if necessary. */
   @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
-  private @Nullable V getOrLoad(K key) {
+  private V getOrLoad(K key) {
     boolean statsEnabled = statistics.isEnabled();
     long start = statsEnabled ? ticker.read() : 0L;
 

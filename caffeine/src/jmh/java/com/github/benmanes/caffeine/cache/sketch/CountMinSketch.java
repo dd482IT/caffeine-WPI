@@ -63,7 +63,7 @@ public final class CountMinSketch<E> implements TinyLfuSketch<E> {
   long[] table;
   int size;
 
-  public CountMinSketch(@NonNegative long maximumSize) {
+  public CountMinSketch(long maximumSize) {
     checkArgument(maximumSize >= 0);
     int maximum = (int) Math.min(maximumSize, Integer.MAX_VALUE >>> 1);
     table = new long[(maximum == 0) ? 1 : IntMath.ceilingPowerOfTwo(maximum)];
@@ -82,7 +82,6 @@ public final class CountMinSketch<E> implements TinyLfuSketch<E> {
    * @return the estimated number of occurrences of the element; possibly zero but never negative
    */
   @Override
-  @NonNegative
   public int frequency(E e) {
     int hash = spread(e.hashCode());
     int start = (hash & 3) << 2;

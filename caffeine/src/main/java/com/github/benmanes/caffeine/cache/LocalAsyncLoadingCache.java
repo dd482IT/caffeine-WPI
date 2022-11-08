@@ -45,13 +45,13 @@ abstract class LocalAsyncLoadingCache<K, V>
     implements LocalAsyncCache<K, V>, AsyncLoadingCache<K, V> {
   static final Logger logger = System.getLogger(LocalAsyncLoadingCache.class.getName());
 
-  final @Nullable BiFunction<? super Set<? extends K>, ? super Executor,
+  final BiFunction<? super Set<? extends K>, ? super Executor,
       ? extends CompletableFuture<? extends Map<? extends K, ? extends V>>> bulkMappingFunction;
   final BiFunction<? super K, ? super Executor,
       ? extends CompletableFuture<? extends V>> mappingFunction;
   final AsyncCacheLoader<K, V> cacheLoader;
 
-  @Nullable LoadingCacheView<K, V> cacheView;
+  LoadingCacheView<K, V> cacheView;
 
   @SuppressWarnings("unchecked")
   LocalAsyncLoadingCache(AsyncCacheLoader<? super K, V> cacheLoader) {
@@ -81,7 +81,6 @@ abstract class LocalAsyncLoadingCache<K, V>
    * Returns a mapping function that adapts to {@link AsyncCacheLoader#asyncLoadAll}, if
    * implemented.
    */
-  @Nullable
   BiFunction<Set<? extends K>, Executor, CompletableFuture<Map<K, V>>> newBulkMappingFunction(
       AsyncCacheLoader<? super K, V> cacheLoader) {
     if (!canBulkLoad(cacheLoader)) {
@@ -211,7 +210,7 @@ abstract class LocalAsyncLoadingCache<K, V>
 
     /** Attempts to avoid a reload if the entry is absent, or a load or reload is in-flight. */
     @SuppressWarnings("FutureReturnValueIgnored")
-    private @Nullable CompletableFuture<V> tryOptimisticRefresh(K key, Object keyReference) {
+    private CompletableFuture<V> tryOptimisticRefresh(K key, Object keyReference) {
       // If a refresh is in-flight, then return it directly. If completed and not yet removed, then
       // remove to trigger a new reload.
       @SuppressWarnings("unchecked")
@@ -249,7 +248,7 @@ abstract class LocalAsyncLoadingCache<K, V>
 
     /** Begins a refresh if the entry has materialized and no reload is in-flight. */
     @SuppressWarnings("FutureReturnValueIgnored")
-    private @Nullable CompletableFuture<V> tryComputeRefresh(K key, Object keyReference) {
+    private CompletableFuture<V> tryComputeRefresh(K key, Object keyReference) {
       long[] startTime = new long[1];
       boolean[] refreshed = new boolean[1];
       @SuppressWarnings({"rawtypes", "unchecked"})

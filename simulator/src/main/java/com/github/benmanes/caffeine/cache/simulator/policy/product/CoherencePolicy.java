@@ -39,7 +39,6 @@ import com.typesafe.config.Config;
  * @author ben.manes@gmail.com (Ben Manes)
  */
 @SuppressWarnings("deprecation")
-@PolicySpec(name = "product.Coherence", characteristics = WEIGHTED)
 public final class CoherencePolicy implements Policy {
   private final PolicyStats policyStats;
   private final LocalCache cache;

@@ -30,27 +30,22 @@ import org.testng.annotations.Test;
 public final class EntryProcessorEntryTest {
   EntryProcessorEntry<Integer, Integer> entry = new EntryProcessorEntry<>(1, 2, Optional.empty());
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void unwrap_fail() {
     entry.unwrap(Map.Entry.class);
   }
 
-  @Test
   public void unwrap() {
     assertThat(entry.unwrap(Cache.Entry.class)).isSameInstanceAs(entry);
   }
 
-  @Test
   public void equals() {
     assertThat(entry.equals(entry)).isTrue();
   }
 
-  @Test
   public void hash() {
     assertThat(entry.hashCode()).isEqualTo(entry.hashCode());
   }
 
-  @Test
   public void string() {
     assertThat(entry.toString()).isEqualTo(Map.entry(1, 2).toString());
   }

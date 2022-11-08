@@ -36,43 +36,36 @@ import com.google.common.collect.testing.IteratorTester;
  * @author ben.manes@gmail.com (Ben Manes)
  */
 public final class JCacheEntryEventTest {
-  @Mock Cache<Integer, Integer> cache;
+  Cache<Integer, Integer> cache;
 
   JCacheEntryEvent<Integer, Integer> event;
 
-  @BeforeTest
   public void before() throws Exception {
     MockitoAnnotations.openMocks(this).close();
     event = new JCacheEntryEvent<>(cache, EventType.CREATED, 1, true, 2, 3);
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void unwrap_fail() {
     event.unwrap(Map.Entry.class);
   }
 
-  @Test
   public void unwrap() {
     assertThat(event.unwrap(Cache.Entry.class)).isSameInstanceAs(event);
   }
 
-  @Test
   public void isOldValueAvailable_false() {
     var entry = new JCacheEntryEvent<>(cache, EventType.CREATED, 1, false, null, 3);
     assertThat(entry.isOldValueAvailable()).isFalse();
   }
 
-  @Test
   public void isOldValueAvailable() {
     assertThat(event.isOldValueAvailable()).isTrue();
   }
 
-  @Test
   public void getOldValue() {
     assertThat(event.getOldValue()).isEqualTo(2);
   }
 
-  @Test
   public void iterable() {
     var tester = new IteratorTester<CacheEntryEvent<? extends Integer, ? extends Integer>>(
         6, IteratorFeature.UNMODIFIABLE, event, IteratorTester.KnownOrder.KNOWN_ORDER) {

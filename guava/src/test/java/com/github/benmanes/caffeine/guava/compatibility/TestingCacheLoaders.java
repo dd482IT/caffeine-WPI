@@ -34,7 +34,6 @@ import com.google.common.util.concurrent.ListenableFuture;
  *
  * @author mike nonemacher
  */
-@GwtCompatible(emulated = true)
 public class TestingCacheLoaders {
 
   /**
@@ -63,7 +62,7 @@ public class TestingCacheLoaders {
   /**
    * Returns a {@link CacheLoader} that returns the given {@code constant} for every request.
    */
-  static <K, V> ConstantLoader<K, V> constantLoader(@Nullable V constant) {
+  static <K, V> ConstantLoader<K, V> constantLoader(V constant) {
     return new ConstantLoader<K, V>(constant);
   }
 
@@ -154,7 +153,6 @@ public class TestingCacheLoaders {
       return key;
     }
 
-    @GwtIncompatible("reload")
     @Override
     public ListenableFuture<Integer> reload(Integer key, Integer oldValue) {
       countReload.incrementAndGet();

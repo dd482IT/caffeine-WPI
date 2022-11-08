@@ -36,7 +36,6 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "opt.Unbounded", characteristics = WEIGHTED)
 public final class UnboundedPolicy implements Policy {
   private final PolicyStats policyStats;
   private final LongOpenHashSet data;

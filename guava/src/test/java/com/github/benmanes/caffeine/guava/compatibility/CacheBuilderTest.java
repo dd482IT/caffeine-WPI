@@ -59,7 +59,6 @@ import junit.framework.TestCase;
 /**
  * Unit tests for Caffeine.
  */
-@GwtCompatible(emulated = true)
 @SuppressWarnings(
     {"CacheLoaderNull", "CanonicalDuration", "PreferJavaTimeOverload", "ThreadPriorityCheck"})
 public class CacheBuilderTest extends TestCase {
@@ -114,7 +113,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible("maximumWeight")
   public void testMaximumSize_andWeight() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder().maximumSize(16);
     try {
@@ -123,7 +121,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible("maximumWeight")
   public void testMaximumWeight_negative() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder();
     try {
@@ -132,7 +129,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalArgumentException expected) {}
   }
 
-  @GwtIncompatible("maximumWeight")
   public void testMaximumWeight_setTwice() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder().maximumWeight(16);
     try {
@@ -146,7 +142,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible("maximumWeight")
   public void testMaximumWeight_withoutWeigher() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder()
         .executor(MoreExecutors.directExecutor())
@@ -157,7 +152,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible("weigher")
   public void testWeigher_withoutMaximumWeight() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder()
         .weigher(constantWeigher(42));
@@ -167,7 +161,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible("weigher")
   public void testWeigher_withMaximumSize() {
     try {
       Caffeine.newBuilder()
@@ -183,7 +176,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible("weakKeys")
   public void testKeyStrengthSetTwice() {
     Caffeine<Object, Object> builder1 = Caffeine.newBuilder().weakKeys();
     try {
@@ -192,7 +184,6 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible("weakValues")
   public void testValueStrengthSetTwice() {
     Caffeine<Object, Object> builder1 = Caffeine.newBuilder().weakValues();
     try {
@@ -215,7 +206,7 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible // java.time.Duration
+  // java.time.Duration
   public void testLargeDurationsAreOk() {
     java.time.Duration threeHundredYears = java.time.Duration.ofDays(365 * 300);
     Caffeine.newBuilder()
@@ -232,7 +223,7 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalArgumentException expected) {}
   }
 
-  @GwtIncompatible // java.time.Duration
+  // java.time.Duration
   public void testTimeToLive_negative_duration() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder();
     try {
@@ -259,7 +250,7 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible // java.time.Duration
+  // java.time.Duration
   public void testTimeToLive_setTwice_duration() {
     Caffeine<Object, Object> builder =
         Caffeine.newBuilder().expireAfterWrite(java.time.Duration.ofSeconds(3600));
@@ -279,7 +270,7 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalArgumentException expected) {}
   }
 
-  @GwtIncompatible // java.time.Duration
+  // java.time.Duration
   public void testTimeToIdle_negative_duration() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder();
     try {
@@ -306,7 +297,7 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible // java.time.Duration
+  // java.time.Duration
   public void testTimeToIdle_setTwice_duration() {
     Caffeine<Object, Object> builder =
         Caffeine.newBuilder().expireAfterAccess(java.time.Duration.ofSeconds(3600));
@@ -327,7 +318,6 @@ public class CacheBuilderTest extends TestCase {
     // well, it didn't blow up.
   }
 
-  @GwtIncompatible("refreshAfterWrite")
   public void testRefresh_zero() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder();
     try {
@@ -336,7 +326,7 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalArgumentException expected) {}
   }
 
-  @GwtIncompatible // java.time.Duration
+  // java.time.Duration
   public void testRefresh_zero_duration() {
     Caffeine<Object, Object> builder = Caffeine.newBuilder();
     try {
@@ -346,7 +336,6 @@ public class CacheBuilderTest extends TestCase {
     }
   }
 
-  @GwtIncompatible("refreshAfterWrite")
   public void testRefresh_setTwice() {
     Caffeine<Object, Object> builder =
         Caffeine.newBuilder().refreshAfterWrite(3600, SECONDS);
@@ -357,7 +346,7 @@ public class CacheBuilderTest extends TestCase {
     } catch (IllegalStateException expected) {}
   }
 
-  @GwtIncompatible // java.time.Duration
+  // java.time.Duration
   public void testRefresh_setTwice_duration() {
     Caffeine<Object, Object> builder =
         Caffeine.newBuilder().refreshAfterWrite(java.time.Duration.ofSeconds(3600));
@@ -396,7 +385,6 @@ public class CacheBuilderTest extends TestCase {
         .isNotInstanceOf(Set.class);
   }
 
-  @GwtIncompatible("CacheTesting")
   public void testNullCache() {
     CountingRemovalListener<Object, Object> listener = countingRemovalListener();
     LoadingCache<Object, Object> nullCache = CaffeinatedGuava.build(Caffeine.newBuilder()
@@ -411,7 +399,6 @@ public class CacheBuilderTest extends TestCase {
     CacheTesting.checkEmpty(nullCache.asMap());
   }
 
-  @GwtIncompatible("QueuingRemovalListener")
   public void testRemovalNotification_clear() throws InterruptedException {
     // If a clear() happens while a computation is pending, we should not get a removal
     // notification.
@@ -472,7 +459,6 @@ public class CacheBuilderTest extends TestCase {
    * removal listener), or else is not affected by the {@code clear()} (and therefore exists in the
    * cache afterward).
    */
-  @GwtIncompatible("QueuingRemovalListener")
   @SuppressWarnings("FutureReturnValueIgnored")
   public void testRemovalNotification_clear_basher() throws InterruptedException {
     // If a clear() happens close to the end of computation, one of two things should happen:
@@ -549,7 +535,6 @@ public class CacheBuilderTest extends TestCase {
    * Calls get() repeatedly from many different threads, and tests that all of the removed entries
    * (removed because of size limits or expiration) trigger appropriate removal notifications.
    */
-  @GwtIncompatible("QueuingRemovalListener")
   @SuppressWarnings("FutureReturnValueIgnored")
   public void testRemovalNotification_get_basher() throws InterruptedException {
     int nTasks = 1000;
@@ -624,14 +609,12 @@ public class CacheBuilderTest extends TestCase {
     assertEquals(computeCount.get(), cache.size() + removalListener.size());
   }
 
-  @GwtIncompatible("NullPointerTester")
   public void testNullParameters() throws Exception {
     NullPointerTester tester = new NullPointerTester();
     Caffeine<Object, Object> builder = Caffeine.newBuilder();
     tester.testAllPublicInstanceMethods(builder);
   }
 
-  @GwtIncompatible("CountDownLatch")
   static final class DelayingIdentityLoader<T> extends CacheLoader<T, T> {
     private final AtomicBoolean shouldWait;
     private final CountDownLatch delayLatch;

@@ -151,7 +151,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   }
 
   @Override
-  public @Nullable V get(K key) {
+  public V get(K key) {
     requireNotClosed();
     Expirable<V> expirable = cache.getIfPresent(key);
     if (expirable == null) {
@@ -322,7 +322,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   }
 
   @Override
-  public @Nullable V getAndPut(K key, V value) {
+  public V getAndPut(K key, V value) {
     requireNotClosed();
     boolean statsEnabled = statistics.isEnabled();
     long start = statsEnabled ? ticker.read() : 0L;
@@ -770,7 +770,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   }
 
   @Override
-  public @Nullable <T> T invoke(K key,
+  public <T> T invoke(K key,
       EntryProcessor<K, V, T> entryProcessor, Object... arguments) {
     requireNonNull(entryProcessor);
     requireNonNull(arguments);
@@ -815,7 +815,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   /** Returns the updated expirable value after performing the post-processing actions. */
   @SuppressWarnings({"fallthrough", "NullAway",
     "PMD.MissingBreakInSwitch", "PMD.SwitchStmtsShouldHaveDefault"})
-  private @Nullable Expirable<V> postProcess(Expirable<V> expirable,
+  private Expirable<V> postProcess(Expirable<V> expirable,
       EntryProcessorEntry<K, V> entry, long currentTimeMS) {
     switch (entry.getAction()) {
       case NONE:
@@ -926,7 +926,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   }
 
   @SuppressWarnings("FutureReturnValueIgnored")
-  private @Nullable Throwable shutdownExecutor() {
+  private Throwable shutdownExecutor() {
     Throwable thrown = null;
     if (executor instanceof ExecutorService) {
       var es = (ExecutorService) executor;
@@ -951,7 +951,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
    * @param outer the outermost error, or null if unset
    * @return the outermost error, or null if unset and successful
    */
-  private static @Nullable Throwable tryClose(@Nullable Object o, @Nullable Throwable outer) {
+  private static Throwable tryClose(Object o, Throwable outer) {
     if (o instanceof Closeable) {
       try {
         ((Closeable) o).close();
@@ -1048,7 +1048,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   }
 
   /** Writes all of the entries to the cache writer if write-through is enabled. */
-  private @Nullable CacheWriterException writeAllToCacheWriter(Map<? extends K, ? extends V> map) {
+  private CacheWriterException writeAllToCacheWriter(Map<? extends K, ? extends V> map) {
     if (!configuration.isWriteThrough() || map.isEmpty()) {
       return null;
     }
@@ -1073,7 +1073,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   }
 
   /** Deletes all of the entries using the cache writer, retaining only the keys that succeeded. */
-  private @Nullable CacheWriterException deleteAllToCacheWriter(Set<? extends K> keys) {
+  private CacheWriterException deleteAllToCacheWriter(Set<? extends K> keys) {
     if (!configuration.isWriteThrough() || keys.isEmpty()) {
       return null;
     }
@@ -1105,7 +1105,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
    * @return a copy of the object if storing by value or the same instance if by reference
    */
   @SuppressWarnings("NullAway")
-  protected final <T> @PolyNull T copyOf(@PolyNull T object) {
+  protected final <T> T copyOf(T object) {
     if (object == null) {
       return null;
     }
@@ -1120,7 +1120,7 @@ public class CacheProxy<K, V> implements Cache<K, V> {
    * @return a copy of the value if storing by value or the same instance if by reference
    */
   @SuppressWarnings("NullAway")
-  protected final @PolyNull V copyValue(@PolyNull Expirable<V> expirable) {
+  protected final V copyValue(Expirable<V> expirable) {
     if (expirable == null) {
       return null;
     }
@@ -1212,8 +1212,8 @@ public class CacheProxy<K, V> implements Cache<K, V> {
   /** An iterator to safely expose the cache entries. */
   final class EntryIterator implements Iterator<Cache.Entry<K, V>> {
     final Iterator<Map.Entry<K, Expirable<V>>> delegate = cache.asMap().entrySet().iterator();
-    Map.@Nullable Entry<K, Expirable<V>> current;
-    Map.@Nullable Entry<K, Expirable<V>> cursor;
+    Map.Entry<K, Expirable<V>> current;
+    Map.Entry<K, Expirable<V>> cursor;
 
     @Override
     public boolean hasNext() {

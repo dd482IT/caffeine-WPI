@@ -36,7 +36,6 @@ import net.jodah.expiringmap.ExpiringMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "product.ExpiringMap")
 public final class ExpiringMapPolicy implements KeyOnlyPolicy {
   private final ExpiringMap<Long, Boolean> cache;
   private final PolicyStats policyStats;

@@ -49,12 +49,10 @@ import com.google.common.util.concurrent.Futures;
 public final class SchedulerTest {
   private final NullPointerTester npeTester = new NullPointerTester();
 
-  @Test(dataProvider = "schedulers")
   public void scheduler_null(Scheduler scheduler) {
     npeTester.testAllPublicInstanceMethods(scheduler);
   }
 
-  @Test(dataProvider = "runnableSchedulers")
   public void scheduler_exception(Scheduler scheduler) {
     var executed = new AtomicBoolean();
     Executor executor = task -> {
@@ -65,7 +63,6 @@ public final class SchedulerTest {
     await().untilTrue(executed);
   }
 
-  @Test(dataProvider = "runnableSchedulers")
   public void scheduler(Scheduler scheduler) {
     var executed = new AtomicBoolean();
     Runnable task = () -> executed.set(true);
@@ -75,14 +72,12 @@ public final class SchedulerTest {
 
   /* --------------- disabled --------------- */
 
-  @Test
   public void disabledScheduler() {
     var future = Scheduler.disabledScheduler()
         .schedule(Runnable::run, () -> {}, 1, TimeUnit.MINUTES);
     assertThat(future).isSameInstanceAs(DisabledFuture.INSTANCE);
   }
 
-  @Test
   public void disabledFuture() {
     assertThat(DisabledFuture.INSTANCE.get(0, TimeUnit.SECONDS)).isNull();
     assertThat(DisabledFuture.INSTANCE.isCancelled()).isFalse();
@@ -92,19 +87,16 @@ public final class SchedulerTest {
     assertThat(DisabledFuture.INSTANCE.get()).isNull();
   }
 
-  @Test
   public void disabledFuture_null() {
     npeTester.testAllPublicInstanceMethods(DisabledFuture.INSTANCE);
   }
 
   /* --------------- guarded --------------- */
 
-  @Test(expectedExceptions = NullPointerException.class)
   public void guardedScheduler_null() {
     Scheduler.guardedScheduler(null);
   }
 
-  @Test
   public void guardedScheduler_nullFuture() {
     var scheduledExecutor = Mockito.mock(ScheduledExecutorService.class);
     var scheduler = Scheduler.forScheduledExecutorService(scheduledExecutor);
@@ -117,14 +109,12 @@ public final class SchedulerTest {
     assertThat(future).isSameInstanceAs(DisabledFuture.INSTANCE);
   }
 
-  @Test
   public void guardedScheduler() {
     var future = Scheduler.guardedScheduler((r, e, d, u) -> Futures.immediateVoidFuture())
         .schedule(Runnable::run, () -> {}, 1, TimeUnit.MINUTES);
     assertThat(future).isSameInstanceAs(Futures.immediateVoidFuture());
   }
 
-  @Test
   public void guardedScheduler_exception() {
     var future = Scheduler.guardedScheduler((r, e, d, u) -> { throw new RuntimeException(); })
         .schedule(Runnable::run, () -> {}, 1, TimeUnit.MINUTES);
@@ -133,12 +123,10 @@ public final class SchedulerTest {
 
   /* --------------- ScheduledExecutorService --------------- */
 
-  @Test(expectedExceptions = NullPointerException.class)
   public void scheduledExecutorService_null() {
     Scheduler.forScheduledExecutorService(null);
   }
 
-  @Test
   public void scheduledExecutorService_schedule() {
     var scheduledExecutor = Mockito.mock(ScheduledExecutorService.class);
     var task = ArgumentCaptor.forClass(Runnable.class);
@@ -158,7 +146,6 @@ public final class SchedulerTest {
     verifyNoMoreInteractions(executor);
   }
 
-  @Test
   public void scheduledExecutorService_shutdown() {
     var scheduledExecutor = Mockito.mock(ScheduledExecutorService.class);
     var executor = Mockito.mock(Executor.class);
@@ -175,7 +162,6 @@ public final class SchedulerTest {
 
   /* --------------- providers --------------- */
 
-  @DataProvider(name = "schedulers")
   public Iterator<Scheduler> providesSchedulers() {
     var schedulers = Set.of(
         Scheduler.forScheduledExecutorService(sameThreadScheduledExecutor()),
@@ -185,7 +171,6 @@ public final class SchedulerTest {
     return schedulers.iterator();
   }
 
-  @DataProvider(name = "runnableSchedulers")
   public Iterator<Scheduler> providesRunnableSchedulers() {
     var schedulers = Set.of(
         Scheduler.forScheduledExecutorService(sameThreadScheduledExecutor()),

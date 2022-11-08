@@ -45,19 +45,16 @@ public final class CacheLoaderTest extends AbstractJCacheTest {
   private CacheLoader<Integer, Integer> cacheLoader;
   private ExpiryPolicy expiry;
 
-  @Test
   public void load() {
     when(cacheLoader.load(any())).thenReturn(-1);
     assertThat(jcacheLoading.get(1)).isEqualTo(-1);
   }
 
-  @Test
   public void load_null() {
     when(cacheLoader.load(any())).thenReturn(null);
     assertThat(jcacheLoading.get(1)).isNull();
   }
 
-  @Test(dataProvider = "throwables")
   public void load_failure(Throwable throwable) {
     try {
       when(cacheLoader.load(any())).thenThrow(throwable);
@@ -70,7 +67,6 @@ public final class CacheLoaderTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void load_failure_expiry() {
     try {
       when(expiry.getExpiryForCreation()).thenThrow(IllegalStateException.class);
@@ -82,7 +78,6 @@ public final class CacheLoaderTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void loadAll() {
     when(cacheLoader.loadAll(anyIterable())).then(answer -> {
       Iterable<Integer> keys = answer.getArgument(0);
@@ -92,20 +87,17 @@ public final class CacheLoaderTest extends AbstractJCacheTest {
     assertThat(result).containsExactly(1, -1, 2, -2, 3, -3);
   }
 
-  @Test(expectedExceptions = CacheLoaderException.class)
   public void loadAll_null() {
     when(cacheLoader.loadAll(anyIterable())).thenReturn(null);
     jcacheLoading.getAll(Set.of(1, 2, 3));
   }
 
-  @Test
   public void loadAll_nullMapping() {
     when(cacheLoader.loadAll(anyIterable())).thenReturn(Collections.singletonMap(1, null));
     var result = jcacheLoading.getAll(Set.of(1, 2, 3));
     assertThat(result).isEmpty();
   }
 
-  @Test(dataProvider = "throwables")
   public void loadAll_failure(Throwable throwable) {
     try {
       when(cacheLoader.loadAll(any())).thenThrow(throwable);
@@ -118,7 +110,6 @@ public final class CacheLoaderTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void loadAll_failure_expiry() {
     try {
       when(expiry.getExpiryForCreation()).thenThrow(IllegalStateException.class);
@@ -130,7 +121,6 @@ public final class CacheLoaderTest extends AbstractJCacheTest {
     }
   }
 
-  @DataProvider(name = "throwables")
   Object[] providesThrowables() {
     return new Object[] { new IllegalStateException(), new CacheLoaderException() };
   }

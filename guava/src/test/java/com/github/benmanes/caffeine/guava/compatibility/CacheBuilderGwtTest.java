@@ -49,7 +49,6 @@ import junit.framework.TestCase;
  *
  * @author Jon Donovan
  */
-@GwtCompatible
 @SuppressWarnings("PreferJavaTimeOverload")
 public class CacheBuilderGwtTest extends TestCase {
 

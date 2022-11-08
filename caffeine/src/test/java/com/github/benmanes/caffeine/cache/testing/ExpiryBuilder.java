@@ -46,14 +46,12 @@ public final class ExpiryBuilder {
   }
 
   /** Sets the fixed update expiration time. */
-  @CanIgnoreReturnValue
   public ExpiryBuilder expiringAfterUpdate(long nanos) {
     updateNanos = nanos;
     return this;
   }
 
   /** Sets the fixed read expiration time. */
-  @CanIgnoreReturnValue
   public ExpiryBuilder expiringAfterRead(long nanos) {
     readNanos = nanos;
     return this;

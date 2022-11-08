@@ -64,7 +64,6 @@ import picocli.CommandLine.TypeConversionException;
  * @author ben.manes@gmail.com (Ben Manes)
  */
 @SuppressWarnings("PMD.ImmutableField")
-@Command(mixinStandardHelpOptions = true)
 public final class PlotCsv implements Runnable {
   @Option(names = "--inputFile", required = true, description = "The csv file path")
   private Path inputFile;
@@ -232,7 +231,6 @@ public final class PlotCsv implements Runnable {
     }
   }
 
-  @AutoValue
   abstract static class ChartStyle {
     abstract RectangleInsets axisOffset();
 
@@ -275,7 +273,6 @@ public final class PlotCsv implements Runnable {
           .build();
     }
 
-    @AutoValue.Builder @CopyAnnotations
     @SuppressWarnings("NarrowingCompoundAssignment")
     abstract static class Builder {
       abstract Builder axisOffset(RectangleInsets axisOffset);

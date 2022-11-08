@@ -50,7 +50,6 @@ public interface Cache<K, V> {
    *         contain a mapping for the key
    * @throws NullPointerException if the specified key is null
    */
-  @Nullable
   V getIfPresent(K key);
 
   /**
@@ -78,8 +77,7 @@ public interface Cache<K, V> {
    * @throws RuntimeException or Error if the mappingFunction does so, in which case the mapping is
    *         left unestablished
    */
-  @PolyNull
-  V get(K key, Function<? super K, ? extends @PolyNull V> mappingFunction);
+  V get(K key, Function<? super K, ? extends V> mappingFunction);
 
   /**
    * Returns a map of the values associated with the {@code keys} in this cache. The returned map
@@ -181,8 +179,6 @@ public interface Cache<K, V> {
    *
    * @return the estimated number of mappings
    */
-  @NonNegative
-  @CheckReturnValue
   long estimatedSize();
 
   /**
@@ -194,7 +190,6 @@ public interface Cache<K, V> {
    *
    * @return the current snapshot of the statistics of this cache
    */
-  @CheckReturnValue
   CacheStats stats();
 
   /**
@@ -212,7 +207,6 @@ public interface Cache<K, V> {
    *
    * @return a thread-safe view of this cache supporting all of the optional {@link Map} operations
    */
-  @CheckReturnValue
   ConcurrentMap<K, V> asMap();
 
   /**
@@ -231,6 +225,5 @@ public interface Cache<K, V> {
    *
    * @return access to inspect and perform advanced operations based on the cache's characteristics
    */
-  @CheckReturnValue
   Policy<K, V> policy();
 }

@@ -48,53 +48,36 @@ import com.google.common.base.Joiner;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Listeners(CacheValidationListener.class)
-@Test(dataProviderClass = CacheProvider.class)
 public final class CaffeineSpecTest {
   static final long UNSET_LONG = UNSET_INT;
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void parseInt_exception() {
     CaffeineSpec.parseInt("key", "value");
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void parseLong_exception() {
     CaffeineSpec.parseLong("key", "value");
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void parseTimeUnit_exception() {
     CaffeineSpec.parseTimeUnit("key", "value");
   }
 
-  @Test(dataProvider = "caches")
-  @CacheSpec(implementation = Implementation.Caffeine, population = Population.EMPTY,
-      initialCapacity = {InitialCapacity.DEFAULT, InitialCapacity.FULL},
       compute = Compute.SYNC, removalListener = Listener.DISABLED)
   public void seconds(CacheContext context) {
     runScenarios(context, new Epoch(TimeUnit.SECONDS, "s"));
   }
 
-  @Test(dataProvider = "caches")
-  @CacheSpec(implementation = Implementation.Caffeine, population = Population.EMPTY,
-      initialCapacity = {InitialCapacity.DEFAULT, InitialCapacity.FULL},
       compute = Compute.SYNC, removalListener = Listener.DISABLED)
   public void minutes(CacheContext context) {
     runScenarios(context, new Epoch(TimeUnit.MINUTES, "m"));
   }
 
-  @Test(dataProvider = "caches")
-  @CacheSpec(implementation = Implementation.Caffeine, population = Population.EMPTY,
-      initialCapacity = {InitialCapacity.DEFAULT, InitialCapacity.FULL},
       compute = Compute.SYNC, removalListener = Listener.DISABLED)
   public void hours(CacheContext context) {
     runScenarios(context, new Epoch(TimeUnit.HOURS, "h"));
   }
 
-  @Test(dataProvider = "caches")
-  @CacheSpec(implementation = Implementation.Caffeine, population = Population.EMPTY,
-      initialCapacity = {InitialCapacity.DEFAULT, InitialCapacity.FULL},
       compute = Compute.SYNC, removalListener = Listener.DISABLED)
   public void days(CacheContext context) {
     runScenarios(context, new Epoch(TimeUnit.DAYS, "d"));

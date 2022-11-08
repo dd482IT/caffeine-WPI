@@ -48,7 +48,6 @@ import com.typesafe.config.Config;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "product.Ehcache3")
 public final class Ehcache3Policy implements KeyOnlyPolicy {
   private final Cache<Long, Boolean> cache;
   private final CacheManager cacheManager;

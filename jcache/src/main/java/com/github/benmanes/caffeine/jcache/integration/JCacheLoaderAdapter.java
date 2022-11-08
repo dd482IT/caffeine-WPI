@@ -74,7 +74,7 @@ public final class JCacheLoaderAdapter<K, V>
   }
 
   @Override
-  public @Nullable Expirable<V> load(K key) {
+  public Expirable<V> load(K key) {
     try {
       boolean statsEnabled = statistics.isEnabled();
       long start = statsEnabled ? ticker.read() : 0L;

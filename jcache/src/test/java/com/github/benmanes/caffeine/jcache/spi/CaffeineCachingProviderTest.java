@@ -39,7 +39,6 @@ import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
  */
 public final class CaffeineCachingProviderTest {
 
-  @Test
   public void loadClass_found() {
     runWithClassloader(provider -> {
       try {
@@ -60,7 +59,6 @@ public final class CaffeineCachingProviderTest {
     }
   }
 
-  @Test
   public void loadClass_notFound() {
     runWithClassloader(provider -> {
       try {
@@ -70,7 +68,6 @@ public final class CaffeineCachingProviderTest {
     });
   }
 
-  @Test
   public void resource_found() {
     runWithClassloader(provider -> {
       assertThat(provider.getDefaultClassLoader().getResource("")).isNotNull();
@@ -85,14 +82,12 @@ public final class CaffeineCachingProviderTest {
     }
   }
 
-  @Test
   public void resource_notFound() {
     runWithClassloader(provider -> {
       assertThat(provider.getDefaultClassLoader().getResource("a.b.c")).isNull();
     });
   }
 
-  @Test
   public void resources_found() {
     runWithClassloader(provider -> {
       try {
@@ -104,7 +99,6 @@ public final class CaffeineCachingProviderTest {
     });
   }
 
-  @Test
   public void resources_notFound() {
     runWithClassloader(provider -> {
       try {
@@ -116,7 +110,6 @@ public final class CaffeineCachingProviderTest {
     });
   }
 
-  @Test
   public void osgi_getCache() {
     try (var provider = new CaffeineCachingProvider()) {
       provider.isOsgiComponent = true;

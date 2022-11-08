@@ -25,7 +25,6 @@ import com.typesafe.config.Config;
 /**
  * @author gilga1983@gmail.com (Gil Einziger)
  */
-@PolicySpec(name = "sketch.TinyCache_GhostCache")
 public final class TinyCacheWithGhostCachePolicy implements KeyOnlyPolicy {
   private final TinyCacheWithGhostCache tinyCache;
   private final PolicyStats policyStats;

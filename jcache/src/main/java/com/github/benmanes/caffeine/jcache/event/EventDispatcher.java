@@ -218,7 +218,7 @@ public final class EventDispatcher<K, V> {
   /** Broadcasts the event to the interested listener's dispatch queues. */
   @SuppressWarnings("FutureReturnValueIgnored")
   private void publish(Cache<K, V> cache, EventType eventType, K key,
-      boolean hasOldValue, @Nullable V oldValue, @Nullable V newValue, boolean quiet) {
+      boolean hasOldValue, V oldValue, V newValue, boolean quiet) {
     if (dispatchQueues.isEmpty()) {
       return;
     }

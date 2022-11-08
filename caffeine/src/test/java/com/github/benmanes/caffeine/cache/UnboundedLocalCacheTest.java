@@ -37,16 +37,9 @@ import com.github.benmanes.caffeine.cache.testing.CheckMaxLogLevel;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@CheckMaxLogLevel(TRACE)
-@Listeners(CacheValidationListener.class)
-@Test(dataProviderClass = CacheProvider.class)
 public final class UnboundedLocalCacheTest {
 
-  @CacheSpec(population = Population.EMPTY, refreshAfterWrite = Expire.DISABLED,
-      expireAfterAccess = Expire.DISABLED, expireAfterWrite = Expire.DISABLED,
-      maximumSize = Maximum.DISABLED, weigher = CacheWeigher.DISABLED,
       keys = ReferenceType.STRONG, values = ReferenceType.STRONG)
-  @Test(dataProvider = "caches")
   public void noPolicy(Cache<Integer, Integer> cache, CacheContext context) {
     assertThat(cache.policy().eviction()).isEmpty();
     assertThat(cache.policy().expireAfterWrite()).isEmpty();

@@ -63,7 +63,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   static final Logger logger = System.getLogger(UnboundedLocalCache.class.getName());
   static final VarHandle REFRESHES;
 
-  @Nullable final RemovalListener<K, V> removalListener;
+  final RemovalListener<K, V> removalListener;
   final ConcurrentHashMap<K, V> data;
   final StatsCounter statsCounter;
   final boolean isRecordingStats;
@@ -71,10 +71,10 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   final boolean isAsync;
   final Ticker ticker;
 
-  @Nullable Set<K> keySet;
-  @Nullable Collection<V> values;
-  @Nullable Set<Entry<K, V>> entrySet;
-  @Nullable volatile ConcurrentMap<Object, CompletableFuture<?>> refreshes;
+  Set<K> keySet;
+  Collection<V> values;
+  Set<Entry<K, V>> entrySet;
+  volatile ConcurrentMap<Object, CompletableFuture<?>> refreshes;
 
   UnboundedLocalCache(Caffeine<? super K, ? super V> builder, boolean isAsync) {
     this.data = new ConcurrentHashMap<>(builder.getInitialCapacity());
@@ -114,7 +114,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   /* --------------- Cache --------------- */
 
   @Override
-  public @Nullable V getIfPresent(Object key, boolean recordStats) {
+  public V getIfPresent(Object key, boolean recordStats) {
     V value = data.get(key);
 
     if (recordStats) {
@@ -128,7 +128,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   }
 
   @Override
-  public @Nullable V getIfPresentQuietly(Object key) {
+  public V getIfPresentQuietly(Object key) {
     return data.get(key);
   }
 
@@ -176,7 +176,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
 
   @Override
   @SuppressWarnings("NullAway")
-  public void notifyRemoval(@Nullable K key, @Nullable V value, RemovalCause cause) {
+  public void notifyRemoval(K key, V value, RemovalCause cause) {
     if (!hasRemovalListener()) {
       return;
     }
@@ -296,7 +296,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   }
 
   @Override
-  public @Nullable V computeIfPresent(K key,
+  public V computeIfPresent(K key,
       BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
     requireNonNull(remappingFunction);
 
@@ -332,7 +332,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
 
   @Override
   public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction,
-      @Nullable Expiry<? super K, ? super V> expiry, boolean recordLoad,
+      Expiry<? super K, ? super V> expiry, boolean recordLoad,
       boolean recordLoadFailure) {
     requireNonNull(remappingFunction);
     return remap(key, statsAware(remappingFunction, recordLoad, recordLoadFailure));
@@ -415,19 +415,19 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   }
 
   @Override
-  public @Nullable V get(Object key) {
+  public V get(Object key) {
     return getIfPresent(key, /* recordStats */ false);
   }
 
   @Override
-  public @Nullable V put(K key, V value) {
+  public V put(K key, V value) {
     V oldValue = data.put(key, value);
     notifyOnReplace(key, oldValue, value);
     return oldValue;
   }
 
   @Override
-  public @Nullable V putIfAbsent(K key, V value) {
+  public V putIfAbsent(K key, V value) {
     return data.putIfAbsent(key, value);
   }
 
@@ -441,7 +441,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   }
 
   @Override
-  public @Nullable V remove(Object key) {
+  public V remove(Object key) {
     @SuppressWarnings("unchecked")
     K castKey = (K) key;
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -488,7 +488,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   }
 
   @Override
-  public @Nullable V replace(K key, V value) {
+  public V replace(K key, V value) {
     requireNonNull(value);
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -672,7 +672,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   static final class KeyIterator<K> implements Iterator<K> {
     final UnboundedLocalCache<K, ?> cache;
     final Iterator<K> iterator;
-    @Nullable K current;
+    K current;
 
     KeyIterator(UnboundedLocalCache<K, ?> cache) {
       this.iterator = cache.data.keySet().iterator();
@@ -799,7 +799,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   static final class ValuesIterator<K, V> implements Iterator<V> {
     final UnboundedLocalCache<K, V> cache;
     final Iterator<Entry<K, V>> iterator;
-    @Nullable Entry<K, V> entry;
+    Entry<K, V> entry;
 
     ValuesIterator(UnboundedLocalCache<K, V> cache) {
       this.iterator = cache.data.entrySet().iterator();
@@ -932,7 +932,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
   static final class EntryIterator<K, V> implements Iterator<Entry<K, V>> {
     final UnboundedLocalCache<K, V> cache;
     final Iterator<Entry<K, V>> iterator;
-    @Nullable Entry<K, V> entry;
+    Entry<K, V> entry;
 
     EntryIterator(UnboundedLocalCache<K, V> cache) {
       this.iterator = cache.data.entrySet().iterator();
@@ -993,7 +993,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
     }
 
     @Override
-    public @Nullable EntrySpliterator<K, V> trySplit() {
+    public EntrySpliterator<K, V> trySplit() {
       Spliterator<Entry<K, V>> split = spliterator.trySplit();
       return (split == null) ? null : new EntrySpliterator<>(cache, split);
     }
@@ -1015,7 +1015,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
     private static final long serialVersionUID = 1;
 
     final UnboundedLocalCache<K, V> cache;
-    @Nullable Policy<K, V> policy;
+    Policy<K, V> policy;
 
     UnboundedLocalManualCache(Caffeine<K, V> builder) {
       cache = new UnboundedLocalCache<>(builder, /* async */ false);
@@ -1059,10 +1059,10 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
     @Override public boolean isRecordingStats() {
       return cache.isRecordingStats;
     }
-    @Override public @Nullable V getIfPresentQuietly(K key) {
+    @Override public V getIfPresentQuietly(K key) {
       return transformer.apply(cache.data.get(key));
     }
-    @Override public @Nullable CacheEntry<K, V> getEntryIfPresentQuietly(K key) {
+    @Override public CacheEntry<K, V> getEntryIfPresentQuietly(K key) {
       V value = transformer.apply(cache.data.get(key));
       return (value == null) ? null : SnapshotEntry.forEntry(key, value);
     }
@@ -1100,7 +1100,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
 
     final Function<K, V> mappingFunction;
     final CacheLoader<? super K, V> cacheLoader;
-    @Nullable final Function<Set<? extends K>, Map<K, V>> bulkMappingFunction;
+    final Function<Set<? extends K>, Map<K, V>> bulkMappingFunction;
 
     UnboundedLocalLoadingCache(Caffeine<K, V> builder, CacheLoader<? super K, V> cacheLoader) {
       super(builder);
@@ -1120,7 +1120,7 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
     }
 
     @Override
-    public @Nullable Function<Set<? extends K>, Map<K, V>>  bulkMappingFunction() {
+    public Function<Set<? extends K>, Map<K, V>>  bulkMappingFunction() {
       return bulkMappingFunction;
     }
 
@@ -1145,9 +1145,9 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
 
     final UnboundedLocalCache<K, CompletableFuture<V>> cache;
 
-    @Nullable ConcurrentMap<K, CompletableFuture<V>> mapView;
-    @Nullable CacheView<K, V> cacheView;
-    @Nullable Policy<K, V> policy;
+    ConcurrentMap<K, CompletableFuture<V>> mapView;
+    CacheView<K, V> cacheView;
+    Policy<K, V> policy;
 
     @SuppressWarnings("unchecked")
     UnboundedLocalAsyncCache(Caffeine<K, V> builder) {
@@ -1205,8 +1205,8 @@ final class UnboundedLocalCache<K, V> implements LocalCache<K, V> {
 
     final UnboundedLocalCache<K, CompletableFuture<V>> cache;
 
-    @Nullable ConcurrentMap<K, CompletableFuture<V>> mapView;
-    @Nullable Policy<K, V> policy;
+    ConcurrentMap<K, CompletableFuture<V>> mapView;
+    Policy<K, V> policy;
 
     @SuppressWarnings("unchecked")
     UnboundedLocalAsyncLoadingCache(Caffeine<K, V> builder, AsyncCacheLoader<? super K, V> loader) {

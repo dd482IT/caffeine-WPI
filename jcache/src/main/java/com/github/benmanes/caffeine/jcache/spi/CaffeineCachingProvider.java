@@ -55,11 +55,9 @@ import com.typesafe.config.ConfigFactory;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Component
 public final class CaffeineCachingProvider implements CachingProvider {
   private static final ClassLoader DEFAULT_CLASS_LOADER = new JCacheClassLoader();
 
-  @GuardedBy("itself")
   final Map<ClassLoader, Map<URI, CacheManager>> cacheManagers;
 
   boolean isOsgiComponent;
@@ -208,7 +206,7 @@ public final class CaffeineCachingProvider implements CachingProvider {
     }
 
     @Override
-    public @Nullable URL getResource(String name) {
+    public URL getResource(String name) {
       ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
       if ((contextClassLoader != null) && (contextClassLoader != DEFAULT_CLASS_LOADER)) {
         URL resource = contextClassLoader.getResource(name);
@@ -263,7 +261,6 @@ public final class CaffeineCachingProvider implements CachingProvider {
     }
   }
 
-  @Activate
   @SuppressWarnings("unused")
   private void activate() {
     isOsgiComponent = true;

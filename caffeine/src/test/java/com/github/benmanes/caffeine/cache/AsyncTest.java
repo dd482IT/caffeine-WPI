@@ -44,39 +44,32 @@ import com.github.benmanes.caffeine.testing.ConcurrentTestHarness;
 public final class AsyncTest {
   private static final long ONE_MINUTE = TimeUnit.MINUTES.toNanos(1);
 
-  @Test
   public void reflectivelyConstruct() throws ReflectiveOperationException {
     var constructor = Async.class.getDeclaredConstructor();
     constructor.setAccessible(true);
     constructor.newInstance();
   }
 
-  @Test(dataProvider = "successful")
   public void isReady_success(CompletableFuture<Integer> future) {
     assertThat(Async.isReady(future)).isTrue();
   }
 
-  @Test(dataProvider = "unsuccessful")
   public void isReady_fails(CompletableFuture<Integer> future) {
     assertThat(Async.isReady(future)).isFalse();
   }
 
-  @Test(dataProvider = "successful")
   public void getIfReady_success(CompletableFuture<Integer> future) {
     assertThat(Async.getIfReady(future)).isEqualTo(1);
   }
 
-  @Test(dataProvider = "unsuccessful")
   public void getIfReady_fails(CompletableFuture<Integer> future) {
     assertThat(Async.getIfReady(future)).isNull();
   }
 
-  @Test(dataProvider = "successful")
   public void getWhenSuccessful_success(CompletableFuture<Integer> future) {
     assertThat(Async.getWhenSuccessful(future)).isEqualTo(1);
   }
 
-  @Test
   public void getWhenSuccessful_success_async() {
     var future = new CompletableFuture<Integer>();
     var result = new AtomicInteger();
@@ -89,7 +82,6 @@ public final class AsyncTest {
     await().untilAtomic(result, is(2));
   }
 
-  @Test(dataProvider = "unsuccessful")
   public void getWhenSuccessful_fails(CompletableFuture<?> future) {
     if ((future != null) && !future.isDone()) {
       var result = new AtomicInteger();
@@ -106,7 +98,6 @@ public final class AsyncTest {
     assertThat(Async.getWhenSuccessful(future)).isNull();
   }
 
-  @Test
   public void asyncExpiry_pending() {
     var expiry = makeAsyncExpiry(ONE_MINUTE, ONE_MINUTE, ONE_MINUTE);
     var future = new CompletableFuture<Integer>();
@@ -121,7 +112,6 @@ public final class AsyncTest {
     verify(expiry.delegate, never()).expireAfterRead(any(), any(), anyLong(), anyLong());
   }
 
-  @Test
   public void asyncExpiry_completed() {
     var expiry = makeAsyncExpiry(ONE_MINUTE, 2 * ONE_MINUTE, 3 * ONE_MINUTE);
     var future = CompletableFuture.completedFuture(100);
@@ -136,7 +126,6 @@ public final class AsyncTest {
     verify(expiry.delegate).expireAfterRead(0, 100, 1, 2);
   }
 
-  @Test
   public void asyncExpiry_bounded() {
     var expiry = makeAsyncExpiry(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE);
     var future = CompletableFuture.completedFuture(100);
@@ -146,12 +135,10 @@ public final class AsyncTest {
     assertThat(expiry.expireAfterRead(0, future, 1, 2)).isEqualTo(MAXIMUM_EXPIRY);
   }
 
-  @DataProvider(name = "successful")
   public Object[][] providesSuccessful() {
     return new Object[][] {{ CompletableFuture.completedFuture(1) }};
   }
 
-  @DataProvider(name = "unsuccessful")
   public Object[][] providesUnsuccessful() {
     return new Object[][] {
         { null },

@@ -37,7 +37,7 @@ final class Pacer {
   final Scheduler scheduler;
 
   long nextFireTime;
-  @Nullable Future<?> future;
+  Future<?> future;
 
   Pacer(Scheduler scheduler) {
     this.scheduler = requireNonNull(scheduler);

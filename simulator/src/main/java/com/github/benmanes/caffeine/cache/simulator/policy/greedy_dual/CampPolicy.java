@@ -46,7 +46,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author himelbrand@gmail.com (Omri Himelbrand)
  */
-@PolicySpec(name = "greedy-dual.Camp", characteristics = WEIGHTED)
 public final class CampPolicy implements Policy {
   private final Int2ObjectMap<Sentinel> sentinelMapping;
   private final NavigableSet<Sentinel> priorityQueue;

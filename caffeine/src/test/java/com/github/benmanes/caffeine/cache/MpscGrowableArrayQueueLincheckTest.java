@@ -35,8 +35,6 @@ import org.testng.annotations.Test;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@OpGroupConfig(name = "consumer", nonParallel = true)
-@Param(name = "element", gen = IntGen.class, conf = "1:5")
 public final class MpscGrowableArrayQueueLincheckTest extends VerifierState {
   private final Queue<Integer> queue;
 
@@ -44,12 +42,10 @@ public final class MpscGrowableArrayQueueLincheckTest extends VerifierState {
     queue = new org.jctools.queues.MpscGrowableArrayQueue<>(4, 65_536);
   }
 
-  @Operation
-  public boolean offer(@Param(name = "element") int e) {
+  public boolean offer(int e) {
     return queue.offer(e);
   }
 
-  @Operation(group = "consumer")
   public Integer poll() {
     return queue.poll();
   }
@@ -66,7 +62,6 @@ public final class MpscGrowableArrayQueueLincheckTest extends VerifierState {
    *   <li>--add-exports java.base/jdk.internal.util=ALL-UNNAMED
    * </ul>
    */
-  @Test(groups = "lincheck")
   public void modelCheckingTest() {
     var options = new ModelCheckingOptions()
         .iterations(100)                  // the number of different scenarios
@@ -75,7 +70,6 @@ public final class MpscGrowableArrayQueueLincheckTest extends VerifierState {
   }
 
   /** This test checks that the concurrent map is linearizable with stress testing. */
-  @Test(groups = "lincheck")
   public void stressTest() {
     var options = new StressOptions()
         .iterations(100)                  // the number of different scenarios

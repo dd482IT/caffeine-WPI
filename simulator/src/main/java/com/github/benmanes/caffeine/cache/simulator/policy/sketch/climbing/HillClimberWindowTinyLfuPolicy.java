@@ -52,7 +52,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "sketch.HillClimberWindowTinyLfu")
 public final class HillClimberWindowTinyLfuPolicy implements KeyOnlyPolicy {
   private static final boolean debug = false;
   private static final boolean trace = false;
@@ -207,7 +206,7 @@ public final class HillClimberWindowTinyLfuPolicy implements KeyOnlyPolicy {
   }
 
   /** Performs the hill climbing process. */
-  private void climb(long key, @Nullable QueueType queue, boolean isFull) {
+  private void climb(long key, QueueType queue, boolean isFull) {
     if (queue == null) {
       climber.onMiss(key, isFull);
     } else {

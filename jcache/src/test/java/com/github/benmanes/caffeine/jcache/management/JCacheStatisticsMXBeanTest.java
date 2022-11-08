@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
  */
 public final class JCacheStatisticsMXBeanTest {
 
-  @Test
   public void clear() {
     JCacheStatisticsMXBean stats = new JCacheStatisticsMXBean();
     stats.recordHits(1);

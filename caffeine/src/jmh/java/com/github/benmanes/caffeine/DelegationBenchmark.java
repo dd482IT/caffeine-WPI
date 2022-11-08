@@ -31,7 +31,6 @@ import com.google.common.collect.ForwardingMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class DelegationBenchmark {
   private static final int SIZE = (2 << 14);
@@ -40,7 +39,6 @@ public class DelegationBenchmark {
   final Map<Integer, Integer> inherit = new InheritMap();
   final Map<Integer, Integer> delegate = new DelegateMap();
 
-  @Setup
   public void setup() {
     for (int i = 0; i < SIZE; i++) {
       inherit.put(i, i);
@@ -48,17 +46,14 @@ public class DelegationBenchmark {
     }
   }
 
-  @State(Scope.Thread)
   public static class ThreadState {
     int index = ThreadLocalRandom.current().nextInt();
   }
 
-  @Benchmark
   public Integer inherit_get(ThreadState threadState) {
     return inherit.get(threadState.index++ & MASK);
   }
 
-  @Benchmark
   public Integer delegate_get(ThreadState threadState) {
     return delegate.get(threadState.index++ & MASK);
   }

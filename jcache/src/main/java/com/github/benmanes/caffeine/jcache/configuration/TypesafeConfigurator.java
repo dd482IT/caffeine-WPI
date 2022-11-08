@@ -263,7 +263,7 @@ public final class TypesafeConfigurator {
     }
 
     /** Returns the duration for the expiration time. */
-    private @Nullable Duration getDurationFor(String path) {
+    private Duration getDurationFor(String path) {
       if (!isSet(path)) {
         return null;
       }

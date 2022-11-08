@@ -32,7 +32,6 @@ import org.openjdk.jmh.annotations.State;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 public class TimerWheelBenchmark {
   private static final int SIZE = (2 << 14);
   private static final int MASK = SIZE - 1;
@@ -44,12 +43,10 @@ public class TimerWheelBenchmark {
   long[] times;
   Timer timer;
 
-  @State(Scope.Thread)
   public static class ThreadState {
     int index;
   }
 
-  @Setup
   public void setup() {
     timer = new Timer(0);
     times = new long[SIZE];
@@ -62,18 +59,15 @@ public class TimerWheelBenchmark {
     timerWheel.schedule(timer);
   }
 
-  @Benchmark
   public Node<Integer, Integer> findBucket(ThreadState threadState) {
     return timerWheel.findBucket(times[threadState.index++ & MASK]);
   }
 
-  @Benchmark
   public void reschedule(ThreadState threadState) {
     timer.setVariableTime(times[threadState.index++ & MASK]);
     timerWheel.reschedule(timer);
   }
 
-  @Benchmark
   public void expire(ThreadState threadState) {
     long time = times[threadState.index++ & MASK];
     timer.setVariableTime(time);
@@ -83,12 +77,10 @@ public class TimerWheelBenchmark {
     timerWheel.advance(cache, time);
   }
 
-  @Benchmark
   public long getExpirationDelay() {
     return timerWheel.getExpirationDelay();
   }
 
-  @Benchmark
   @SuppressWarnings({"ForEachIterable", "PMD.ForLoopCanBeForeach"})
   public int ascending() {
     int count = 0;
@@ -99,7 +91,6 @@ public class TimerWheelBenchmark {
     return count;
   }
 
-  @Benchmark
   @SuppressWarnings("PMD.ForLoopCanBeForeach")
   public int descending() {
     int count = 0;
@@ -128,13 +119,13 @@ public class TimerWheelBenchmark {
     @Override public Node<Integer, Integer> getPreviousInVariableOrder() {
       return prev;
     }
-    @Override public void setPreviousInVariableOrder(@Nullable Node<Integer, Integer> prev) {
+    @Override public void setPreviousInVariableOrder(Node<Integer, Integer> prev) {
       this.prev = prev;
     }
     @Override public Node<Integer, Integer> getNextInVariableOrder() {
       return next;
     }
-    @Override public void setNextInVariableOrder(@Nullable Node<Integer, Integer> next) {
+    @Override public void setNextInVariableOrder(Node<Integer, Integer> next) {
       this.next = next;
     }
 

@@ -31,7 +31,6 @@ import com.google.errorprone.annotations.Immutable;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Immutable(containerOf = {"K", "V"})
 public final class RemovalNotification<K, V> extends SimpleImmutableEntry<K, V> {
   private static final long serialVersionUID = 1L;
 
@@ -44,7 +43,7 @@ public final class RemovalNotification<K, V> extends SimpleImmutableEntry<K, V> 
    * @param value the value represented by this entry
    * @param cause the reason for which the entry was removed
    */
-  public RemovalNotification(@Nullable K key, @Nullable V value, RemovalCause cause) {
+  public RemovalNotification(K key, V value, RemovalCause cause) {
     super(key, value);
     this.cause = requireNonNull(cause);
   }

@@ -38,16 +38,12 @@ import com.github.benmanes.caffeine.cache.testing.CacheValidationListener;
  * @author Branimir Lambov (github.com/blambov)
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Listeners(CacheValidationListener.class)
-@Test(dataProviderClass = CacheProvider.class)
 public final class HashClashTest {
   private static final int STEP = 5;
   private static final Long LONG_1 = 1L;
   private static final long ITERS = 200_000;
   private static final boolean debug = false;
 
-  @Test(dataProvider = "caches")
-  @CacheSpec(population = Population.EMPTY, maximumSize = Maximum.ONE_FIFTY, stats = Stats.ENABLED)
   public void testCache(Cache<Long, Long> cache, CacheContext context) {
     for (long j = 0; j < 300; ++j) {
       cache.get(1L, identity());

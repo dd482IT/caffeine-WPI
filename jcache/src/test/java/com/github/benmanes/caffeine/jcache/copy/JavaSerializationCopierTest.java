@@ -45,39 +45,32 @@ import com.google.common.collect.ImmutableSet;
  */
 public final class JavaSerializationCopierTest {
 
-  @Test(dataProvider = "nullArgs", expectedExceptions = NullPointerException.class)
   public void constructor_null(Set<Class<?>> immutableClasses,
       Map<Class<?>, Function<Object, Object>> deepCopyStrategies) {
     new JavaSerializationCopier(immutableClasses, deepCopyStrategies);
   }
 
-  @Test(dataProvider = "copier", expectedExceptions = NullPointerException.class)
   public void null_object(Copier copier) {
     copy(copier, null);
   }
 
-  @Test(dataProvider = "copier", expectedExceptions = NullPointerException.class)
   public void null_classLoader(Copier copier) {
     copier.copy(1, null);
   }
 
-  @Test(dataProvider = "copier", expectedExceptions = UncheckedIOException.class)
   public void serializable_fail(JavaSerializationCopier copier) {
     copier.serialize(new Object());
   }
 
-  @Test
   public void deserializable_resolveClass() {
     var copier = new JavaSerializationCopier();
     copier.copy(ImmutableSet.of(), ClassLoader.getPlatformClassLoader());
   }
 
-  @Test(dataProvider = "copier", expectedExceptions = CacheException.class)
   public void deserializable_badData(JavaSerializationCopier copier) {
     copier.deserialize(new byte[0], Thread.currentThread().getContextClassLoader());
   }
 
-  @Test(expectedExceptions = CacheException.class)
   public void deserializable_classNotFound() {
     var copier = new JavaSerializationCopier() {
       @Override protected ObjectInputStream newInputStream(
@@ -93,26 +86,22 @@ public final class JavaSerializationCopierTest {
     copier.roundtrip(100, Thread.currentThread().getContextClassLoader());
   }
 
-  @Test(dataProvider = "copier")
   public void mutable(Copier copier) {
     var ints = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
     assertThat(copy(copier, ints)).containsExactlyElementsIn(ints).inOrder();
   }
 
-  @Test
   public void immutable() {
     String text = "test";
     assertThat(copy(new JavaSerializationCopier(), text)).isSameInstanceAs(text);
   }
 
-  @Test(dataProvider = "copier")
   @SuppressWarnings({"JavaUtilDate", "JdkObsolete", "UndefinedEquals"})
   public void deepCopy_date(Copier copier) {
     Date date = new Date();
     assertThat(copy(copier, date)).isEqualTo(date);
   }
 
-  @Test(dataProvider = "copier")
   @SuppressWarnings({"JavaUtilDate", "JdkObsolete"})
   public void deepCopy_calendar(Copier copier) {
     Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"), US);
@@ -120,19 +109,16 @@ public final class JavaSerializationCopierTest {
     assertThat(copy(copier, calendar)).isEqualTo(calendar);
   }
 
-  @Test(dataProvider = "copier")
   public void array_primitive(Copier copier) {
     int[] ints = { 0, 1, 2, 3, 4 };
     assertThat(copy(copier, ints)).isEqualTo(ints);
   }
 
-  @Test(dataProvider = "copier")
   public void array_immutable(Copier copier) {
     Integer[] ints = { 0, 1, 2, 3, 4 };
     assertThat(copy(copier, ints)).asList().containsExactlyElementsIn(ints).inOrder();
   }
 
-  @Test(dataProvider = "copier")
   public void array_mutable(Copier copier) {
     Object[] array = { new ArrayList<>(List.of(0, 1, 2, 3, 4)) };
     assertThat(copy(copier, array)).asList().containsExactlyElementsIn(array).inOrder();
@@ -142,7 +128,6 @@ public final class JavaSerializationCopierTest {
     return copier.copy(object, Thread.currentThread().getContextClassLoader());
   }
 
-  @DataProvider(name = "copier")
   public Object[] providesCopiers() {
     return new Object[] {
         new JavaSerializationCopier(),
@@ -150,7 +135,6 @@ public final class JavaSerializationCopierTest {
     };
   }
 
-  @DataProvider(name = "nullArgs")
   public Object[][] providesNullArgs() {
     return new Object[][] { { null, null }, { null, Map.of() }, { Set.of(), null } };
   }

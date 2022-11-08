@@ -42,14 +42,12 @@ import org.testng.annotations.Test;
  */
 @SuppressWarnings("unchecked")
 public final class EventTypeAwareListenerTest {
-  @Mock Cache<Integer, Integer> cache;
+  Cache<Integer, Integer> cache;
 
-  @BeforeMethod
   public void before() throws Exception {
     MockitoAnnotations.openMocks(this).close();
   }
 
-  @Test
   public void closed() throws IOException {
     when(cache.isClosed()).thenReturn(true);
     var listener = Mockito.mock(CacheEntryListener.class);
@@ -60,7 +58,6 @@ public final class EventTypeAwareListenerTest {
     }
   }
 
-  @Test(dataProvider = "exceptions")
   public void created_failure(Throwable error) throws IOException {
     var listener = Mockito.mock(CacheEntryCreatedListener.class, answer -> { throw error; });
     try (var forwarder = new EventTypeAwareListener<>(listener)) {
@@ -70,7 +67,6 @@ public final class EventTypeAwareListenerTest {
     verify(listener).onCreated(anyIterable());
   }
 
-  @Test(dataProvider = "exceptions")
   public void updated_failure(Throwable error) throws IOException {
     var listener = Mockito.mock(CacheEntryUpdatedListener.class, answer -> { throw error; });
     try (var forwarder = new EventTypeAwareListener<>(listener)) {
@@ -80,7 +76,6 @@ public final class EventTypeAwareListenerTest {
     verify(listener).onUpdated(anyIterable());
   }
 
-  @Test(dataProvider = "exceptions")
   public void removed_failure(Throwable error) throws IOException {
     var listener = Mockito.mock(CacheEntryRemovedListener.class, answer -> { throw error; });
     try (var forwarder = new EventTypeAwareListener<>(listener)) {
@@ -90,7 +85,6 @@ public final class EventTypeAwareListenerTest {
     verify(listener).onRemoved(anyIterable());
   }
 
-  @Test(dataProvider = "exceptions")
   public void expired_failure(Throwable error) throws IOException {
     var listener = Mockito.mock(CacheEntryExpiredListener.class, answer -> { throw error; });
     try (var forwarder = new EventTypeAwareListener<>(listener)) {
@@ -100,7 +94,6 @@ public final class EventTypeAwareListenerTest {
     verify(listener).onExpired(anyIterable());
   }
 
-  @DataProvider(name = "exceptions")
   public Object[] providesExceptions() {
     return new Object[] { new Exception(), new Throwable() };
   }

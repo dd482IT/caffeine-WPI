@@ -36,11 +36,8 @@ import com.google.common.cache.LoadingCache;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@RunWith(PaxExam.class)
-@ExamReactorStrategy(PerMethod.class)
 public final class OSGiTest {
 
-  @Configuration
   public Option[] config() {
     return options(
         junitBundles(),
@@ -50,7 +47,6 @@ public final class OSGiTest {
         mavenBundle("com.google.guava", "guava", System.getProperty("guava.osgi.version")));
   }
 
-  @Test
   public void sanity() {
     CacheLoader<Integer, Integer> loader = new CacheLoader<Integer, Integer>() {
       @Override public Integer load(Integer key) {

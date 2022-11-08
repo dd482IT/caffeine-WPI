@@ -42,7 +42,7 @@ enum DisabledStatsCounter implements StatsCounter {
   public void recordLoadFailure(long loadTime) {}
 
   @Override
-  public void recordEviction(@NonNegative int weight, RemovalCause cause) {
+  public void recordEviction(int weight, RemovalCause cause) {
     requireNonNull(cause);
   }
 

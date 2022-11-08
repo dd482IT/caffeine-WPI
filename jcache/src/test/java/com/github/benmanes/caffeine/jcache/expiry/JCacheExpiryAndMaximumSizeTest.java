@@ -44,7 +44,6 @@ import com.google.common.util.concurrent.MoreExecutors;
  *
  * @author github.com/kdombeck (Ken Dombeck)
  */
-@Test(singleThreaded = true)
 @SuppressWarnings("unchecked")
 public class JCacheExpiryAndMaximumSizeTest extends AbstractJCacheTest {
   private static final long ONE_MINUTE = TimeUnit.MINUTES.toNanos(1);
@@ -53,7 +52,6 @@ public class JCacheExpiryAndMaximumSizeTest extends AbstractJCacheTest {
   private final Expiry<Integer, Integer> expiry = Mockito.mock(Expiry.class);
   private final AtomicInteger removed = new AtomicInteger();
 
-  @BeforeMethod
   public void setup() {
     Mockito.reset(expiry);
     when(expiry.expireAfterCreate(anyInt(), anyInt(), anyLong())).thenReturn(ONE_MINUTE);
@@ -79,7 +77,6 @@ public class JCacheExpiryAndMaximumSizeTest extends AbstractJCacheTest {
     return configuration;
   }
 
-  @Test
   public void expiry() {
     jcache.put(KEY_1, VALUE_1);
     verify(expiry).expireAfterCreate(anyInt(), anyInt(), anyLong());
@@ -91,7 +88,6 @@ public class JCacheExpiryAndMaximumSizeTest extends AbstractJCacheTest {
     verify(expiry).expireAfterRead(anyInt(), anyInt(), anyLong(), anyLong());
   }
 
-  @Test
   public void size() {
     for (int i = 0; i < 2 * MAXIMUM; i++) {
       jcache.put(i, i);

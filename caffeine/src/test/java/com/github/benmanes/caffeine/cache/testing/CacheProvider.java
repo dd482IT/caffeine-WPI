@@ -54,7 +54,6 @@ public final class CacheProvider {
   }
 
   /** Returns the lazily generated test parameters. */
-  @DataProvider(name = "caches")
   public static Iterator<Object[]> providesCaches(Method testMethod) {
     return new CacheProvider(testMethod).getTestCases();
   }

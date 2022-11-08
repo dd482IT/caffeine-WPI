@@ -37,7 +37,6 @@ import com.typesafe.config.Config;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "product.Cache2k", characteristics = WEIGHTED)
 public final class Cache2kPolicy implements Policy {
   private static final Logger logger = Logger.getLogger("org.cache2k");
 

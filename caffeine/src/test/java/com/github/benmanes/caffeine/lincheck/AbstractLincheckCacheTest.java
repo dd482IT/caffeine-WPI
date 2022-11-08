@@ -38,8 +38,6 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
  * @author afedorov2602@gmail.com (Alexander Fedorov)
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Param(name = "key", gen = IntGen.class, conf = "1:5")
-@Param(name = "value", gen = IntGen.class, conf = "1:10")
 public abstract class AbstractLincheckCacheTest extends VerifierState {
   private final LoadingCache<Integer, Integer> cache;
 
@@ -59,7 +57,6 @@ public abstract class AbstractLincheckCacheTest extends VerifierState {
    *   <li>--add-exports java.base/jdk.internal.util=ALL-UNNAMED
    * </ul>
    */
-  @Test(groups = "lincheck")
   public void modelCheckingTest() {
     var options = new ModelCheckingOptions()
         .iterations(100)                 // the number of different scenarios
@@ -68,7 +65,6 @@ public abstract class AbstractLincheckCacheTest extends VerifierState {
   }
 
   /** This test checks linearizability with stress testing. */
-  @Test(groups = "lincheck")
   public void stressTest() {
     var options = new StressOptions()
         .iterations(100)                  // the number of different scenarios
@@ -90,101 +86,83 @@ public abstract class AbstractLincheckCacheTest extends VerifierState {
 
   /* --------------- Cache --------------- */
 
-  @Operation
-  public Integer getIfPresent(@Param(name = "key") int key) {
+  public Integer getIfPresent(int key) {
     return cache.getIfPresent(key);
   }
 
-  @Operation
-  public Integer get_function(@Param(name = "key") int key, @Param(name = "value") int nextValue) {
+  public Integer get_function(int key, int nextValue) {
     return cache.get(key, k -> nextValue);
   }
 
-  @Operation
-  public void put(@Param(name = "key") int key, @Param(name = "value") int value) {
+  public void put(int key, int value) {
     cache.put(key, value);
   }
 
-  @Operation
-  public void invalidate(@Param(name = "key") int key) {
+  public void invalidate(int key) {
     cache.invalidate(key);
   }
 
   /* --------------- LoadingCache --------------- */
 
-  @Operation
-  public Integer get(@Param(name = "key") int key) {
+  public Integer get(int key) {
     return cache.get(key);
   }
 
   /* --------------- Concurrent Map --------------- */
 
-  @Operation
-  public boolean containsKey(@Param(name = "key") int key) {
+  public boolean containsKey(int key) {
     return cache.asMap().containsKey(key);
   }
 
-  @Operation
-  public boolean containsValue(@Param(name = "value") int value) {
+  public boolean containsValue(int value) {
     return cache.asMap().containsValue(value);
   }
 
-  @Operation
-  public Integer get_asMap(@Param(name = "key") int key) {
+  public Integer get_asMap(int key) {
     return cache.asMap().get(key);
   }
 
-  @Operation
-  public Integer put_asMap(@Param(name = "key") int key, @Param(name = "value") int value) {
+  public Integer put_asMap(int key, int value) {
     return cache.asMap().put(key, value);
   }
 
-  @Operation
-  public Integer putIfAbsent(@Param(name = "key") int key, @Param(name = "value") int value) {
+  public Integer putIfAbsent(int key, int value) {
     return cache.asMap().putIfAbsent(key, value);
   }
 
-  @Operation
-  public Integer replace(@Param(name = "key") int key, @Param(name = "value") int nextValue) {
+  public Integer replace(int key, int nextValue) {
     return cache.asMap().replace(key, nextValue);
   }
 
-  @Operation
-  public boolean replaceConditionally(@Param(name = "key") int key,
-      @Param(name = "value") int previousValue, @Param(name = "value") int nextValue) {
+  public boolean replaceConditionally(int key,
+      int previousValue, int nextValue) {
     return cache.asMap().replace(key, previousValue, nextValue);
   }
 
-  @Operation
-  public Integer remove(@Param(name = "key") int key) {
+  public Integer remove(int key) {
     return cache.asMap().remove(key);
   }
 
-  @Operation
-  public boolean removeConditionally(@Param(name = "key") int key,
-      @Param(name = "value") int previousValue) {
+  public boolean removeConditionally(int key,
+      int previousValue) {
     return cache.asMap().remove(key, previousValue);
   }
 
-  @Operation
-  public Integer computeIfAbsent(@Param(name = "key") int key,
-      @Param(name = "value") int nextValue) {
+  public Integer computeIfAbsent(int key,
+      int nextValue) {
     return cache.asMap().computeIfAbsent(key, k -> nextValue);
   }
 
-  @Operation
-  public Integer computeIfPresent(@Param(name = "key") int key,
-      @Param(name = "value") int nextValue) {
+  public Integer computeIfPresent(int key,
+      int nextValue) {
     return cache.asMap().computeIfPresent(key, (k, v) -> nextValue);
   }
 
-  @Operation
-  public Integer compute(@Param(name = "key") int key, @Param(name = "value") int nextValue) {
+  public Integer compute(int key, int nextValue) {
     return cache.asMap().compute(key, (k, v) -> nextValue);
   }
 
-  @Operation
-  public Integer merge(@Param(name = "key") int key, @Param(name = "value") int nextValue) {
+  public Integer merge(int key, int nextValue) {
     return cache.asMap().merge(key, nextValue, (k, v) -> v + nextValue);
   }
 }

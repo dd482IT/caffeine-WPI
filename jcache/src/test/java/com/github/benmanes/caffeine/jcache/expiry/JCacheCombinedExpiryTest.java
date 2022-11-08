@@ -36,7 +36,6 @@ import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   @Override
@@ -52,7 +51,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- containsKey --------------- */
 
-  @Test
   public void containsKey_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -63,7 +61,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- get --------------- */
 
-  @Test
   public void get_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -72,7 +69,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
     assertThat(getExpirable(jcache, KEY_1)).isNull();
   }
 
-  @Test
   public void get_expired_loading() {
     jcacheLoading.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -82,7 +78,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- getAll --------------- */
 
-  @Test
   public void getAll_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -93,7 +88,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- put --------------- */
 
-  @Test
   public void put_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -105,7 +99,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- putIfAbsent --------------- */
 
-  @Test
   public void putIfAbsent_expired() {
     jcache.putIfAbsent(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -118,7 +111,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- remove --------------- */
 
-  @Test
   public void remove_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -127,7 +119,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
     assertThat(getExpirable(jcache, KEY_1)).isNull();
   }
 
-  @Test
   public void removeConditionally_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -138,7 +129,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- replace --------------- */
 
-  @Test
   public void replac_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -147,7 +137,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
     assertThat(getExpirable(jcache, KEY_1)).isNull();
   }
 
-  @Test
   public void replaceConditionally_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();
@@ -158,7 +147,6 @@ public final class JCacheCombinedExpiryTest extends AbstractJCacheTest {
 
   /* --------------- invoke --------------- */
 
-  @Test
   public void invoke_expired() {
     jcache.put(KEY_1, VALUE_1);
     advancePastExpiry();

@@ -35,7 +35,6 @@ import com.google.errorprone.annotations.Immutable;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Immutable
 public final class Int implements Serializable {
   public static final Int MAX_VALUE = Int.valueOf(Integer.MAX_VALUE);
 

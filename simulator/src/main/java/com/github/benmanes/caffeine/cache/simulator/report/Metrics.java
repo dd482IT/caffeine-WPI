@@ -36,7 +36,6 @@ import com.google.common.base.MoreObjects;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@AutoValue
 public abstract class Metrics {
   public abstract Function<Object, String> objectFormatter();
   public abstract DoubleFunction<String> percentFormatter();
@@ -80,7 +79,6 @@ public abstract class Metrics {
         .longFormatter(value -> (value == 0) ? "" : Long.toString(value));
   }
 
-  @AutoValue.Builder
   public abstract static class Builder {
     public abstract Builder objectFormatter(Function<Object, String> objectFormatter);
     public abstract Builder percentFormatter(DoubleFunction<String> percentFormatter);

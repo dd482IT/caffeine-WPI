@@ -43,7 +43,6 @@ import picocli.CommandLine.Option;
  * @author ben.manes@gmail.com (Ben Manes)
  */
 @SuppressWarnings("PMD.ImmutableField")
-@Command(mixinStandardHelpOptions = true)
 public final class CombinedCsvReport implements Runnable {
   @Option(names = "--inputFiles", required = true, split = ",",
       description = "The maximumSize to the csv file path")

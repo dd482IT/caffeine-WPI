@@ -34,18 +34,14 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@RunWith(PaxExam.class)
-@ExamReactorStrategy(PerMethod.class)
 public final class OSGiTest {
 
-  @Configuration
   public Option[] config() {
     return options(
         junitBundles(),
         bundle("file:" + System.getProperty("caffeine.osgi.jar")));
   }
 
-  @Test
   public void sanity() {
     LoadingCache<Integer, Integer> cache = Caffeine.newBuilder().build(k -> -k);
     assertEquals(-1, cache.get(1).intValue());

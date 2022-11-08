@@ -77,7 +77,7 @@ public final class CacheManagerImpl implements CacheManager {
   }
 
   @Override
-  public @Nullable ClassLoader getClassLoader() {
+  public ClassLoader getClassLoader() {
     return classLoaderReference.get();
   }
 
@@ -118,7 +118,7 @@ public final class CacheManagerImpl implements CacheManager {
   }
 
   @Override
-  public @Nullable <K, V> Cache<K, V> getCache(
+  public <K, V> Cache<K, V> getCache(
       String cacheName, Class<K> keyType, Class<V> valueType) {
     ClassLoader old = Thread.currentThread().getContextClassLoader();
     try {

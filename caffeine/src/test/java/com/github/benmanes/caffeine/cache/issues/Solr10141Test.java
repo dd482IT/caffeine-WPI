@@ -39,7 +39,6 @@ import com.github.benmanes.caffeine.testing.ConcurrentTestHarness;
  * @author yseeley@gmail.com (Yonik Seeley)
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(groups = "isolated")
 public final class Solr10141Test {
   static final int blocksInTest = 400;
   static final int maxEntries = blocksInTest / 2;
@@ -56,7 +55,6 @@ public final class Solr10141Test {
 
   final Random rnd = new Random();
 
-  @Test
   public void eviction() {
     var hits = new AtomicLong();
     var inserts = new AtomicLong();
@@ -135,7 +133,6 @@ public final class Solr10141Test {
     assertThat(failed.get()).isFalse();
   }
 
-  @Test
   public void clear() {
     var inserts = new AtomicLong();
     var removals = new AtomicLong();

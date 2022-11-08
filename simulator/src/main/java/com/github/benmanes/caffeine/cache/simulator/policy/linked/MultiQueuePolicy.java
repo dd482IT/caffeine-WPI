@@ -48,7 +48,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectSortedMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "linked.MultiQueue")
 public final class MultiQueuePolicy implements KeyOnlyPolicy {
   private final Long2ObjectSortedMap<Node> out;
   private final Long2ObjectMap<Node> data;

@@ -59,7 +59,6 @@ public interface CacheLoader<K, V> extends AsyncCacheLoader<K, V> {
    *         treated like any other {@code Exception} in all respects except that, when it is
    *         caught, the thread's interrupt status is set
    */
-  @Nullable
   V load(K key) throws Exception;
 
   /**
@@ -167,7 +166,7 @@ public interface CacheLoader<K, V> extends AsyncCacheLoader<K, V> {
    *         treated like any other {@code Exception} in all respects except that, when it is
    *         caught, the thread's interrupt status is set
    */
-  default @Nullable V reload(K key, V oldValue) throws Exception {
+  default V reload(K key, V oldValue) throws Exception {
     return load(key);
   }
 
@@ -221,13 +220,12 @@ public interface CacheLoader<K, V> extends AsyncCacheLoader<K, V> {
    * @return a cache loader that delegates to the supplied {@code mappingFunction}
    * @throws NullPointerException if the mappingFunction is null
    */
-  @CheckReturnValue
   @SuppressWarnings("FunctionalInterfaceClash")
   static <K, V> CacheLoader<K, V> bulk(Function<? super Set<? extends K>,
       ? extends Map<? extends K, ? extends V>> mappingFunction) {
     requireNonNull(mappingFunction);
     return new CacheLoader<K, V>() {
-      @Override public @Nullable V load(K key) {
+      @Override public V load(K key) {
         return loadAll(Set.of(key)).get(key);
       }
       @Override public Map<? extends K, ? extends V> loadAll(Set<? extends K> keys) {

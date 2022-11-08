@@ -48,7 +48,6 @@ public class MembershipTest {
 
   static final boolean display = false;
 
-  @Test(dataProvider = "filterTypes")
   public void bloomFilterTest(FilterType filterType) {
     List<Integer> capacities = new ArrayList<>(ImmutableList.of(0, 1));
     for (int capacity = 2 << 10; capacity < (2 << 22); capacity <<= 2) {
@@ -77,19 +76,16 @@ public class MembershipTest {
     }
   }
 
-  @Test(dataProvider = "ensureCapacity")
   public void caffeine_ensureCapacity(int expectedInsertions, double fpp) {
     BloomFilter filter = new BloomFilter();
     filter.ensureCapacity(expectedInsertions, fpp);
     filter.put(-1);
   }
 
-  @DataProvider(name = "ensureCapacity")
   public Iterator<Object[]> providesExpectedInsertions() {
     return IntStream.range(0,  25).boxed().map(i -> new Object[] { i, FPP }).iterator();
   }
 
-  @DataProvider(name = "filterTypes")
   public Object[] providesFilterTypes() {
     return FilterType.values();
   }

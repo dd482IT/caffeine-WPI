@@ -25,14 +25,12 @@ import org.testng.annotations.Test;
  */
 public final class CacheStatsTest {
 
-  @Test(dataProvider = "badArgs", expectedExceptions = IllegalArgumentException.class)
   public void invalid(int hitCount, int missCount, int loadSuccessCount, int loadFailureCount,
       int totalLoadTime, int evictionCount, int evictionWeight) {
     CacheStats.of(hitCount, missCount, loadSuccessCount,
         loadFailureCount, totalLoadTime, evictionCount, evictionWeight);
   }
 
-  @Test
   public void empty() {
     var stats = CacheStats.of(0, 0, 0, 0, 0, 0, 0);
     checkStats(stats, 0, 0, 1.0, 0, 0.0, 0, 0, 0.0, 0, 0, 0.0, 0, 0);
@@ -45,7 +43,6 @@ public final class CacheStatsTest {
     assertThat(stats.toString()).isEqualTo(CacheStats.empty().toString());
   }
 
-  @Test
   public void populated() {
     var stats = CacheStats.of(11, 13, 17, 19, 23, 27, 54);
     checkStats(stats, 24, 11, 11.0/24, 13, 13.0/24,
@@ -62,7 +59,6 @@ public final class CacheStatsTest {
     assertThat(stats.toString()).isEqualTo(expected.toString());
   }
 
-  @Test
   public void minus() {
     var one = CacheStats.of(11, 13, 17, 19, 23, 27, 54);
     var two = CacheStats.of(53, 47, 43, 41, 37, 31, 62);
@@ -73,7 +69,6 @@ public final class CacheStatsTest {
     assertThat(one.minus(two)).isEqualTo(CacheStats.empty());
   }
 
-  @Test
   public void plus() {
     var one = CacheStats.of(11, 13, 15, 13, 11, 9, 18);
     var two = CacheStats.of(53, 47, 41, 39, 37, 35, 70);
@@ -85,7 +80,6 @@ public final class CacheStatsTest {
     assertThat(sum).isEqualTo(one.plus(two));
   }
 
-  @Test
   public void overflow() {
     var max = CacheStats.of(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE,
         Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE);
@@ -94,7 +88,6 @@ public final class CacheStatsTest {
         Long.MAX_VALUE, Long.MAX_VALUE);
   }
 
-  @Test
   public void underflow() {
     var max = CacheStats.of(Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE,
         Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE, Long.MAX_VALUE);
@@ -120,7 +113,6 @@ public final class CacheStatsTest {
     assertThat(stats.evictionWeight()).isEqualTo(evictionWeight);
   }
 
-  @DataProvider(name = "badArgs")
   public Object[][] providesBadArgs() {
     return new Object[][] {
         { -1,  0,  0,  0,  0,  0,  0, },

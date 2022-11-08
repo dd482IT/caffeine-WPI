@@ -35,7 +35,6 @@ import com.google.errorprone.annotations.concurrent.GuardedBy;
 abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K, V>> {
 
   /** Return the key or {@code null} if it has been reclaimed by the garbage collector. */
-  @Nullable
   public abstract K getKey();
 
   /**
@@ -45,7 +44,6 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
   public abstract Object getKeyReference();
 
   /** Return the value or {@code null} if it has been reclaimed by the garbage collector. */
-  @Nullable
   public abstract V getValue();
 
   /**
@@ -55,8 +53,7 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
   public abstract Object getValueReference();
 
   /** Sets the value, which may be held strongly, weakly, or softly. */
-  @GuardedBy("this")
-  public abstract void setValue(V value, @Nullable ReferenceQueue<V> referenceQueue);
+  public abstract void setValue(V value, ReferenceQueue<V> referenceQueue);
 
   /**
    * Returns {@code true} if the given objects are considered equivalent. A strongly held value is
@@ -65,18 +62,14 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
   public abstract boolean containsValue(Object value);
 
   /** Returns the weight of this entry from the entry's perspective. */
-  @NonNegative
-  @GuardedBy("this")
   public int getWeight() {
     return 1;
   }
 
   /** Sets the weight from the entry's perspective. */
-  @GuardedBy("this")
-  public void setWeight(@NonNegative int weight) {}
+  public void setWeight(int weight) {}
 
   /** Returns the weight of this entry from the policy's perspective. */
-  @NonNegative
   // @GuardedBy("evictionLock")
   public int getPolicyWeight() {
     return 1;
@@ -84,7 +77,7 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
 
   /** Sets the weight from the policy's perspective. */
   // @GuardedBy("evictionLock")
-  public void setPolicyWeight(@NonNegative int weight) {}
+  public void setPolicyWeight(int weight) {}
 
   /* --------------- Health --------------- */
 
@@ -95,19 +88,15 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
    * If the entry was removed from the hash-table and is awaiting removal from the page
    * replacement policy.
    */
-  @GuardedBy("this")
   public abstract boolean isRetired();
 
   /** If the entry was removed from the hash-table and the page replacement policy. */
-  @GuardedBy("this")
   public abstract boolean isDead();
 
   /** Sets the node to the <tt>retired</tt> state. */
-  @GuardedBy("this")
   public abstract void retire();
 
   /** Sets the node to the <tt>dead</tt> state. */
-  @GuardedBy("this")
   public abstract void die();
 
   /* --------------- Variable order --------------- */
@@ -137,7 +126,7 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
   }
 
   // @GuardedBy("evictionLock")
-  public void setPreviousInVariableOrder(@Nullable Node<K, V> prev) {
+  public void setPreviousInVariableOrder(Node<K, V> prev) {
     throw new UnsupportedOperationException();
   }
 
@@ -147,7 +136,7 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
   }
 
   // @GuardedBy("evictionLock")
-  public void setNextInVariableOrder(@Nullable Node<K, V> prev) {
+  public void setNextInVariableOrder(Node<K, V> prev) {
     throw new UnsupportedOperationException();
   }
 
@@ -210,25 +199,25 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
 
   @Override
   // @GuardedBy("evictionLock")
-  public @Nullable Node<K, V> getPreviousInAccessOrder() {
+  public Node<K, V> getPreviousInAccessOrder() {
     return null;
   }
 
   @Override
   // @GuardedBy("evictionLock")
-  public void setPreviousInAccessOrder(@Nullable Node<K, V> prev) {
+  public void setPreviousInAccessOrder(Node<K, V> prev) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   // @GuardedBy("evictionLock")
-  public @Nullable Node<K, V> getNextInAccessOrder() {
+  public Node<K, V> getNextInAccessOrder() {
     return null;
   }
 
   @Override
   // @GuardedBy("evictionLock")
-  public void setNextInAccessOrder(@Nullable Node<K, V> next) {
+  public void setNextInAccessOrder(Node<K, V> next) {
     throw new UnsupportedOperationException();
   }
 
@@ -255,25 +244,25 @@ abstract class Node<K, V> implements AccessOrder<Node<K, V>>, WriteOrder<Node<K,
 
   @Override
   // @GuardedBy("evictionLock")
-  public @Nullable Node<K, V> getPreviousInWriteOrder() {
+  public Node<K, V> getPreviousInWriteOrder() {
     return null;
   }
 
   @Override
   // @GuardedBy("evictionLock")
-  public void setPreviousInWriteOrder(@Nullable Node<K, V> prev) {
+  public void setPreviousInWriteOrder(Node<K, V> prev) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   // @GuardedBy("evictionLock")
-  public @Nullable Node<K, V> getNextInWriteOrder() {
+  public Node<K, V> getNextInWriteOrder() {
     return null;
   }
 
   @Override
   // @GuardedBy("evictionLock")
-  public void setNextInWriteOrder(@Nullable Node<K, V> next) {
+  public void setNextInWriteOrder(Node<K, V> next) {
     throw new UnsupportedOperationException();
   }
 

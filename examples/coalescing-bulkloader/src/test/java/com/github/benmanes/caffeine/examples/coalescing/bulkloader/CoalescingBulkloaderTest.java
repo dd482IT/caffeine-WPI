@@ -45,7 +45,6 @@ import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 
-@RunWith(Parameterized.class)
 public final class CoalescingBulkloaderTest {
 
   private final Function<
@@ -63,7 +62,6 @@ public final class CoalescingBulkloaderTest {
   private static final int delta = 20;
   private static final int actualLoadTime = 50;
 
-  @Parameters
   public static List<
           Function<
               Function<Stream<Integer>, Stream<Integer>>, CoalescingBulkloader<Integer, Integer>>>
@@ -105,7 +103,6 @@ public final class CoalescingBulkloaderTest {
                 }));
   }
 
-  @Test
   public void maxDelayIsNotMissedTooMuch() throws InterruptedException {
     AtomicInteger loaderCalled = new AtomicInteger(0);
     final AsyncLoadingCache<Integer, Integer> cache = createCache(loaderCalled);
@@ -122,7 +119,6 @@ public final class CoalescingBulkloaderTest {
     assertThat(result.getNow(0), is(1));
   }
 
-  @Test
   public void whenEnoughKeysAreRequestedTheLoadWillHappenImmediately() throws InterruptedException {
     AtomicInteger loaderCalled = new AtomicInteger(0);
     final AsyncLoadingCache<Integer, Integer> cache = createCache(loaderCalled);
@@ -160,7 +156,6 @@ public final class CoalescingBulkloaderTest {
     }
   }
 
-  @Rule
   // Because the jvm may have to warm up or whatever other influences, timing may be off, causing
   // these tests to fail.
   // So retry a couple of times.

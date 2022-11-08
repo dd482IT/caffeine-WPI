@@ -45,7 +45,6 @@ final class References {
      * @return The object to which this reference refers, or {@code null} if this reference object
      *         has been cleared
      */
-    @Nullable
     E get();
 
     /**
@@ -64,7 +63,7 @@ final class References {
      * @param object the reference object with which to compare
      * @return {@code true} if this object is the same as the argument; {@code false} otherwise
      */
-    default boolean referenceEquals(@Nullable Object object) {
+    default boolean referenceEquals(Object object) {
       if (object == this) {
         return true;
       } else if (object instanceof InternalReference<?>) {
@@ -183,7 +182,7 @@ final class References {
   static class WeakKeyReference<K> extends WeakReference<K> implements InternalReference<K> {
     private final int hashCode;
 
-    public WeakKeyReference(@Nullable K key, @Nullable ReferenceQueue<K> queue) {
+    public WeakKeyReference(K key, ReferenceQueue<K> queue) {
       super(key, queue);
       hashCode = System.identityHashCode(key);
     }
@@ -219,7 +218,7 @@ final class References {
       extends WeakReference<K> implements InternalReference<K> {
     private final int hashCode;
 
-    public WeakKeyEqualsReference(K key, @Nullable ReferenceQueue<K> queue) {
+    public WeakKeyEqualsReference(K key, ReferenceQueue<K> queue) {
       super(key, queue);
       hashCode = key.hashCode();
     }
@@ -256,7 +255,7 @@ final class References {
     private Object keyReference;
 
     public WeakValueReference(Object keyReference,
-        @Nullable V value, @Nullable ReferenceQueue<V> queue) {
+        V value, ReferenceQueue<V> queue) {
       super(value, queue);
       this.keyReference = keyReference;
     }
@@ -297,7 +296,7 @@ final class References {
     private Object keyReference;
 
     public SoftValueReference(Object keyReference,
-        @Nullable V value, @Nullable ReferenceQueue<V> queue) {
+        V value, ReferenceQueue<V> queue) {
       super(value, queue);
       this.keyReference = keyReference;
     }

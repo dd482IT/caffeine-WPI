@@ -55,12 +55,10 @@ public abstract class QueueSanityTest {
     this.isBounded = isBounded;
   }
 
-  @Before
   public void clear() {
     queue.clear();
   }
 
-  @Test
   public void sanity() {
     for (int i = 0; i < SIZE; i++) {
       assertNull(queue.poll());
@@ -99,7 +97,6 @@ public abstract class QueueSanityTest {
     assertThat(queue, emptyAndZeroSize());
   }
 
-  @Test
   public void testSizeIsTheNumberOfOffers() {
     int currentSize = 0;
     while (currentSize < SIZE && queue.offer(currentSize)) {
@@ -108,7 +105,6 @@ public abstract class QueueSanityTest {
     }
   }
 
-  @Test
   public void whenFirstInThenFirstOut() {
     assumeThat(ordering, is(Ordering.FIFO));
 
@@ -135,12 +131,10 @@ public abstract class QueueSanityTest {
     assertThat(i, is(size));
   }
 
-  @Test(expected = NullPointerException.class)
   public void offerNullResultsInNPE() {
     queue.offer(null);
   }
 
-  @Test
   public void whenOfferItemAndPollItemThenSameInstanceReturnedAndQueueIsEmpty() {
     assertThat(queue, emptyAndZeroSize());
 
@@ -158,7 +152,6 @@ public abstract class QueueSanityTest {
     assertThat(queue, emptyAndZeroSize());
   }
 
-  @Test
   public void testPowerOf2Capacity() {
     assumeThat(isBounded, is(true));
     int n = Pow2.roundToPowerOfTwo(capacity);
@@ -173,7 +166,6 @@ public abstract class QueueSanityTest {
     public int value;
   }
 
-  @Test
   @SuppressWarnings({"rawtypes", "unchecked"})
   public void testHappensBefore() throws InterruptedException {
     final AtomicBoolean stop = new AtomicBoolean();
@@ -219,7 +211,6 @@ public abstract class QueueSanityTest {
 
   }
 
-  @Test
   public void testSize() throws InterruptedException {
     final AtomicBoolean stop = new AtomicBoolean();
     final Queue<Integer> q = queue;
@@ -255,7 +246,6 @@ public abstract class QueueSanityTest {
 
   }
 
-  @Test
   public void testPollAfterIsEmpty() throws InterruptedException {
     final AtomicBoolean stop = new AtomicBoolean();
     final Queue<Integer> q = queue;

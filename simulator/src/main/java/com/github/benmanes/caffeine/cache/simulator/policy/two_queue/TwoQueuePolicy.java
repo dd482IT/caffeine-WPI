@@ -38,7 +38,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "two-queue.TwoQueue")
 public final class TwoQueuePolicy implements KeyOnlyPolicy {
   static final Node UNLINKED = new Node();
 

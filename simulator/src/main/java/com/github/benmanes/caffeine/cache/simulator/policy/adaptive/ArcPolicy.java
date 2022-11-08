@@ -44,7 +44,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "adaptive.Arc")
 public final class ArcPolicy implements KeyOnlyPolicy {
   // In Cache:
   // - T1: Pages that have been accessed at least once

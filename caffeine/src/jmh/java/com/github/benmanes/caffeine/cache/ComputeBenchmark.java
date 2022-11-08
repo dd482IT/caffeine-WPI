@@ -37,7 +37,6 @@ import site.ycsb.generator.ScrambledZipfianGenerator;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 @SuppressWarnings({"LexicographicalAnnotationAttributeListing", "PMD.MethodNamingConventions"})
 public class ComputeBenchmark {
   static final int SIZE = (2 << 14);
@@ -47,13 +46,11 @@ public class ComputeBenchmark {
   static final Function<Integer, Boolean> mappingFunction = any -> Boolean.TRUE;
   static final CacheLoader<Integer, Boolean> cacheLoader = CacheLoader.from(key -> Boolean.TRUE);
 
-  @Param({"ConcurrentHashMap", "Caffeine", "Guava"})
   String computeType;
 
   Function<Integer, Boolean> benchmarkFunction;
   Integer[] ints;
 
-  @State(Scope.Thread)
   public static class ThreadState {
     static final Random random = new Random();
     int index = random.nextInt();
@@ -67,7 +64,6 @@ public class ComputeBenchmark {
     }
   }
 
-  @Setup
   @SuppressWarnings("ReturnValueIgnored")
   public void setup() {
     if (computeType.equals("ConcurrentHashMap")) {
@@ -82,12 +78,10 @@ public class ComputeBenchmark {
     Arrays.stream(ints).forEach(benchmarkFunction::apply);
   }
 
-  @Benchmark @Threads(32)
   public Boolean compute_sameKey(ThreadState threadState) {
     return benchmarkFunction.apply(COMPUTE_KEY);
   }
 
-  @Benchmark @Threads(32)
   public Boolean compute_spread(ThreadState threadState) {
     return benchmarkFunction.apply(ints[threadState.index++ & MASK]);
   }

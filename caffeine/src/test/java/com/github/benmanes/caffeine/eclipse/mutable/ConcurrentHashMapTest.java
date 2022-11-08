@@ -88,7 +88,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     return added[0] ? null : newValue;
   }
 
-  @Test
   public void doubleReverseTest() {
     FastList<String> source = FastList.newListWith("1", "2", "3");
     MutableList<String> expectedDoubleReverse =
@@ -112,14 +111,12 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Assert.assertEquals(FastList.newListWith("1", "12", "123"), expectedNormal);
   }
 
-  @Test
   public void putIfAbsent() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertEquals(Integer.valueOf(1), map.putIfAbsent(1, 1));
     Assert.assertNull(map.putIfAbsent(3, 3));
   }
 
-  @Test
   public void replace() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertEquals(Integer.valueOf(1), map.replace(1, 7));
@@ -127,7 +124,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Assert.assertNull(map.replace(3, 3));
   }
 
-  @Test
   public void entrySetContains() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", Integer.valueOf(1), "Two",
         Integer.valueOf(2), "Three", Integer.valueOf(3));
@@ -136,7 +132,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Assert.assertTrue(map.entrySet().contains(ImmutableEntry.of("One", Integer.valueOf(1))));
   }
 
-  @Test
   public void entrySetRemove() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", Integer.valueOf(1), "Two",
         Integer.valueOf(2), "Three", Integer.valueOf(3));
@@ -145,7 +140,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Assert.assertTrue(map.entrySet().remove(ImmutableEntry.of("One", Integer.valueOf(1))));
   }
 
-  @Test
   public void replaceWithOldValue() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertTrue(map.replace(1, 1, 7));
@@ -153,7 +147,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Assert.assertFalse(map.replace(2, 3, 3));
   }
 
-  @Test
   public void removeWithKeyValue() {
     ConcurrentMutableMap<Integer, Integer> map = newMapWithKeysValues(1, 1, 2, 2);
     Assert.assertTrue(map.remove(1, 1));
@@ -161,7 +154,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
   }
 
   @Override
-  @Test
   public void removeFromEntrySet() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", 1, "Two", 2, "Three", 3);
     Assert.assertTrue(map.entrySet().remove(ImmutableEntry.of("Two", 2)));
@@ -172,7 +164,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
   }
 
   @Override
-  @Test
   public void removeAllFromEntrySet() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", 1, "Two", 2, "Three", 3);
     Assert.assertTrue(map.entrySet().removeAll(
@@ -185,13 +176,11 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
   }
 
   @Override
-  @Test
   public void keySetEqualsAndHashCode() {
     MutableMap<String, Integer> map = newMapWithKeysValues("One", 1, "Two", 2, "Three", 3);
     Verify.assertEqualsAndHashCode(UnifiedSet.newSetWith("One", "Two", "Three"), map.keySet());
   }
 
-  @Test
   public void equalsEdgeCases() {
     Assert.assertNotEquals(newMap().withKeyValue(1, 1), newMap());
     Assert.assertNotEquals(newMap().withKeyValue(1, 1),
@@ -199,7 +188,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
   }
 
   @Override
-  @Test
   public void partition_value() {
     MapIterable<String, Integer> map = newMapWithKeysValues("A", 1, "B", 2, "C", 3, "D", 4);
     PartitionIterable<Integer> partition = map.partition(IntegerPredicates.isEven());
@@ -208,7 +196,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
   }
 
   @Override
-  @Test
   public void partitionWith_value() {
     MapIterable<String, Integer> map = newMapWithKeysValues("A", 1, "B", 2, "C", 3, "D", 4);
     PartitionIterable<Integer> partition =
@@ -218,12 +205,10 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
   }
 
   @Override
-  @Test
   public void withMapNull() {
     Assert.assertThrows(NullPointerException.class, () -> newMap().withMap(null));
   }
 
-  @Test
   public void parallelGroupByIntoConcurrentHashMap() {
     MutableMap<Integer, MutableBag<Integer>> actual = newMap();
     ParallelIterate.forEach(
@@ -233,7 +218,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Verify.assertEqualsAndHashCode(SMALL_BAG_MUTABLE_MAP, actual);
   }
 
-  @Test
   public void concurrentPutGetPutAllRemoveContainsKeyContainsValueGetIfAbsentPutTest() {
     ConcurrentMutableMap<Integer, Integer> map1 = newMap();
     ConcurrentMutableMap<Integer, Integer> map2 = newMap();
@@ -262,7 +246,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Verify.assertEqualsAndHashCode(map1, map2);
   }
 
-  @Test
   public void concurrentPutIfAbsentGetIfPresentPutTest() {
     ConcurrentMutableMap<Integer, Integer> map1 = newMap();
     ConcurrentMutableMap<Integer, Integer> map2 = newMap();
@@ -281,7 +264,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Assert.assertEquals(map1, map2);
   }
 
-  @Test
   public void concurrentClear() {
     ConcurrentMutableMap<Integer, Integer> map = newMap();
     ParallelIterate.forEach(Interval.oneTo(100), each -> {
@@ -293,7 +275,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     Verify.assertEmpty(map);
   }
 
-  @Test
   public void concurrentRemoveAndPutIfAbsent() {
     ConcurrentMutableMap<Integer, Integer> map1 = newMap();
     ParallelIterate.forEach(Interval.oneTo(100), each -> {
@@ -319,7 +300,6 @@ public abstract class ConcurrentHashMapTest extends ConcurrentHashMapTestCase {
     }, 1, executor);
   }
 
-  @Test
   public void emptyToString() {
     ConcurrentMutableMap<?, ?> empty = newMap();
     Assert.assertEquals("{}", empty.toString());

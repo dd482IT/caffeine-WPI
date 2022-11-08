@@ -41,7 +41,6 @@ public interface Weigher<K, V> {
    * @param value the value to weigh
    * @return the weight of the entry; must be non-negative
    */
-  @NonNegative
   int weigh(K key, V value);
 
   /**

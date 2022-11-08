@@ -46,7 +46,6 @@ import site.ycsb.generator.ScrambledZipfianGenerator;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Group)
 @SuppressWarnings({"CanonicalAnnotationSyntax", "LexicographicalAnnotationAttributeListing",
     "PMD.JUnit4TestShouldUseAfterAnnotation", "PMD.MethodNamingConventions"})
 public class PutRemoveBenchmark {
@@ -54,26 +53,17 @@ public class PutRemoveBenchmark {
   private static final int MASK = SIZE - 1;
   private static final int ITEMS = SIZE / 3;
 
-  @Param({
-    "Caffeine",
-    "LinkedHashMap_Lru",
-    "ConcurrentHashMap",
-    "ConcurrentLinkedHashMap",
-    "Guava",
-    "Ehcache3",
   })
   CacheType cacheType;
 
   BasicCache<Integer, Boolean> cache;
   Integer[] ints;
 
-  @State(Scope.Thread)
   public static class ThreadState {
     static final Random random = new Random();
     int index = random.nextInt();
   }
 
-  @Setup
   public void setup() {
     ints = new Integer[SIZE];
     cache = cacheType.create(2 * SIZE);
@@ -92,17 +82,14 @@ public class PutRemoveBenchmark {
     }
   }
 
-  @TearDown(Level.Iteration)
   public void tearDown() {
     cache.cleanUp();
   }
 
-  @Benchmark @Group @GroupThreads(4)
   public void put(ThreadState threadState) {
     cache.put(ints[threadState.index++ & MASK], Boolean.TRUE);
   }
 
-  @Benchmark @Group @GroupThreads(4)
   public void remove(ThreadState threadState) {
     cache.remove(ints[threadState.index++ & MASK]);
   }

@@ -66,7 +66,7 @@ public final class WikipediaTraceReader extends TextTraceReader implements KeyOn
    *  <li>A flag to indicate if the request resulted in a database update or not ('-' or 'save')
    * </ul>
    */
-  private @Nullable String parseRequest(String line) {
+  private String parseRequest(String line) {
     if (!isRead(line)) {
       return null;
     }
@@ -132,7 +132,6 @@ public final class WikipediaTraceReader extends TextTraceReader implements KeyOn
     return true;
   }
 
-  @AutoValue
   abstract static class Replacement {
     abstract String search();
     abstract String replace();

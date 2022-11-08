@@ -47,7 +47,6 @@ import org.openjdk.jmh.infra.Blackhole;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class SlotLookupBenchmark {
   static final int SPARSE_SIZE = 2 << 14;
@@ -58,7 +57,6 @@ public class SlotLookupBenchmark {
   long probeOffset;
   long[] array;
 
-  @Setup
   @SuppressWarnings("deprecation")
   public void setupThreadLocal() {
     threadLocal = ThreadLocal.withInitial(() -> {
@@ -70,23 +68,19 @@ public class SlotLookupBenchmark {
     });
   }
 
-  @Setup
   public void setupBinarySearch() {
     array = LongStream.range(0, ARENA_SIZE).toArray();
   }
 
-  @Setup
   public void setupStriped64() {
     probeOffset = UnsafeAccess.fieldOffset(Thread.class, "threadLocalRandomProbe");
   }
 
-  @Benchmark
   public int threadLocal() {
     // Emulates holding the arena slot in a thread-local
     return threadLocal.get();
   }
 
-  @Benchmark
   public int threadIdHash() {
     // Emulates finding the arena slot by hashing the thread id
     @SuppressWarnings("deprecation")
@@ -100,7 +94,6 @@ public class SlotLookupBenchmark {
     return x ^ (x >>> 31);
   }
 
-  @Benchmark
   public int threadHashCode() {
     // Emulates finding the arena slot by the thread's hashCode
     int hash = mix32(Thread.currentThread().hashCode());
@@ -113,7 +106,6 @@ public class SlotLookupBenchmark {
     return (x >>> 16) ^ x;
   }
 
-  @Benchmark
   public long striped64_unsafe(Blackhole blackhole) {
     // Emulates finding the arena slot by reusing the thread-local random seed (j.u.c.a.Striped64)
     int hash = getProbe_unsafe();
@@ -137,7 +129,6 @@ public class SlotLookupBenchmark {
     UnsafeAccess.UNSAFE.putInt(Thread.currentThread(), probeOffset, probe);
   }
 
-  @Benchmark
   public long striped64_varHandle(Blackhole blackhole) {
     // Emulates finding the arena slot by reusing the thread-local random seed (j.u.c.a.Striped64)
     int hash = getProbe_varHandle();

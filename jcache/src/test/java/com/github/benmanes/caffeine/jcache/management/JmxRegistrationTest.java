@@ -39,7 +39,6 @@ import org.testng.annotations.Test;
  */
 public final class JmxRegistrationTest {
 
-  @Test(dataProvider = "registerExceptions", expectedExceptions = CacheException.class)
   public void register_error(Class<? extends Throwable> throwableType) throws JMException {
     var name = new ObjectName("");
     var bean = new JCacheStatisticsMXBean();
@@ -48,7 +47,6 @@ public final class JmxRegistrationTest {
     JmxRegistration.register(server, name, bean);
   }
 
-  @Test(dataProvider = "unegisterExceptions", expectedExceptions = CacheException.class)
   public void unregister_error(Class<? extends Throwable> throwableType) throws JMException {
     var name = new ObjectName("");
     var server = Mockito.mock(MBeanServer.class);
@@ -57,12 +55,10 @@ public final class JmxRegistrationTest {
     JmxRegistration.unregister(server, name);
   }
 
-  @Test(expectedExceptions = CacheException.class)
   public void newObjectName_malformed() {
     JmxRegistration.newObjectName("a=b");
   }
 
-  @DataProvider(name = "registerExceptions")
   public Object[] providesRegisterExceptions() {
     return new Object[] {
         InstanceAlreadyExistsException.class,
@@ -71,7 +67,6 @@ public final class JmxRegistrationTest {
     };
   }
 
-  @DataProvider(name = "unegisterExceptions")
   public Object[] providesUnregisterExceptions() {
     return new Object[] {
         MBeanRegistrationException.class,

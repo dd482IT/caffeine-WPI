@@ -111,9 +111,9 @@ public final class CacheContext {
   AsyncCache<?, ?> asyncCache;
   Cache<?, ?> cache;
 
-  @Nullable Int firstKey;
-  @Nullable Int middleKey;
-  @Nullable Int lastKey;
+  Int firstKey;
+  Int middleKey;
+  Int lastKey;
   long initialSize;
 
   // Generated on-demand

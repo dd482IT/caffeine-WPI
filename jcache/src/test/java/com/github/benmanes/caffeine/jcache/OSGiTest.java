@@ -40,14 +40,11 @@ import com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@RunWith(PaxExam.class)
-@ExamReactorStrategy(PerMethod.class)
 public final class OSGiTest {
 
   @Inject
   private CachingProvider cachingProvider;
 
-  @Configuration
   public Option[] config() {
     return options(
         junitBundles(),
@@ -65,7 +62,6 @@ public final class OSGiTest {
             .version(System.getProperty("osgiUtil.promise")));
   }
 
-  @Test
   public void sanity() {
     var cachingProvider = Caching.getCachingProvider(
         "com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider",
@@ -75,7 +71,6 @@ public final class OSGiTest {
     assertNull(cache.get("a"));
   }
 
-  @Test
   public void testOSGIDS() {
     assertNotNull("Should have found a registered CachingProvider.", cachingProvider);
     assertEquals(CaffeineCachingProvider.class, cachingProvider.getClass());

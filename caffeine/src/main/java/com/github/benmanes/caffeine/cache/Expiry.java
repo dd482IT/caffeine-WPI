@@ -57,7 +57,7 @@ public interface Expiry<K, V> {
    * @param currentDuration the current duration, in nanoseconds
    * @return the length of time before the entry expires, in nanoseconds
    */
-  long expireAfterUpdate(K key, V value, long currentTime, @NonNegative long currentDuration);
+  long expireAfterUpdate(K key, V value, long currentTime, long currentDuration);
 
   /**
    * Specifies that the entry should be automatically removed from the cache once the duration has
@@ -75,5 +75,5 @@ public interface Expiry<K, V> {
    * @param currentDuration the current duration, in nanoseconds
    * @return the length of time before the entry expires, in nanoseconds
    */
-  long expireAfterRead(K key, V value, long currentTime, @NonNegative long currentDuration);
+  long expireAfterRead(K key, V value, long currentTime, long currentDuration);
 }

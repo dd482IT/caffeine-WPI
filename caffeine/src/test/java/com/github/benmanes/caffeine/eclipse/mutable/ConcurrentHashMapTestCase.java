@@ -30,12 +30,10 @@ import org.junit.Test;
 public abstract class ConcurrentHashMapTestCase extends MutableMapTestCase {
   protected ExecutorService executor;
 
-  @Before
   public void setUp() {
     executor = Executors.newFixedThreadPool(20);
   }
 
-  @After
   public void tearDown() {
     executor.shutdown();
   }
@@ -44,7 +42,6 @@ public abstract class ConcurrentHashMapTestCase extends MutableMapTestCase {
   protected abstract <K, V> ConcurrentMutableMap<K, V> newMap();
 
   @Override
-  @Test
   public void updateValue() {
     super.updateValue();
 
@@ -57,7 +54,6 @@ public abstract class ConcurrentHashMapTestCase extends MutableMapTestCase {
   }
 
   @Override
-  @Test
   public void updateValue_collisions() {
     super.updateValue_collisions();
 
@@ -71,7 +67,6 @@ public abstract class ConcurrentHashMapTestCase extends MutableMapTestCase {
   }
 
   @Override
-  @Test
   public void updateValueWith() {
     super.updateValueWith();
 
@@ -87,7 +82,6 @@ public abstract class ConcurrentHashMapTestCase extends MutableMapTestCase {
   }
 
   @Override
-  @Test
   public void updateValueWith_collisions() {
     super.updateValueWith_collisions();
 

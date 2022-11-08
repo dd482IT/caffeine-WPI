@@ -50,7 +50,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "linked.SegmentedLru")
 public final class SegmentedLruPolicy implements KeyOnlyPolicy {
   static final Node UNLINKED = new Node();
 

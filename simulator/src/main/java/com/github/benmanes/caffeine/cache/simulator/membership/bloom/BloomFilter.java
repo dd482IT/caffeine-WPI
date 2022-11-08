@@ -67,7 +67,7 @@ public final class BloomFilter implements Membership {
    * @param expectedInsertions the number of expected insertions
    * @param fpp the false positive probability, where {@literal 0.0 > fpp < 1.0}
    */
-  public void ensureCapacity(@NonNegative long expectedInsertions, @NonNegative double fpp) {
+  public void ensureCapacity(long expectedInsertions, double fpp) {
     checkArgument(expectedInsertions >= 0);
     checkArgument(fpp > 0 && fpp < 1);
 

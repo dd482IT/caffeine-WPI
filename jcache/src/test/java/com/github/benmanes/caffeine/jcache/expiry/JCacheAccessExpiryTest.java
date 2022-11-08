@@ -47,10 +47,8 @@ import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
-  @BeforeMethod
   public void setup() {
     for (int i = 0; i < 100; i++) {
       jcacheLoading.put(i, -i);
@@ -68,14 +66,12 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
     return configuration;
   }
 
-  @DataProvider(name = "eternal")
   public Object[] providesEternal() {
     return new Object[] { true, false };
   }
 
   /* --------------- containsKey --------------- */
 
-  @Test
   public void containsKey_expired() {
     jcache.put(KEY_1, VALUE_1);
     ticker.setAutoIncrementStep(EXPIRY_DURATION / 2, TimeUnit.MILLISECONDS);
@@ -86,7 +82,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
   /* --------------- get --------------- */
 
-  @Test
   public void get_absent() {
     assertThat(jcache.get(KEY_1)).isEqualTo(VALUE_1);
 
@@ -95,7 +90,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
     assertThat(getExpirable(jcache, KEY_1)).isNull();
   }
 
-  @Test(dataProvider = "eternal")
   public void get_present(boolean eternal) {
     var expirable = getExpirable(jcache, KEY_1);
     if (eternal) {
@@ -106,7 +100,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test
   public void get_expired() {
     jcache.put(KEY_1, VALUE_1);
     ticker.setAutoIncrementStep(EXPIRY_DURATION / 2, TimeUnit.MILLISECONDS);
@@ -117,7 +110,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
   /* --------------- get (loading) --------------- */
 
-  @Test
   public void get_loading_absent() {
     assertThat(jcacheLoading.get(KEY_1)).isEqualTo(VALUE_1);
 
@@ -128,7 +120,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
     assertThat(expirable.getExpireTimeMS()).isEqualTo(currentTimeMillis() + EXPIRY_DURATION);
   }
 
-  @Test(dataProvider = "eternal")
   public void get_loading_present(boolean eternal) {
     var expirable = getExpirable(jcacheLoading, KEY_1);
     if (eternal) {
@@ -141,7 +132,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
   /* --------------- getAllPresent --------------- */
 
-  @Test
   public void getAll_absent() {
     assertThat(jcache.getAll(keys)).isEqualTo(entries);
 
@@ -153,7 +143,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
     }
   }
 
-  @Test(dataProvider = "eternal")
   public void getAll_present(boolean eternal) {
     for (Integer key : keys) {
       var expirable = getExpirable(jcacheLoading, key);
@@ -172,7 +161,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
   /* --------------- invoke --------------- */
 
-  @Test
   public void invoke_absent() {
     assertThat(jcache.get(KEY_1)).isEqualTo(VALUE_1);
 
@@ -183,7 +171,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
     assertThat(getExpirable(jcache, KEY_1)).isNull();
   }
 
-  @Test(dataProvider = "eternal")
   public void invoke_present(boolean eternal) {
     var expirable = getExpirable(jcache, KEY_1);
     if (eternal) {
@@ -197,7 +184,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
   /* --------------- invokeAll --------------- */
 
-  @Test
   public void invokeAll_absent() {
     assertThat(jcache.getAll(keys)).isEqualTo(entries);
 
@@ -209,7 +195,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
     }
   }
 
-  @Test
   public void invokeAll_present() {
     var result = jcache.invokeAll(keys, (entry, args) -> entry.getValue());
     var unwrapped = result.entrySet().stream().collect(toImmutableMap(
@@ -224,7 +209,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
   /* --------------- conditional remove --------------- */
 
-  @Test
   public void removeConditionally() {
     assertThat(jcache.remove(KEY_1, VALUE_2)).isFalse();
 
@@ -234,7 +218,6 @@ public final class JCacheAccessExpiryTest extends AbstractJCacheTest {
 
   /* --------------- conditional replace --------------- */
 
-  @Test
   public void replaceConditionally() {
     assertThat(jcache.replace(KEY_1, VALUE_2, VALUE_3)).isFalse();
 

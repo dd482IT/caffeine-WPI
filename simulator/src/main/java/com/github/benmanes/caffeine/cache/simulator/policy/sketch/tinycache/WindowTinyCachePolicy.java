@@ -26,7 +26,6 @@ import com.typesafe.config.Config;
 /**
  * @author gilga1983@gmail.com (Gil Einziger)
  */
-@PolicySpec(name = "sketch.WindowTinyCache")
 public final class WindowTinyCachePolicy implements KeyOnlyPolicy {
   private final TinyCache window;
   private final PolicyStats policyStats;

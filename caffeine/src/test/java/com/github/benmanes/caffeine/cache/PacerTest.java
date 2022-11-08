@@ -37,26 +37,23 @@ import com.google.common.primitives.Ints;
 /**
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 public final class PacerTest {
   private static final long ONE_MINUTE_IN_NANOS = TimeUnit.MINUTES.toNanos(1);
   private static final Random random = new Random();
   private static final long NOW = random.nextLong();
 
-  @Mock Scheduler scheduler;
-  @Mock Executor executor;
-  @Mock Runnable command;
-  @Mock Future<?> future;
+  Scheduler scheduler;
+  Executor executor;
+  Runnable command;
+  Future<?> future;
 
   Pacer pacer;
 
-  @BeforeMethod
   public void beforeMethod() throws Exception {
     MockitoAnnotations.openMocks(this).close();
     pacer = new Pacer(scheduler);
   }
 
-  @Test
   public void schedule_initialize() {
     long delay = random.nextInt(Ints.saturatedCast(Pacer.TOLERANCE));
     doReturn(DisabledFuture.INSTANCE)
@@ -67,7 +64,6 @@ public final class PacerTest {
     assertThat(pacer.nextFireTime).isEqualTo(NOW + Pacer.TOLERANCE);
   }
 
-  @Test
   public void schedule_initialize_recurse() {
     long delay = random.nextInt(Ints.saturatedCast(Pacer.TOLERANCE));
     doAnswer(invocation -> {
@@ -82,7 +78,6 @@ public final class PacerTest {
     assertThat(pacer.nextFireTime).isEqualTo(NOW + Pacer.TOLERANCE);
   }
 
-  @Test
   public void schedule_cancel_schedule() {
     long fireTime = NOW + Pacer.TOLERANCE;
     long delay = random.nextInt(Ints.saturatedCast(Pacer.TOLERANCE));
@@ -103,7 +98,6 @@ public final class PacerTest {
     assertThat(pacer.future).isSameInstanceAs(future);
   }
 
-  @Test
   public void scheduled_afterNextFireTime_skip() {
     pacer.nextFireTime = NOW + ONE_MINUTE_IN_NANOS;
     pacer.future = future;
@@ -116,7 +110,6 @@ public final class PacerTest {
     verifyNoInteractions(scheduler, executor, command, future);
   }
 
-  @Test
   public void schedule_beforeNextFireTime_skip() {
     pacer.nextFireTime = NOW + ONE_MINUTE_IN_NANOS;
     pacer.future = future;
@@ -131,7 +124,6 @@ public final class PacerTest {
     verifyNoInteractions(scheduler, executor, command, future);
   }
 
-  @Test
   public void schedule_beforeNextFireTime_minimumDelay() {
     pacer.nextFireTime = NOW + ONE_MINUTE_IN_NANOS;
     pacer.future = future;
@@ -151,7 +143,6 @@ public final class PacerTest {
     verifyNoMoreInteractions(scheduler, future);
   }
 
-  @Test
   public void schedule_beforeNextFireTime_customDelay() {
     pacer.nextFireTime = NOW + ONE_MINUTE_IN_NANOS;
     pacer.future = future;
@@ -171,14 +162,12 @@ public final class PacerTest {
     verifyNoMoreInteractions(scheduler, future);
   }
 
-  @Test
   public void cancel_initialize() {
     pacer.cancel();
     assertThat(pacer.nextFireTime).isEqualTo(0);
     assertThat(pacer.future).isNull();
   }
 
-  @Test
   public void cancel_scheduled() {
     pacer.nextFireTime = NOW + ONE_MINUTE_IN_NANOS;
     pacer.future = future;

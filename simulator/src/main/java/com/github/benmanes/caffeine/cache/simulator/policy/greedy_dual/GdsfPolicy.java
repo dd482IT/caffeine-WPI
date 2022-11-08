@@ -45,7 +45,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "greedy-dual.Gdsf", characteristics = WEIGHTED)
 public final class GdsfPolicy implements Policy {
   private final NavigableSet<Node> priorityQueue;
   private final Long2ObjectMap<Node> data;

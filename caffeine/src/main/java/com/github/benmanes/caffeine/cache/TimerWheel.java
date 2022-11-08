@@ -303,8 +303,8 @@ final class TimerWheel<K, V> implements Iterable<Node<K, V>> {
   abstract class Traverser implements Iterator<Node<K, V>> {
     final long expectedNanos;
 
-    @Nullable Node<K, V> current;
-    @Nullable Node<K, V> next;
+    Node<K, V> current;
+    Node<K, V> next;
 
     Traverser() {
       expectedNanos = nanos;
@@ -334,7 +334,7 @@ final class TimerWheel<K, V> implements Iterable<Node<K, V>> {
       return current;
     }
 
-    @Nullable Node<K, V> computeNext() {
+    Node<K, V> computeNext() {
       var node = (current == null) ? sentinel() : current;
       for (;;) {
         node = traverse(node);
@@ -359,10 +359,10 @@ final class TimerWheel<K, V> implements Iterable<Node<K, V>> {
     abstract Node<K, V> traverse(Node<K, V> node);
 
     /** Returns the sentinel for the wheel's next bucket, or null if the wheel is exhausted. */
-    abstract @Nullable Node<K, V> goToNextBucket();
+    abstract Node<K, V> goToNextBucket();
 
     /** Returns the sentinel for the next wheel's bucket position, or null if no more wheels. */
-    abstract @Nullable Node<K, V> goToNextWheel();
+    abstract Node<K, V> goToNextWheel();
   }
 
   final class AscendingIterator extends Traverser {
@@ -378,12 +378,12 @@ final class TimerWheel<K, V> implements Iterable<Node<K, V>> {
     @Override Node<K, V> traverse(Node<K, V> node) {
       return node.getNextInVariableOrder();
     }
-    @Override @Nullable Node<K, V> goToNextBucket() {
+    @Override Node<K, V> goToNextBucket() {
       return (++steps < wheel[wheelIndex].length)
           ? wheel[wheelIndex][bucketIndex()]
           : null;
     }
-    @Override @Nullable Node<K, V> goToNextWheel() {
+    @Override Node<K, V> goToNextWheel() {
       if (++wheelIndex == wheel.length) {
         return null;
       }
@@ -411,12 +411,12 @@ final class TimerWheel<K, V> implements Iterable<Node<K, V>> {
     @Override Node<K, V> sentinel() {
       return wheel[wheelIndex][bucketIndex()];
     }
-    @Override @Nullable Node<K, V> goToNextBucket() {
+    @Override Node<K, V> goToNextBucket() {
       return (++steps < wheel[wheelIndex].length)
           ? wheel[wheelIndex][bucketIndex()]
           : null;
     }
-    @Override @Nullable Node<K, V> goToNextWheel() {
+    @Override Node<K, V> goToNextWheel() {
       if (--wheelIndex < 0) {
         return null;
       }
@@ -447,22 +447,22 @@ final class TimerWheel<K, V> implements Iterable<Node<K, V>> {
       return prev;
     }
     @SuppressWarnings("NullAway")
-    @Override public void setPreviousInVariableOrder(@Nullable Node<K, V> prev) {
+    @Override public void setPreviousInVariableOrder(Node<K, V> prev) {
       this.prev = prev;
     }
     @Override public Node<K, V> getNextInVariableOrder() {
       return next;
     }
     @SuppressWarnings("NullAway")
-    @Override public void setNextInVariableOrder(@Nullable Node<K, V> next) {
+    @Override public void setNextInVariableOrder(Node<K, V> next) {
       this.next = next;
     }
 
-    @Override public @Nullable K getKey() { return null; }
+    @Override public K getKey() { return null; }
     @Override public Object getKeyReference() { throw new UnsupportedOperationException(); }
-    @Override public @Nullable V getValue() { return null; }
+    @Override public V getValue() { return null; }
     @Override public Object getValueReference() { throw new UnsupportedOperationException(); }
-    @Override public void setValue(V value, @Nullable ReferenceQueue<V> referenceQueue) {}
+    @Override public void setValue(V value, ReferenceQueue<V> referenceQueue) {}
     @Override public boolean containsValue(Object value) { return false; }
     @Override public boolean isAlive() { return false; }
     @Override public boolean isRetired() { return false; }

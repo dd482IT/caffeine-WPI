@@ -44,7 +44,7 @@ interface LocalCache<K, V> extends ConcurrentMap<K, V> {
   StatsCounter statsCounter();
 
   /** Asynchronously sends a removal notification to the listener. */
-  void notifyRemoval(@Nullable K key, @Nullable V value, RemovalCause cause);
+  void notifyRemoval(K key, V value, RemovalCause cause);
 
   /** Returns the {@link Executor} used by this cache. */
   Executor executor();
@@ -53,7 +53,7 @@ interface LocalCache<K, V> extends ConcurrentMap<K, V> {
   ConcurrentMap<Object, CompletableFuture<?>> refreshes();
 
   /** Returns the {@link Expiry} used by this cache. */
-  @Nullable Expiry<K, V> expiry();
+  Expiry<K, V> expiry();
 
   /** Returns the {@link Ticker} used by this cache for statistics. */
   Ticker statsTicker();
@@ -68,14 +68,12 @@ interface LocalCache<K, V> extends ConcurrentMap<K, V> {
    * See {@link Cache#getIfPresent(K)}. This method differs by accepting a parameter of whether
    * to record the hit-and-miss statistics based on the success of this operation.
    */
-  @Nullable
   V getIfPresent(K key, boolean recordStats);
 
   /**
    * See {@link Cache#getIfPresent(K)}. This method differs by not recording the access with
    * the statistics nor the eviction policy.
    */
-  @Nullable
   V getIfPresentQuietly(Object key);
 
   /** See {@link Cache#getAllPresent}. */
@@ -88,7 +86,7 @@ interface LocalCache<K, V> extends ConcurrentMap<K, V> {
   boolean replace(K key, V oldValue, V newValue, boolean shouldDiscardRefresh);
 
   @Override
-  default @Nullable V compute(K key,
+  default V compute(K key,
       BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
     return compute(key, remappingFunction, expiry(),
         /* recordLoad */ true, /* recordLoadFailure */ true);
@@ -98,11 +96,11 @@ interface LocalCache<K, V> extends ConcurrentMap<K, V> {
    * See {@link ConcurrentMap#compute}. This method differs by accepting parameters indicating
    * whether to record load statistics based on the success of this operation.
    */
-  @Nullable V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction,
-      @Nullable Expiry<? super K, ? super V> expiry, boolean recordLoad, boolean recordLoadFailure);
+  V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction,
+      Expiry<? super K, ? super V> expiry, boolean recordLoad, boolean recordLoadFailure);
 
   @Override
-  default @Nullable V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+  default V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
     return computeIfAbsent(key, mappingFunction, /* recordStats */ true, /* recordLoad */ true);
   }
 
@@ -110,7 +108,7 @@ interface LocalCache<K, V> extends ConcurrentMap<K, V> {
    * See {@link ConcurrentMap#computeIfAbsent}. This method differs by accepting parameters
    * indicating how to record statistics.
    */
-  @Nullable V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction,
+  V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction,
       boolean recordStats, boolean recordLoad);
 
   /** See {@link Cache#invalidateAll(Iterable)}. */

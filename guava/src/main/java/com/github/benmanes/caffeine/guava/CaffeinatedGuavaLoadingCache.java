@@ -238,7 +238,7 @@ final class CaffeinatedGuavaLoadingCache<K, V>
     FutureCompleter(CompletableFuture<V> future) {
       this.future = future;
     }
-    @Override public void onSuccess(@Nullable V value) {
+    @Override public void onSuccess(V value) {
       if (value == null) {
         future.completeExceptionally(new InvalidCacheLoadException("null value"));
       } else {

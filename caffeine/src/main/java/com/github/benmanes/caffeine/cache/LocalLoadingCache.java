@@ -50,7 +50,7 @@ interface LocalLoadingCache<K, V> extends LocalManualCache<K, V>, LoadingCache<K
   Function<K, V> mappingFunction();
 
   /** Returns the {@link CacheLoader#loadAll} as a mapping function, if implemented. */
-  @Nullable Function<Set<? extends K>, Map<K, V>> bulkMappingFunction();
+  Function<Set<? extends K>, Map<K, V>> bulkMappingFunction();
 
   @Override
   @SuppressWarnings("NullAway")
@@ -193,7 +193,7 @@ interface LocalLoadingCache<K, V> extends LocalManualCache<K, V>, LoadingCache<K
   }
 
   /** Returns a mapping function that adapts to {@link CacheLoader#loadAll}, if implemented. */
-  static <K, V> @Nullable Function<Set<? extends K>, Map<K, V>> newBulkMappingFunction(
+  static <K, V> Function<Set<? extends K>, Map<K, V>> newBulkMappingFunction(
       CacheLoader<? super K, V> cacheLoader) {
     if (!hasLoadAll(cacheLoader)) {
       return null;

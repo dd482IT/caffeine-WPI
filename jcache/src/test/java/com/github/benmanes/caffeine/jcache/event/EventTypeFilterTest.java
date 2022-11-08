@@ -28,31 +28,26 @@ import org.testng.annotations.Test;
 public final class EventTypeFilterTest {
   EventTypeFilter<Integer, Integer> filter;
 
-  @BeforeTest
   public void before() {
     CacheEntryCreatedListener<Integer, Integer> created = events -> {};
     filter = new EventTypeFilter<>(created, event -> true);
   }
 
-  @Test
   @SuppressWarnings("TruthIncompatibleType")
   public void equals_wrongType() {
     assertThat(filter).isNotEqualTo(1);
   }
 
-  @Test
   public void equals_false() {
     CacheEntryCreatedListener<Integer, Integer> created = events -> {};
     EventTypeFilter<Integer, Integer> other = new EventTypeFilter<>(created, event -> false);
     assertThat(filter).isNotEqualTo(other);
   }
 
-  @Test
   public void equals() {
     assertThat(filter.equals(filter)).isTrue();
   }
 
-  @Test
   public void hash() {
     assertThat(filter.hashCode()).isEqualTo(filter.hashCode());
   }

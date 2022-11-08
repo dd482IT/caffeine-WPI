@@ -50,7 +50,6 @@ public interface AsyncCache<K, V> {
    *         does not contain a mapping for the key
    * @throws NullPointerException if the specified key is null
    */
-  @Nullable
   CompletableFuture<V> getIfPresent(K key);
 
   /**
@@ -185,7 +184,6 @@ public interface AsyncCache<K, V> {
    *
    * @return a thread-safe view of this cache supporting all of the optional {@link Map} operations
    */
-  @CheckReturnValue
   ConcurrentMap<K, CompletableFuture<V>> asMap();
 
   /**
@@ -196,6 +194,5 @@ public interface AsyncCache<K, V> {
    *
    * @return a thread-safe synchronous view of this cache
    */
-  @CheckReturnValue
   Cache<K, V> synchronous();
 }

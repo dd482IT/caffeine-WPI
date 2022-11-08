@@ -34,24 +34,20 @@ import site.ycsb.generator.ScrambledZipfianGenerator;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 @SuppressWarnings("LexicographicalAnnotationAttributeListing")
 public class FrequencySketchBenchmark {
   private static final int SIZE = (2 << 14);
   private static final int MASK = SIZE - 1;
   private static final int ITEMS = SIZE / 3;
 
-  @Param({"Flat", "Block"})
   SketchType sketchType;
 
-  @Param({"32768", "524288", "8388608", "134217728"})
   int tableSize;
 
   TinyLfuSketch<Integer> sketch;
   Integer[] ints;
   int index;
 
-  @Setup
   public void setup() {
     var generator = new ScrambledZipfianGenerator(ITEMS);
     sketch = sketchType.create(tableSize);
@@ -65,17 +61,14 @@ public class FrequencySketchBenchmark {
     }
   }
 
-  @Benchmark
   public void increment() {
     sketch.increment(ints[index++ & MASK]);
   }
 
-  @Benchmark
   public int frequency() {
     return sketch.frequency(ints[index++ & MASK]);
   }
 
-  @Benchmark
   public void reset() {
     sketch.reset();
   }

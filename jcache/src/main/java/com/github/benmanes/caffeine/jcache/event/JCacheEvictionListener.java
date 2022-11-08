@@ -56,7 +56,7 @@ public final class JCacheEvictionListener<K, V> implements RemovalListener<K, Ex
 
   @Override
   @SuppressWarnings("NullAway")
-  public void onRemoval(K key, @Nullable Expirable<V> expirable, RemovalCause cause) {
+  public void onRemoval(K key, Expirable<V> expirable, RemovalCause cause) {
     if (expirable != null) {
       V value = expirable.get();
       if (cause == RemovalCause.EXPIRED) {

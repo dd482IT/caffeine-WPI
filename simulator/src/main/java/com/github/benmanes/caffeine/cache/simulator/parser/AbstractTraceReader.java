@@ -97,7 +97,7 @@ public abstract class AbstractTraceReader implements TraceReader {
   }
 
   /** Returns a uncompressed stream if XZ encoded, else {@code null}. */
-  private @Nullable InputStream tryXZ(InputStream input) {
+  private InputStream tryXZ(InputStream input) {
     try {
       return new XZInputStream(input);
     } catch (IOException e) {
@@ -106,7 +106,7 @@ public abstract class AbstractTraceReader implements TraceReader {
   }
 
   /** Returns a uncompressed stream, else {@code null}. */
-  private @Nullable InputStream tryCompressed(InputStream input) {
+  private InputStream tryCompressed(InputStream input) {
     try {
       return new CompressorStreamFactory().createCompressorInputStream(input);
     } catch (CompressorException e) {
@@ -115,7 +115,7 @@ public abstract class AbstractTraceReader implements TraceReader {
   }
 
   /** Returns a unarchived stream, else {@code null}. */
-  private @Nullable InputStream tryArchived(InputStream input) {
+  private InputStream tryArchived(InputStream input) {
     try {
       var archive = new ArchiveStreamFactory().createArchiveInputStream(input);
       var entries = new AbstractIterator<InputStream>() {

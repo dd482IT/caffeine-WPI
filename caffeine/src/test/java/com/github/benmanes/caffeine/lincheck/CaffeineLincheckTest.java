@@ -27,10 +27,8 @@ import com.github.benmanes.caffeine.cache.Caffeine;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(groups = "lincheck")
 public final class CaffeineLincheckTest {
 
-  @Factory
   public Object[] factory() {
     return new Object[] { new BoundedLincheckTest(), new UnboundedLincheckTest() };
   }

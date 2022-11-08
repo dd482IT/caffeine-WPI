@@ -36,7 +36,6 @@ import com.typesafe.config.Config;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "product.TCache")
 public final class TCachePolicy implements KeyOnlyPolicy {
   private final Cache<Long, Boolean> cache;
   private final PolicyStats policyStats;

@@ -38,12 +38,10 @@ import org.junit.Test;
 public abstract class ConcurrentHashMapAcceptanceTest {
   private ExecutorService executor;
 
-  @Before
   public void setUp() {
     executor = Executors.newFixedThreadPool(20);
   }
 
-  @After
   public void tearDown() {
     executor.shutdown();
   }
@@ -72,7 +70,6 @@ public abstract class ConcurrentHashMapAcceptanceTest {
     return added[0] ? null : newValue;
   }
 
-  @Test
   public void parallelGroupByIntoConcurrentHashMap() {
     MutableMap<Integer, MutableBag<Integer>> actual = newMap();
     ParallelIterate.forEach(Interval.oneTo(1000000), each -> actual
@@ -82,7 +79,6 @@ public abstract class ConcurrentHashMapAcceptanceTest {
         Interval.oneTo(1000000).groupBy(each -> each % 100000).toMap(HashBag::new), actual);
   }
 
-  @Test
   public void concurrentPutGetPutAllRemoveContainsKeyContainsValueGetIfAbsentPutTest() {
     ConcurrentMutableMap<Integer, Integer> map1 = newMap();
     ConcurrentMutableMap<Integer, Integer> map2 = newMap();
@@ -111,7 +107,6 @@ public abstract class ConcurrentHashMapAcceptanceTest {
     Verify.assertEqualsAndHashCode(map1, map2);
   }
 
-  @Test
   public void concurrentPutIfAbsentGetIfPresentPutTest() {
     ConcurrentMutableMap<Integer, Integer> map1 = newMap();
     ConcurrentMutableMap<Integer, Integer> map2 = newMap();
@@ -130,7 +125,6 @@ public abstract class ConcurrentHashMapAcceptanceTest {
     Assert.assertEquals(map1, map2);
   }
 
-  @Test
   public void concurrentClear() {
     ConcurrentMutableMap<Integer, Integer> map = newMap();
     ParallelIterate.forEach(Interval.oneTo(1000), each -> {
@@ -146,7 +140,6 @@ public abstract class ConcurrentHashMapAcceptanceTest {
     Verify.assertEmpty(map);
   }
 
-  @Test
   public void concurrentRemoveAndPutIfAbsent() {
     ConcurrentMutableMap<Integer, Integer> map1 = newMap();
     ParallelIterate.forEach(Interval.oneTo(1000), each -> {
@@ -190,7 +183,6 @@ public abstract class ConcurrentHashMapAcceptanceTest {
     }
   }
 
-  @Test
   public void size() {
     ConcurrentMutableMap<Integer, Integer> map = newMap();
     ParallelIterate.forEach(Interval.oneTo(10_000), each -> map.put(each, each));
@@ -200,21 +192,18 @@ public abstract class ConcurrentHashMapAcceptanceTest {
     Assert.assertEquals(10_000, map.entrySet().size());
   }
 
-  @Test
   public void size_entrySet() {
     ConcurrentMutableMap<Integer, Integer> map = newMap();
     ParallelIterate.forEach(Interval.oneTo(10_000), each -> map.put(each, each));
     Assert.assertEquals(10_000, map.entrySet().size());
   }
 
-  @Test
   public void size_keySet() {
     ConcurrentMutableMap<Integer, Integer> map = newMap();
     ParallelIterate.forEach(Interval.oneTo(10_000), each -> map.put(each, each));
     Assert.assertEquals(10_000, map.keySet().size());
   }
 
-  @Test
   public void size_values() {
     ConcurrentMutableMap<Integer, Integer> map = newMap();
     ParallelIterate.forEach(Interval.oneTo(10_000), each -> map.put(each, each));

@@ -39,7 +39,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@PolicySpec(name = "sketch.RandomWindowTinyLfu")
 public final class RandomWindowTinyLfuPolicy implements KeyOnlyPolicy {
   final Long2ObjectMap<Node> data;
   final PolicyStats policyStats;

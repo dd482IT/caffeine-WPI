@@ -55,8 +55,6 @@ import com.google.common.util.concurrent.MoreExecutors;
  * @author yurgis2
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(groups = "isolated")
-@Listeners(CacheValidationListener.class)
 public final class Issue30Test {
   private static final boolean DEBUG = false;
 
@@ -76,12 +74,10 @@ public final class Issue30Test {
 
   private final ExecutorService executor = Executors.newFixedThreadPool(N_THREADS);
 
-  @AfterClass
   public void afterClass() {
     MoreExecutors.shutdownAndAwaitTermination(executor, 1, TimeUnit.MINUTES);
   }
 
-  @DataProvider(name = "params")
   public Object[][] providesCache() {
     var source = new ConcurrentHashMap<String, String>();
     var lastLoad = new ConcurrentHashMap<String, Instant>();
@@ -92,7 +88,6 @@ public final class Issue30Test {
     return new Object[][] {{ cache, source, lastLoad }};
   }
 
-  @Test(dataProvider = "params", invocationCount = 100, threadPoolSize = N_THREADS)
   public void expiration(AsyncLoadingCache<String, String> cache,
       ConcurrentMap<String, String> source, ConcurrentMap<String, Instant> lastLoad)
           throws InterruptedException {

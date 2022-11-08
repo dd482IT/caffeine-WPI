@@ -60,7 +60,6 @@ public interface Policy<K, V> {
    *         no mapping for the key
    * @throws NullPointerException if the specified key is null
    */
-  @Nullable
   V getIfPresentQuietly(K key);
 
   /**
@@ -74,7 +73,6 @@ public interface Policy<K, V> {
    *         mapping for the key
    * @throws NullPointerException if the specified key is null
    */
-  @Nullable
   default CacheEntry<K, V> getEntryIfPresentQuietly(K key) {
     // This method was added & implemented in version 3.0.6
     throw new UnsupportedOperationException();
@@ -183,7 +181,6 @@ public interface Policy<K, V> {
      *
      * @return the maximum size bounding, which may be either weighted or unweighted
      */
-    @NonNegative
     long getMaximum();
 
     /**
@@ -199,7 +196,7 @@ public interface Policy<K, V> {
      *        cache was constructed
      * @throws IllegalArgumentException if the maximum size specified is negative
      */
-    void setMaximum(@NonNegative long maximum);
+    void setMaximum(long maximum);
 
     /**
      * Returns an unmodifiable snapshot {@link Map} view of the cache with ordered traversal. The
@@ -215,7 +212,7 @@ public interface Policy<K, V> {
      *        the limit)
      * @return a snapshot view of the cache from the coldest entry to the hottest
      */
-    Map<K, V> coldest(@NonNegative int limit);
+    Map<K, V> coldest(int limit);
 
     /**
      * Returns an unmodifiable snapshot {@link Map} view of the cache with ordered traversal. The
@@ -232,7 +229,7 @@ public interface Policy<K, V> {
      *        disregard the limit)
      * @return a snapshot view of the cache from the coldest entry to the hottest
      */
-    default Map<K, V> coldestWeighted(@NonNegative long weightLimit) {
+    default Map<K, V> coldestWeighted(long weightLimit) {
       // This method was added & implemented in version 3.0.4
       throw new UnsupportedOperationException();
     }
@@ -280,7 +277,7 @@ public interface Policy<K, V> {
      *        the limit)
      * @return a snapshot view of the cache from the hottest entry to the coldest
      */
-    Map<K, V> hottest(@NonNegative int limit);
+    Map<K, V> hottest(int limit);
 
     /**
      * Returns an unmodifiable snapshot {@link Map} view of the cache with ordered traversal. The
@@ -297,7 +294,7 @@ public interface Policy<K, V> {
      *        disregard the limit)
      * @return a snapshot view of the cache from the hottest entry to the coldest
      */
-    default Map<K, V> hottestWeighted(@NonNegative long weightLimit) {
+    default Map<K, V> hottestWeighted(long weightLimit) {
       // This method was added & implemented in version 3.0.4
       throw new UnsupportedOperationException();
     }
@@ -379,7 +376,6 @@ public interface Policy<K, V> {
      * @return the length of time after which an entry should be automatically removed
      * @throws NullPointerException if the unit is null
      */
-    @NonNegative
     long getExpiresAfter(TimeUnit unit);
 
     /**
@@ -403,7 +399,7 @@ public interface Policy<K, V> {
      * @throws IllegalArgumentException if {@code duration} is negative
      * @throws NullPointerException if the unit is null
      */
-    void setExpiresAfter(@NonNegative long duration, TimeUnit unit);
+    void setExpiresAfter(long duration, TimeUnit unit);
 
     /**
      * Specifies that each entry should be automatically removed from the cache once a fixed
@@ -431,7 +427,7 @@ public interface Policy<K, V> {
      *        the limit)
      * @return a snapshot view of the cache from the oldest entry to the youngest
      */
-    Map<K, V> oldest(@NonNegative int limit);
+    Map<K, V> oldest(int limit);
 
     /**
      * Returns the computed result from the ordered traversal of the cache entries. The oorder of
@@ -474,7 +470,7 @@ public interface Policy<K, V> {
      *        the limit)
      * @return a snapshot view of the cache from the youngest entry to the oldest
      */
-    Map<K, V> youngest(@NonNegative int limit);
+    Map<K, V> youngest(int limit);
 
     /**
      * Returns the computed result from the ordered traversal of the cache entries. The order of
@@ -543,7 +539,7 @@ public interface Policy<K, V> {
      * @throws IllegalArgumentException if {@code duration} is negative
      * @throws NullPointerException if the specified key or unit is null
      */
-    void setExpiresAfter(K key, @NonNegative long duration, TimeUnit unit);
+    void setExpiresAfter(K key, long duration, TimeUnit unit);
 
     /**
      * Specifies that the entry should be automatically removed from the cache once the duration has
@@ -573,7 +569,7 @@ public interface Policy<K, V> {
      * @throws IllegalArgumentException if {@code duration} is negative
      * @throws NullPointerException if the specified key, value, or unit is null
      */
-    @Nullable V putIfAbsent(K key, V value, @NonNegative long duration, TimeUnit unit);
+    V putIfAbsent(K key, V value, long duration, TimeUnit unit);
 
     /**
      * Associates the {@code value} with the {@code key} in this cache if the specified key is not
@@ -589,7 +585,7 @@ public interface Policy<K, V> {
      * @throws IllegalArgumentException if {@code duration} is negative
      * @throws NullPointerException if the specified key, value, or duration is null
      */
-    default @Nullable V putIfAbsent(K key, V value, Duration duration) {
+    default V putIfAbsent(K key, V value, Duration duration) {
       return putIfAbsent(key, value, saturatedToNanos(duration), TimeUnit.NANOSECONDS);
     }
 
@@ -608,7 +604,7 @@ public interface Policy<K, V> {
      * @throws IllegalArgumentException if {@code duration} is negative
      * @throws NullPointerException if the specified key, value, or unit is null
      */
-    @Nullable V put(K key, V value, @NonNegative long duration, TimeUnit unit);
+    V put(K key, V value, long duration, TimeUnit unit);
 
     /**
      * Associates the {@code value} with the {@code key} in this cache. If the cache previously
@@ -624,7 +620,7 @@ public interface Policy<K, V> {
      * @throws IllegalArgumentException if {@code duration} is negative
      * @throws NullPointerException if the specified key, value, or duration is null
      */
-    default @Nullable V put(K key, V value, Duration duration) {
+    default V put(K key, V value, Duration duration) {
       return put(key, value, saturatedToNanos(duration), TimeUnit.NANOSECONDS);
     }
 
@@ -651,8 +647,8 @@ public interface Policy<K, V> {
      * @throws RuntimeException or Error if the remappingFunction does so, in which case the mapping
      *         is unchanged
      */
-    default @PolyNull V compute(K key,
-        BiFunction<? super K, ? super V, ? extends @PolyNull V> remappingFunction,
+    default V compute(K key,
+        BiFunction<? super K, ? super V, ? extends V> remappingFunction,
         Duration duration) {
       // This method was added & implemented in version 3.0.6
       throw new UnsupportedOperationException();
@@ -672,7 +668,7 @@ public interface Policy<K, V> {
      *        the limit)
      * @return a snapshot view of the cache from the oldest entry to the youngest
      */
-    Map<K, V> oldest(@NonNegative int limit);
+    Map<K, V> oldest(int limit);
 
     /**
      * Returns the computed result from the ordered traversal of the cache entries. The oorder of
@@ -715,7 +711,7 @@ public interface Policy<K, V> {
      *        the limit)
      * @return a snapshot view of the cache from the youngest entry to the oldest
      */
-    Map<K, V> youngest(@NonNegative int limit);
+    Map<K, V> youngest(int limit);
 
     /**
      * Returns the computed result from the ordered traversal of the cache entries. The order of
@@ -792,7 +788,6 @@ public interface Policy<K, V> {
      * @return the length of time after which an entry is eligible to be reloaded
      * @throws NullPointerException if the unit is null
      */
-    @NonNegative
     long getRefreshesAfter(TimeUnit unit);
 
     /**
@@ -816,7 +811,7 @@ public interface Policy<K, V> {
      * @throws IllegalArgumentException if {@code duration} is negative
      * @throws NullPointerException if the unit is null
      */
-    void setRefreshesAfter(@NonNegative long duration, TimeUnit unit);
+    void setRefreshesAfter(long duration, TimeUnit unit);
 
     /**
      * Specifies that each entry should be eligible for reloading once a fixed duration has elapsed.

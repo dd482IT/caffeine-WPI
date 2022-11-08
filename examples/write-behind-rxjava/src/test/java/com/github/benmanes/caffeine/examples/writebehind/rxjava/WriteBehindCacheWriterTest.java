@@ -38,7 +38,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
  */
 public final class WriteBehindCacheWriterTest {
 
-  @Test
   public void givenCacheUpdate_writeBehindIsCalled() {
     AtomicBoolean writerCalled = new AtomicBoolean(false);
 
@@ -61,7 +60,6 @@ public final class WriteBehindCacheWriterTest {
     Awaitility.await().untilTrue(writerCalled);
   }
 
-  @Test
   public void givenCacheUpdateOnMultipleKeys_writeBehindIsCalled() {
     AtomicBoolean writerCalled = new AtomicBoolean(false);
     AtomicInteger numberOfEntries = new AtomicInteger(0);
@@ -90,7 +88,6 @@ public final class WriteBehindCacheWriterTest {
     Assert.assertEquals(3, numberOfEntries.intValue());
   }
 
-  @Test
   public void givenMultipleCacheUpdatesOnSameKey_writeBehindIsCalledWithMostRecentTime() {
     AtomicBoolean writerCalled = new AtomicBoolean(false);
     AtomicInteger numberOfEntries = new AtomicInteger(0);

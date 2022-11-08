@@ -60,7 +60,6 @@ public final class CacheProxyTest extends AbstractJCacheTest {
     return configuration;
   }
 
-  @Test
   @SuppressWarnings({"ObjectToString", "unchecked"})
   public void getConfiguration_immutable() {
     var config = jcache.getConfiguration(CaffeineConfiguration.class);
@@ -113,12 +112,10 @@ public final class CacheProxyTest extends AbstractJCacheTest {
         .isEqualTo(List.of(configuration).toString());
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void unwrap_fail() {
     jcache.unwrap(CaffeineConfiguration.class);
   }
 
-  @Test
   public void unwrap() {
     assertThat(jcache.unwrap(Cache.class)).isSameInstanceAs(jcache);
     assertThat(jcache.unwrap(CacheProxy.class)).isSameInstanceAs(jcache);
@@ -127,19 +124,16 @@ public final class CacheProxyTest extends AbstractJCacheTest {
   }
 
   @SuppressWarnings("serial")
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void unwrap_configuration() {
     abstract class Dummy implements Configuration<Integer, Integer> {};
     jcache.getConfiguration(Dummy.class);
   }
 
-  @Test(expectedExceptions = IllegalArgumentException.class)
   public void unwrap_entry() {
     jcache.put(KEY_1, VALUE_1);
     jcache.iterator().next().unwrap(String.class);
   }
 
-  @Test
   public void close_fails() throws IOException {
     doThrow(IOException.class).when(expiry).close();
     doThrow(IOException.class).when(loader).close();

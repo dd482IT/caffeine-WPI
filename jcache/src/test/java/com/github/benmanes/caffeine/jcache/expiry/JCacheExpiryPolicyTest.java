@@ -31,41 +31,34 @@ public final class JCacheExpiryPolicyTest {
   final ExpiryPolicy temporal = new JCacheExpiryPolicy(
       Duration.ONE_DAY, Duration.ONE_HOUR, Duration.ONE_MINUTE);
 
-  @Test
   public void creation() {
     assertThat(eternal.getExpiryForCreation()).isEqualTo(Duration.ETERNAL);
     assertThat(temporal.getExpiryForCreation()).isEqualTo(Duration.ONE_DAY);
   }
 
-  @Test
   public void update() {
     assertThat(eternal.getExpiryForUpdate()).isEqualTo(Duration.ETERNAL);
     assertThat(temporal.getExpiryForUpdate()).isEqualTo(Duration.ONE_HOUR);
   }
 
-  @Test
   public void access() {
     assertThat(eternal.getExpiryForAccess()).isEqualTo(Duration.ETERNAL);
     assertThat(temporal.getExpiryForAccess()).isEqualTo(Duration.ONE_MINUTE);
   }
 
-  @Test
   @SuppressWarnings("TruthIncompatibleType")
   public void equals_wrongType() {
     assertThat(eternal).isNotEqualTo(1);
   }
 
-  @Test
   public void equals_wrongValue() {
     assertThat(eternal).isNotEqualTo(temporal);
   }
 
-  @Test
   public void equals() {
     assertThat(eternal.equals(eternal)).isTrue();
   }
 
-  @Test
   public void hash() {
     assertThat(eternal.hashCode()).isNotEqualTo(temporal.hashCode());
   }

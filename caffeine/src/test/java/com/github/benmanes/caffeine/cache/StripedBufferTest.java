@@ -36,7 +36,6 @@ import com.google.common.base.MoreObjects;
 public final class StripedBufferTest {
   static final Integer ELEMENT = 1;
 
-  @Test(dataProvider = "buffers")
   public void init(FakeBuffer<Integer> buffer) {
     assertThat(buffer.table).isNull();
 
@@ -45,7 +44,6 @@ public final class StripedBufferTest {
     assertThat(result).isEqualTo(Buffer.SUCCESS);
   }
 
-  @Test
   public void expand() {
     var buffer = new FakeBuffer<Integer>(Buffer.FAILED);
     assertThat(buffer.offer(ELEMENT)).isEqualTo(Buffer.SUCCESS);
@@ -59,7 +57,6 @@ public final class StripedBufferTest {
     Assert.fail();
   }
 
-  @Test
   @SuppressWarnings("ThreadPriorityCheck")
   public void expand_concurrent() {
     var buffer = new FakeBuffer<Boolean>(Buffer.FAILED);
@@ -72,7 +69,6 @@ public final class StripedBufferTest {
     assertThat(buffer.table).hasLength(MAXIMUM_TABLE_SIZE);
   }
 
-  @Test(dataProvider = "buffers")
   @SuppressWarnings("ThreadPriorityCheck")
   public void produce(FakeBuffer<Integer> buffer) {
     ConcurrentTestHarness.timeTasks(NCPU, () -> {
@@ -84,7 +80,6 @@ public final class StripedBufferTest {
     assertThat(buffer.table.length).isAtMost(MAXIMUM_TABLE_SIZE);
   }
 
-  @Test(dataProvider = "buffers")
   public void drain(FakeBuffer<Integer> buffer) {
     buffer.drainTo(e -> {});
     assertThat(buffer.drains).isEqualTo(0);
@@ -95,7 +90,6 @@ public final class StripedBufferTest {
     assertThat(buffer.drains).isEqualTo(1);
   }
 
-  @DataProvider(name = "buffers")
   public Object[] providesBuffers() {
     var results = List.of(Buffer.SUCCESS, Buffer.FAILED, Buffer.FULL);
     var buffers = new ArrayList<Buffer<Integer>>();

@@ -33,30 +33,21 @@ import org.openjdk.jmh.annotations.TearDown;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@State(Scope.Benchmark)
 @SuppressWarnings({"CanonicalAnnotationSyntax", "LexicographicalAnnotationAttributeListing",
   "PMD.JUnit4TestShouldUseAfterAnnotation"})
 public class EvictionBenchmark {
 
-  @Param({
-    "LinkedHashMap_Lru",
-    "Coherence_Hybrid",
-    "Caffeine",
-    "Ehcache3",
   })
   CacheType cacheType;
 
-  @Param({"1", "100", "10000", "1000000", "10000000"})
   int size;
 
   BasicCache<Integer, Boolean> cache;
 
-  @State(Scope.Thread)
   public static class ThreadState {
     int key;
   }
 
-  @Setup
   public void setup() {
     cache = cacheType.create(size);
     for (int i = 0; i < size; i++) {
@@ -64,12 +55,10 @@ public class EvictionBenchmark {
     }
   }
 
-  @TearDown(Level.Iteration)
   public void tearDown() {
     cache.cleanUp();
   }
 
-  @Benchmark
   public void evict(ThreadState threadState) {
     cache.put(threadState.key++, Boolean.TRUE);
   }

@@ -41,7 +41,6 @@ import com.google.common.testing.FakeTicker;
  *
  * @author ben.manes@gmail.com (Ben Manes)
  */
-@Test(singleThreaded = true)
 @SuppressWarnings("PreferJavaTimeOverload")
 public abstract class AbstractJCacheTest {
   protected static final long EXPIRY_DURATION = TimeUnit.MINUTES.toMillis(1);
@@ -61,7 +60,6 @@ public abstract class AbstractJCacheTest {
   protected CacheManager cacheManager;
   protected FakeTicker ticker;
 
-  @BeforeClass(alwaysRun = true)
   public void beforeClass() {
     var provider = Caching.getCachingProvider(CaffeineCachingProvider.class.getName());
     cacheManager = provider.getCacheManager(
@@ -69,7 +67,6 @@ public abstract class AbstractJCacheTest {
     cacheManager.getCacheNames().forEach(cacheManager::destroyCache);
   }
 
-  @BeforeMethod(alwaysRun = true)
   public void before() {
     jcacheConfiguration = getConfiguration();
     ticker = new FakeTicker().advance(START_TIME_MS, TimeUnit.MILLISECONDS);
@@ -78,7 +75,6 @@ public abstract class AbstractJCacheTest {
         "jcacheLoading", getLoadingConfiguration());
   }
 
-  @AfterMethod(alwaysRun = true)
   public void after() {
     cacheManager.destroyCache("jcache");
     cacheManager.destroyCache("jcacheLoading");
@@ -89,7 +85,6 @@ public abstract class AbstractJCacheTest {
 
   /* --------------- Utility methods ------------- */
 
-  @Nullable
   protected static Expirable<Integer> getExpirable(
       CacheProxy<Integer, Integer> cache, Integer key) {
     return cache.cache.getIfPresent(key);

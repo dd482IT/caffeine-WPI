@@ -51,7 +51,6 @@ public abstract class ReadBuffer<E> {
   public abstract int offer(E e);
 
   /** Drains the buffer, sending each element to the consumer for processing. */
-  @GuardedBy("lock")
   protected abstract void drainTo(Consumer<E> consumer);
 
   /** Drains the events. */
